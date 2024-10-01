@@ -1,0 +1,17 @@
+<div *ngFor="let comentario of comentarios">
+    <div *ngIf="comentario.mensaje && comentario.mensaje != null">
+        {{comentario.mensaje}}
+    </div>
+    <div *ngIf="comentario.usuario && comentario.usuario.id != null">
+       <a href=""> {{comentario.usuario.id}}</a>
+    </div>
+  </div>
+
+  <div>
+    <input type="submit" placeholder="traer un comentario" (click)="guardarComentario('hola')">
+  </div>
+
+  <div *ngIf="mensajeError">
+    <app-errores [mensajeError]="mensajeError"></app-errores>
+  </div>
+  

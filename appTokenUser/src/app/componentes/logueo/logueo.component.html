@@ -1,0 +1,19 @@
+<h1>Loguin</h1>
+
+<div>
+    <button (click)="logueoOauth()">Haz clic aquí para loguarte con google</button>
+</div>
+
+<div class="container contenedor-formulario">
+    <div class="">
+
+      <input type="text" name="" id="" placeholder="Ingrese el nombre de usuario" [(ngModel)]="nombreUsuario"
+      class="">
+
+      <input type="text" name="" id="" placeholder="Ingrese la contraseña" [(ngModel)]="contrasenia"
+      class="">
+
+        <input type="submit" value="Buscar" class="btn btn-primary" [disabled]="nombreUsuario.trim() === '' || contrasenia.trim() === '' " (click)="loguin(nombreUsuario, contrasenia)">
+    </div>
+</div>
+  

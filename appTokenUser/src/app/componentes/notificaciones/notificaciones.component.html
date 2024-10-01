@@ -1,0 +1,16 @@
+<div *ngFor="let notificacion of notificaciones">
+  <p>{{ notificacion.informacion }}</p>
+  <a [routerLink]="['/detalleNotificacion', notificacion.idRedireccionamiento]">
+    Ver detalles
+  </a>
+    <div *ngFor="let usuario of notificacion.listaUsuarios">
+      <button *ngIf="usuario.id === idUsuario"
+              (click)="eliminarNotificacion(notificacion.id, usuario.id)"
+              class="btn btn-primary">
+        Eliminar
+      </button>
+    </div>
+  </div>
+
+  <button (click)="visualizarNotificacionesByUserID()">marcar las notificaciones como vistas</button>
+  
