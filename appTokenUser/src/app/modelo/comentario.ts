@@ -3,7 +3,7 @@ import { Usuario } from "./usuario";
 
 export interface Comentario {
   id?: number;
-  fecha?: Date;  // Cambiado a opcional
+  fecha?: string;  // Cambiado a opcional
   mensaje?: string;  // Cambiado a opcional
   listaReaccion?: Reaccion[];
   listaComentario?: Comentario[];

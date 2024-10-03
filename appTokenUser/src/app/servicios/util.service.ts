@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { SocketService } from './socket.service';
 import Swal from 'sweetalert2';
 import { jwtDecode } from 'jwt-decode';
+import { UsuarioService } from './usuario.service';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class UtilService {
 
-  constructor(private router: Router, private socket: SocketService) { }
+  constructor(private router: Router, private socket: SocketService, private usuarioService:UsuarioService) { }
   private baseUrl = 'http://localhost:8080';
 
   public agregarCredencialesASesion(authLoguinResponseDTO: AuthLoguinResponseDTO) {
@@ -20,6 +21,9 @@ export class UtilService {
       localStorage.setItem('authToken', authLoguinResponseDTO.token);
       localStorage.setItem('userRole', authLoguinResponseDTO.role);
       localStorage.setItem('userID', authLoguinResponseDTO.id.toString());
+
+      this.usuarioService.setUserId(Number(localStorage.getItem('userID')));
+      this.usuarioService.setRolUsuario(localStorage.getItem('userRole')!);
     } else {
       console.error("Ids nulos")
     }
@@ -27,7 +31,7 @@ export class UtilService {
   }
 
   redirectToHome() {
-    const rol: string | null = localStorage.getItem('userID');
+    const rol: string | null = localStorage.getItem('userRole');
 
     if (rol) {
       this.socket.iniciarConexionSocket(rol);

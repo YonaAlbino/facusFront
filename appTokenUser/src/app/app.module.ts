@@ -15,6 +15,13 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { ErroresComponent } from './componentes/errores/errores.component';
 import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
+import { UsuarioComponent } from './componentes/usuario/usuario.component';
+import { UniversidadComponent } from './componentes/universidad/universidad.component';
+import { CarreraComponent } from './componentes/carrera/carrera.component';
+import { CalificacionComponent } from './componentes/calificacion/calificacion.component';
+import { PermisoComponent } from './componentes/permiso/permiso.component';
+import { ReaccionComponent } from './componentes/reaccion/reaccion.component';
+
 
 
 const routes: Routes = [
@@ -25,6 +32,12 @@ const routes: Routes = [
   { path: 'detalleNotificacion/:id', component: DetalleNotificacionComponent},
   { path: 'comentarios', component: ComentarioComponent},
   { path: 'loguin', component: LogueoComponent},
+  { path: 'usuario', component: UsuarioComponent},
+  { path: 'universidad', component: UniversidadComponent},
+  { path: 'carrera', component: CarreraComponent},
+  { path: 'calificacion', component: CalificacionComponent},
+  { path: 'permiso', component: PermisoComponent},
+  { path: 'reaccion', component: ReaccionComponent},
   // Otras rutas
 ];
 
@@ -37,7 +50,14 @@ const routes: Routes = [
     NotificacionesComponent,
     ComentarioComponent,
     NavbarComponent,
-    ErroresComponent
+    ErroresComponent,
+    UsuarioComponent,
+    UniversidadComponent,
+    CarreraComponent,
+    CalificacionComponent,
+    PermisoComponent,
+    ReaccionComponent,
+  
   ],
   imports: [
     BrowserModule,

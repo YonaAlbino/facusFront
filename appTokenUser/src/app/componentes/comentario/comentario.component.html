@@ -1,6 +1,7 @@
 <div *ngFor="let comentario of comentarios">
     <div *ngIf="comentario.mensaje && comentario.mensaje != null">
         {{comentario.mensaje}}
+        <p>Fecha: {{ comentario.fecha | date: 'longDate' }}</p> <!-- Muestra la fecha en formato largo -->
     </div>
     <div *ngIf="comentario.usuario && comentario.usuario.id != null">
        <a href=""> {{comentario.usuario.id}}</a>
@@ -8,7 +9,7 @@
   </div>
 
   <div>
-    <input type="submit" placeholder="traer un comentario" (click)="guardarComentario('hola')">
+    <input type="submit" placeholder="traer un comentario" (click)="guardarComentario('mensaje editado')">
   </div>
 
   <div *ngIf="mensajeError">

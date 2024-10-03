@@ -8,10 +8,8 @@ import { SocketService } from './socket.service';
 })
 export class PruebaService {
 
-  private topicAdmin = "/tema/admin";
-  private topicUser = "/tema/usuario"
-
-
+  // private topicAdmin = "/tema/admin";
+  // private topicUser = "/tema/usuario"
 
   private authUrl = 'http://localhost:8080/login'; // URL del endpoint de autenticación en Spring Boot
 

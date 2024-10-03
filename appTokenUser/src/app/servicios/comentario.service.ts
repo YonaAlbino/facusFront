@@ -1,8 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, throwError } from 'rxjs';
 import { Comentario } from '../modelo/comentario';
 import { UtilService } from './util.service';
+import { Reaccion } from '../modelo/reaccion';
+import { Usuario } from '../modelo/usuario';
+import { Rutas } from '../enumerables/rutas';
 
 
 @Injectable({
@@ -10,24 +13,29 @@ import { UtilService } from './util.service';
 })
 export class ComentarioService {
 
- private rutaEndpoint = '/comentario'; 
- private token = localStorage.getItem('authToken'); // O donde almacenes tu token
+  private rutaEndpoint = '/comentario';
+  private rutaBase = Rutas.RUTA_BASE;
 
-  constructor(private http:HttpClient, private util:UtilService) { }
+  constructor(private http: HttpClient) { }
 
-  getComentarios():Observable<Comentario[]>{
-    return this.http.get<Comentario[]>(this.util.getUrlBase() + this.rutaEndpoint);
+  getComentarios(): Observable<Comentario[]> {
+    return this.http.get<Comentario[]>(this.rutaBase + this.rutaEndpoint);
   }
 
-  getComentarioById(id:number):Observable<Comentario>{
-    return this.http.get<Comentario>(this.util.getUrlBase() + this.rutaEndpoint + "/" + id);
+  getComentarioById(id: number): Observable<Comentario> {
+    return this.http.get<Comentario>(this.rutaBase  + this.rutaEndpoint + "/" + id);
   }
 
-  guardarComentario(mensaje:string):Observable<Comentario>{
-    const comentarioAGuardar: Comentario = {
-      mensaje: mensaje,
-    }
-    return this.http.post<Comentario>(this.util.getUrlBase() + this.rutaEndpoint, comentarioAGuardar);
+  guardarComentario(comentario: Comentario): Observable<Comentario> {
+    return this.http.post<Comentario>(this.rutaBase  + this.rutaEndpoint, comentario);
+  }
+
+  eliminarComentario(id: number): Observable<string> {
+    return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);
+  }
+
+  editComentario(comentario:Comentario): Observable<Comentario> {
+    return this.http.put<Comentario>(this.rutaBase  + this.rutaEndpoint, comentario);
   }
 
 }

@@ -14,7 +14,7 @@ export class EsuchaSocketComponent implements OnInit {
 
   // public messages: string[] = [];
   public notificaciones: number = 0;
-  idUser: number = Number(localStorage.getItem('userID'));
+  //idUser: number = Number(localStorage.getItem('userID'));
   private idUsuario:number | undefined;
   
   constructor(private webSocketService: SocketService,
@@ -22,9 +22,9 @@ export class EsuchaSocketComponent implements OnInit {
     private usuarioService: UsuarioService, private usarioService:UsuarioService) { }
 
   ngOnInit(): void {
-    this.escucharSocket();
     this.usuarioService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null) {
+        this.escucharSocket(idUsuario);
         this.notificacionesService.getNotificacionesNoLeidas(idUsuario)
           .subscribe((notificaciones: Notificacion[]) => {
             this.notificaciones = notificaciones.length;
@@ -33,13 +33,13 @@ export class EsuchaSocketComponent implements OnInit {
     })
   }
 
-  escucharSocket() {
+  escucharSocket(idUser:number) {
     this.webSocketService.getMessages("/tema/admin/notificacion").subscribe((mensaje) => {
       //this.messages.push(mensaje);
       this.notificaciones++;
     });
 
-    this.webSocketService.getMessages("/usuario/" + this.idUser).subscribe((mensaje) => {
+    this.webSocketService.getMessages("/tema/usuario/" + idUser).subscribe((mensaje) => {
       //this.messages.push(mensaje);
       this.notificaciones++;
     });

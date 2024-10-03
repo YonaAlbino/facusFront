@@ -34,7 +34,6 @@ contrasenia: string = "";
   };
   
     this.usuarioService.loguin(credenciales).subscribe((AuthLoguinResponseDTO) => {
-      console.log(AuthLoguinResponseDTO);
       this.util.agregarCredencialesASesion(AuthLoguinResponseDTO);
       this.util.redirectToHome();
     }, (error) => {
