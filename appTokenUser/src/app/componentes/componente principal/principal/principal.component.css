@@ -1,0 +1,36 @@
+/* mi-componente.component.css */
+/* :host {
+    display: block; /* Asegúrate de que el componente ocupe el espacio completo 
+    background-color: #8b8b8b;  
+    width: 100%;
+    height: 100vh;
+  } */
+  
+  .informativo-texto{
+
+  }
+
+  .informativo{
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+    margin-top: 50px;
+  }
+
+  .informativo .informativo-texto p {
+    font-size: 18px;
+  }
+
+  .container .informativo .informativo-imagen {
+   text-align: center;
+  }
+
+  .container .topUniversidadCarrera{
+    margin-top: 50px;
+    border: 1px solid;
+    text-align: center;
+  }

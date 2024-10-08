@@ -1,0 +1,51 @@
+<h2 style="text-align: center;">Top Carreras</h2>
+
+<!-- Tabla para mostrar las carreras mejor calificadas -->
+<table class="table" style="border: 1px solid;">
+    <tbody>
+        <!-- Recorremos la lista de carreras -->
+        <tr *ngFor="let carrera of listaTopCarreras; let i = index">
+            <!-- Mostramos el índice ajustado por la cantidad de carreras cargadas -->
+            <th scope="row">{{ i + 1 + totalCarrerasCargadas }}</th>
+
+            <!-- Columna con el nombre de la carrera -->
+            <td>
+                <a [routerLink]="['/detalle', carrera.id]"
+                    style="text-decoration: none; color: black; font-weight: bold;">
+                    {{ carrera.nombre }}
+                </a>
+            </td>
+
+            <!-- Columna con el botón para ver la universidad asociada -->
+            <td style="text-align: center;">
+                <input type="button" value="Ver universidad" (click)="buscarUniversidadPorIdCarrera(carrera, i)"
+                    style="background-color: white; border: none;">
+
+                <!-- Mostrar la universidad seleccionada si coincide con el índice -->
+                <div *ngIf="universidad && indiceCarreraSeleccionada === i">
+                    <a [routerLink]="['/detalleUniversidad', universidad.id]">{{ universidad.nombre }}</a>
+                </div>
+            </td>
+
+            <!-- Columna con la lista de calificaciones (si existen) -->
+            <td>
+                <p *ngIf="carrera.listaCalificacion && carrera.listaCalificacion.length > 0">
+                    <app-promedio-calificacion 
+              [listaCalificacion]="carrera.listaCalificacion">
+          </app-promedio-calificacion>
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Botones de paginación -->
+<div style="text-align: center; margin-top: 20px;">
+    <!-- Botón para cargar más carreras -->
+    <input type="button" value="Siguiente" (click)="cargarMasCarreras(listaTopCarreras.length)"
+        [disabled]="listaTopCarreras.length < registrosPorPagina" style="background-color: white; border: 1px solid;">
+
+    <!-- Botón para cargar menos carreras -->
+    <input type="button" value="Anterior" (click)="cargarMenosCarreras()" [disabled]="paginaActual === 0"
+        style="background-color: white; border: 1px solid;">
+</div>

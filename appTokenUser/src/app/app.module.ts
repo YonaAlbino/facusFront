@@ -21,6 +21,16 @@ import { CarreraComponent } from './componentes/carrera/carrera.component';
 import { CalificacionComponent } from './componentes/calificacion/calificacion.component';
 import { PermisoComponent } from './componentes/permiso/permiso.component';
 import { ReaccionComponent } from './componentes/reaccion/reaccion.component';
+import { CarruselComponent } from './componentes/carrusel/carrusel.component';
+import { TopCarreraComponent } from './componentes/top-carrera/top-carrera.component';
+import { DetalleUniversidadComponent } from './componentes/detalle-universidad/detalle-universidad.component';
+import { TopUniversidadComponent } from './componentes/top-universidad/top-universidad.component';
+import { PromedioCalificacionComponent } from './componentes/promedio-calificacion/promedio-calificacion.component';
+import { CuerpoComponent } from './componentes/cuerpo/cuerpo.component';
+import { BarraBusquedaComponent } from './componentes/barra-busqueda/barra-busqueda.component';
+import { FooterComponent } from './componentes/footer/footer.component';
+import { ErrorComponent } from './componentes/error/error.component';
+
 
 
 
@@ -38,6 +48,13 @@ const routes: Routes = [
   { path: 'calificacion', component: CalificacionComponent},
   { path: 'permiso', component: PermisoComponent},
   { path: 'reaccion', component: ReaccionComponent},
+  { path: 'carrusel', component: CarruselComponent},
+  { path: 'topCarrera', component: TopCarreraComponent},
+  { path: 'detalleUniversidad/:id', component: DetalleUniversidadComponent},
+  { path: 'topUniversidad', component: TopUniversidadComponent},
+  { path: 'cuerpo', component: CuerpoComponent},
+  { path: 'barraBusqueda', component: BarraBusquedaComponent},
+  { path: 'footer', component: FooterComponent},
   // Otras rutas
 ];
 
@@ -57,6 +74,15 @@ const routes: Routes = [
     CalificacionComponent,
     PermisoComponent,
     ReaccionComponent,
+    CarruselComponent,
+    TopCarreraComponent,
+    DetalleUniversidadComponent,
+    TopUniversidadComponent,
+    PromedioCalificacionComponent,
+    CuerpoComponent,
+    BarraBusquedaComponent,
+    FooterComponent,
+    ErrorComponent,
   
   ],
   imports: [

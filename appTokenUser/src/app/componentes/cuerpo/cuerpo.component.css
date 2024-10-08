@@ -1,0 +1,55 @@
+.btn-recargar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    width: 20%;
+    margin: 20px auto;
+  }
+  
+  .contenedor-universidades {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  .pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination a.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .pagination a.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .busqueda{
+    display: flex;
+    width: 100%;
+  }

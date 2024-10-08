@@ -13,15 +13,17 @@ import { UtilService } from '../servicios/util.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
 import { Usuario } from '../modelo/usuario';
+import { ErrorServiceService } from '../servicios/error-service.service';
 
 @Injectable()
 export class InterceptorInterceptor implements HttpInterceptor {
 
   constructor(
-    private router: Router,                
-    private util: UtilService,             
-    private usuarioService: UsuarioService 
-  ) {}
+    private router: Router,
+    private util: UtilService,
+    private usuarioService: UsuarioService,
+    private errorService:ErrorServiceService
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // Verificar si la solicitud contiene el encabezado 'Skip-Interceptor'.
@@ -33,7 +35,9 @@ export class InterceptorInterceptor implements HttpInterceptor {
         //   'Authorization': `Bearer ${localStorage.getItem('refreshToken')}`
         // }
       });
-      return next.handle(modifiedRequest); // Se envía la solicitud modificada sin más procesamiento.
+      return next.handle(modifiedRequest).pipe(
+        catchError(error => this.handleError(error)) // Manejo de errores aquí
+      );
     }
     // Obtener el token de autenticación (authToken) almacenado en localStorage.
     const authToken = localStorage.getItem('authToken');
@@ -107,14 +111,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let mensajeError = 'Error desconocido'; // Mensaje de error por defecto.
-    // Si el error es del cliente (ErrorEvent), obtenemos el mensaje de error del cliente.
-    if (error.error instanceof ErrorEvent) {
-      mensajeError = `Error del cliente: ${error.error.message}`;
-    } else {
-      // Si es un error del servidor, obtenemos el estado HTTP y el mensaje del servidor.
-      mensajeError = `Error del servidor: ${error.status} - ${error.error.message}`;
-    }
-    // Si el error es un 401 (no autorizado), posiblemente el token ha expirado o es inválido.
+
     if (error.status === 401) {
       mensajeError += ' - Necesitas volver a iniciar sesión';
       // Mostramos un mensaje y redirigimos al usuario a la página de login.
@@ -122,11 +119,22 @@ export class InterceptorInterceptor implements HttpInterceptor {
         this.router.navigate(['/loguin']); // Redirigir a la página de login.
       });
     }
-    if (error.status === 403) {
-      mensajeError += ' -No tienes los permisos necesarios para realizar esta acción';
-    }
+
+    // Si el error es del cliente (ErrorEvent), obtenemos el mensaje de error del cliente.
+    // if (error.error instanceof ErrorEvent) {
+    //   mensajeError = `Error del cliente: ${error.error.message}`;
+    // } else {
+    //   // Si es un error del servidor, obtenemos el estado HTTP y el mensaje del servidor.
+    //   mensajeError = `Error del servidor: ${error.status} - ${error.error.message}`;
+    // }
+    // // Si el error es un 401 (no autorizado), posiblemente el token ha expirado o es inválido.
+
+    // if (error.status === 403) {
+    //   mensajeError += ' -No tienes los permisos necesarios para realizar esta acción';
+    // }
     // Imprimir el error en la consola para depuración.
-    console.error(mensajeError);
+    this.errorService.reportError(error.message);
+    
     // Devolvemos un error utilizando throwError para que sea capturado por quien llamó al interceptor.
     return throwError(() => new Error(mensajeError));
   }

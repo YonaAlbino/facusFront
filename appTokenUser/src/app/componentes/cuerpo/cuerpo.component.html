@@ -1,0 +1,52 @@
+<!-- <app-carrusel></app-carrusel> -->
+<div class="container">
+
+    <div *ngIf="mensajeError">
+        <app-errores [mensajeError]="mensajeError"></app-errores>
+    </div>
+
+    <app-barra-busqueda (universdiadEncontrada)="manejadorUniversdiadEncontrada($event)"></app-barra-busqueda>
+    <div class="btn-recargar">
+        <button class="btn btn-primary" [disabled]="recarga" (click)="recargar()">Recargar</button>
+    </div>
+
+    <div *ngIf="universidadBuscada" class="alert alert-danger">
+        Universidad no encontrada
+    </div>
+
+
+    <div class="container contenedor-universidades">
+        <div class="card" *ngFor="let universidad of universidades" style="width: 18rem; margin-bottom: 20px;">
+            <img [src]="universidad.imagen" class="card-img-top" alt="Imagen de {{ universidad.nombre }}">
+
+            <div class="card-body">
+                <h5 class="card-title">{{ universidad.nombre }}</h5>
+                <p class="card-text">{{ universidad.descripcion }}</p>
+                <a [href]="universidad.direccionWeb" class="card-text">{{ universidad.direccionWeb }}</a>
+                <p class="card-text">{{ universidad.direccion }}</p>
+
+                <ng-container *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length">
+                    <app-promedio-calificacion
+                        [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
+                </ng-container>
+
+                <a [routerLink]="['/detalle', universidad.id]" class="btn btn-primary">Ver</a>
+                <a [routerLink]="['/edicionUniversdiad', universidad.id]" class="btn btn-primary">Editar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination-container">
+        <ul class="pagination">
+            <li [class.disabled]="paginaActual === 0">
+                <a (click)="cambiarPagina(paginaActual - 1)" aria-label="Anterior">&laquo;</a>
+            </li>
+            <li *ngFor="let i of [].constructor(cantidadPaginas); let index = index">
+                <a (click)="cambiarPagina(index)" [class.active]="paginaActual === index">{{ index + 1 }}</a>
+            </li>
+            <li [class.disabled]="paginaActual + 1 === cantidadPaginas">
+                <a (click)="cambiarPagina(paginaActual + 1)" aria-label="Siguiente">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</div>

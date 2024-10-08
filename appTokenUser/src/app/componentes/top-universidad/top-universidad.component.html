@@ -1,0 +1,28 @@
+<h2 style="text-align: center">Top universidades</h2>
+<table class="table" style="border: 1px solid">
+    <tbody>
+        <tr *ngFor="let universidad of listaTopUniversidades; let i = index">
+            <th scope="row">{{ i + 1 + (pagina * registrosPorPagina) }}</th>
+            <td>
+                <a style="text-decoration: none; color: black; font-weight: bold"
+                    [routerLink]="['/detalleUniversidad', universidad.id]">
+                    {{ universidad.nombre }}
+                </a>
+            </td>
+            <td>
+                <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0">
+                    <app-promedio-calificacion [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div *ngIf="this.mensajeError">
+    <app-errores [mensajeError]="mensajeError"></app-errores>
+</div>
+
+<button style="background-color: white; border: none" (click)="cargarMasUniversidades()"
+    [disabled]="listaTopUniversidades.length < registrosPorPagina">Siguiente</button>
+<button style="background-color: white; border: none" (click)="cargarMenosUniversidades()"
+    [disabled]="pagina == 0">Anterior</button>

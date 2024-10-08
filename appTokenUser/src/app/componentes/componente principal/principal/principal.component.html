@@ -1,1 +1,30 @@
-<h1>Hola soy el componente principal</h1>
+<div class="container">
+
+    <app-carrusel></app-carrusel>
+
+    <div class="informativo">
+        <div class="informativo-texto">
+            <p>Esta web tiene como objetivo brindar información sobre las universidades y centros educativos de
+                Argentina.
+                Puedes buscar tu universidad y ver las opiniones de los alumnos, o si no existe en los registros, puedes
+                agregarla tú mismo haciendo click <a href="#">aquí</a>
+            </p>
+        </div>
+        <div class="informativo-imagen">
+            <img width="90%"
+                src="assets/imagenes/undraw_undraw_undraw_undraw_undraw_website_o7n3_bucy_30uo_-1-_d6br_0qfo.svg"
+                alt="Mi imagen SVG">
+        </div>
+    </div>
+
+    <!-- <div class="topUniversidadCarrera">
+        <h1>Top universidad-carrera</h1>
+    </div> -->
+
+    <div style="display: flex; justify-content: center; margin-top: 50px;">
+        <app-top-universidad></app-top-universidad>
+        <app-top-carrera></app-top-carrera>
+    </div>
+
+    <app-cuerpo></app-cuerpo>
+</div>
