@@ -1,0 +1,42 @@
+
+
+.agregarComentario{
+    margin-bottom: 50px;
+}
+
+.mostrarRespuesta{
+    background-color: #fff;
+    border: none;
+
+}
+
+.botonResponder{
+    background-color: #fff;
+    border: none;
+    color: rgb(70, 70, 255);
+    font-weight: bold;
+}
+
+.botonEliminar{
+    background-color: #fff;
+    border: none;
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+}
+
+.likeDislike{
+    display: flex;
+}
+
+.likeDislike  svg{
+    font-size: 220px;
+}
+
+.likeDislike svg:first-child{
+    margin-right: 10px;
+}
+
+.botonLike{
+    border: none;
+    background-color: white;
+}

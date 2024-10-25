@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Universidad } from 'src/app/modelo/universidad';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 
 @Component({
@@ -9,10 +10,9 @@ import { UniversidadService } from 'src/app/servicios/universidad.service';
   styleUrls: ['./carrusel.component.css']
 })
 export class CarruselComponent {
-
   constructor(private universidadService: UniversidadService) { }
 
-  universidades: Universidad[] = new Array(3);
+  universidades: UniversidadDTO[] = new Array(3);
   mensajeError!: string;
 
   ngOnInit(): void {
@@ -36,11 +36,11 @@ export class CarruselComponent {
       })
   }
 
-  completarCampos(listaUniversdiades: Universidad[]) {
+  completarCampos(listaUniversdiades: UniversidadDTO[]) {
     for (let i = listaUniversdiades.length; i < 3; i++) {
 
       if (!listaUniversdiades[i]) {
-        const nuevaUniversidad: Universidad = {
+        const nuevaUniversidad: UniversidadDTO = {
           nombre: "Nombre no disponible",  // O algún valor predeterminado
           descripcion: "Descripción no disponible",  // O algún valor predeterminado
           imagen: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
@@ -52,4 +52,9 @@ export class CarruselComponent {
     }
   }
 
+
+  imagenNocargada(event: Event) {
+    const imgElemnt = event.target as HTMLImageElement;
+    imgElemnt.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  }
 }

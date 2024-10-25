@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Notificacion } from 'src/app/modelo/notificacion';
+import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
 import { NotificacionService } from 'src/app/servicios/notificacion.service';
 
 import { SocketService } from 'src/app/servicios/socket.service';
@@ -26,7 +26,7 @@ export class EsuchaSocketComponent implements OnInit {
       if (idUsuario !== null) {
         this.escucharSocket(idUsuario);
         this.notificacionesService.getNotificacionesNoLeidas(idUsuario)
-          .subscribe((notificaciones: Notificacion[]) => {
+          .subscribe((notificaciones: NotificacionDTO[]) => {
             this.notificaciones = notificaciones.length;
           });
       }

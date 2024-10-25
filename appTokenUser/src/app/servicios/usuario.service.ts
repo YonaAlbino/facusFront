@@ -3,9 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CredencialesLogueo } from '../modelo/credenciales-logueo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
-import { UtilService } from './util.service';
-import { Usuario } from '../modelo/usuario';
 import { Rutas } from '../enumerables/rutas';
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { UsuarioDTO } from '../modelo/UsuarioDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -50,31 +50,40 @@ export class UsuarioService {
       'Authorization': `Bearer ${token}`,
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
+    console.log("juan")
     return this.HttpClient.post<AuthLoguinResponseDTO>(this.baseUrl + "/getAccesToken", token, { headers: headers });
   }
 
-  getIdRefreshToken(idUsuario: string): Observable<Usuario> {
+  getIdRefreshToken(idUsuario: string): Observable<UsuarioDTO> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.HttpClient.get<Usuario>(this.baseUrl + "/usuario" + "/" + idUsuario, { headers: headers });
+    return this.HttpClient.get<UsuarioDTO>(this.baseUrl + "/usuario" + "/" + idUsuario, { headers: headers });
   }
 
-  public getUsuarios(): Observable<Usuario[]> {
-    return this.HttpClient.get<Usuario[]>(this.baseUrl + this.rutaEndPoint);
+  public getUsuarios(): Observable<UsuarioDTO[]> {
+    return this.HttpClient.get<UsuarioDTO[]>(this.baseUrl + this.rutaEndPoint);
   }
 
-  public getUsuarioById(id: number): Observable<Usuario> {
-    return this.HttpClient.get<Usuario>(this.baseUrl + this.rutaEndPoint + "/" + id)
+  public getUsuarioById(id: number): Observable<UsuarioDTO> {
+    return this.HttpClient.get<UsuarioDTO>(this.baseUrl + this.rutaEndPoint + "/" + id)
   }
 
-  public crearUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.HttpClient.post(this.baseUrl + this.rutaEndPoint, usuario);
+  public crearUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
+    const usuarioClass = {
+      ...usuario,
+      '@class': EnumsDTOs.UsuarioDTO
+    };
+    return this.HttpClient.post(this.baseUrl + this.rutaEndPoint, usuarioClass);
   }
 
-  public editUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.HttpClient.put(this.baseUrl + this.rutaEndPoint, usuario);
+  public editUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
+    const usuarioClass = {
+      ...usuario,
+      '@class': EnumsDTOs.UsuarioDTO
+    };
+    return this.HttpClient.put(this.baseUrl + this.rutaEndPoint, usuarioClass);
   }
 
 

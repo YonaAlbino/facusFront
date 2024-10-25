@@ -1,0 +1,13 @@
+.contenedor-formulario{
+    margin-top: 50px;
+}
+
+.barra-busqueda{
+    width: 50%;
+}
+
+.barraBusqueda{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+}

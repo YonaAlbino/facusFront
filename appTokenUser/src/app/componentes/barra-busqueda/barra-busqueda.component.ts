@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Universidad } from 'src/app/modelo/universidad';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 
 @Component({
@@ -14,16 +15,13 @@ export class BarraBusquedaComponent {
   mensajeError!: string;
   nombreUniversidad!: string;
 
-  @Output() universdiadEncontrada: EventEmitter<Universidad[]> = new EventEmitter<Universidad[]>();
-  buscarUniversidadesPorNombre(nombreUniversidad: string) {
-    this.universidadService.buscarUniversidadesPorNombre(nombreUniversidad)
-      .pipe(catchError((error: string) => {
-        this.mensajeError = error;
-        return EMPTY;
-      })).subscribe({
-        next: (universidades) => {
-          this.universdiadEncontrada.emit(universidades);
-        }
+  @Output() universdiadEncontrada: EventEmitter<UniversidadDTO[]> = new EventEmitter<UniversidadDTO[]>();
+
+  buscarUniversidadPorNombre(nombreUniversdiad: string) {
+    this.universidadService.buscarUniversidadesPorNombre(nombreUniversdiad)
+      .subscribe((universidades) => {
+        this.universdiadEncontrada.emit(universidades);
       })
   }
+  
 }

@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { Calificacion } from 'src/app/modelo/calificacion';
+import { CalificacionDTO } from 'src/app/modelo/calificacion';
+
 
 @Component({
   selector: 'app-promedio-calificacion',
@@ -9,7 +10,7 @@ import { Calificacion } from 'src/app/modelo/calificacion';
 export class PromedioCalificacionComponent implements OnInit {
 
   //Obtengo la lista de calificaciones que se envio desde el elemento padre
-  @Input() listaCalificacion: Calificacion[] = [];
+  @Input() listaCalificacion: CalificacionDTO[] = [];
 
   constructor(private renderer: Renderer2, private el: ElementRef) { }
 
@@ -17,6 +18,7 @@ export class PromedioCalificacionComponent implements OnInit {
   cantidadCalificaciones: number = 0;
 
   ngOnInit(): void {
+    console.log("<21321321asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaapp-top-universidad321")
     this.promedio = this.calcularPromedio();
     this.pintarEstrellas(this.promedio);
   }
@@ -25,6 +27,7 @@ export class PromedioCalificacionComponent implements OnInit {
     let acumuladorNotas: number = 0;
     let cantidadNotas: number = this.listaCalificacion.length;
     this.cantidadCalificaciones = cantidadNotas;
+
 
     // Sumar todas las notas
     this.listaCalificacion.forEach(calificacion => {
@@ -40,7 +43,7 @@ export class PromedioCalificacionComponent implements OnInit {
 
 
   pintarEstrellas(estrellasLlenas: number) {
-    const numEstrellasLlenas = estrellasLlenas;
+    const numEstrellasLlenas = Math.max(0, Math.min(5, estrellasLlenas));  // entre 0 y 5
     const numEstrellasVacias = 5 - numEstrellasLlenas;
     const estrellasHtml = '★'.repeat(numEstrellasLlenas) + '☆'.repeat(numEstrellasVacias);
 

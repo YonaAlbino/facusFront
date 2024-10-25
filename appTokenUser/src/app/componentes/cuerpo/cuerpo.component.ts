@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Universidad } from 'src/app/modelo/universidad';
+
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 import { catchError, EMPTY, Observable } from 'rxjs';
+import { UtilService } from 'src/app/servicios/util.service';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 
 @Component({
   selector: 'app-cuerpo',
@@ -9,8 +11,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
   styleUrls: ['./cuerpo.component.css']
 })
 export class CuerpoComponent implements OnInit {
-
-  universidades: Universidad[] = [];
+  universidades: UniversidadDTO[] = [];
   registrosPorPagina = 8;
   paginaActual = 0;
   cantidadPaginas = 0;
@@ -18,7 +19,7 @@ export class CuerpoComponent implements OnInit {
   recarga = false;
   mensajeError!:string;
 
-  constructor(private universidadService: UniversidadService) { }
+  constructor(private universidadService: UniversidadService, private util:UtilService) { }
 
   ngOnInit() {
     this.cargarUniversidades();
@@ -50,7 +51,7 @@ export class CuerpoComponent implements OnInit {
     this.obtenerUniversidadesPaginadas();
   }
 
-  manejadorUniversdiadEncontrada(universidades: Universidad[]) {
+  manejadorUniversdiadEncontrada(universidades: UniversidadDTO[]) {
     if (universidades.length > 0) {
       this.universidades = universidades;
       this.universidadBuscada = false;
@@ -72,4 +73,12 @@ export class CuerpoComponent implements OnInit {
     this.obtenerUniversidadesPaginadas();
     this.recarga = false;
   }
+
+  imagenNoCargada(event: Event) {
+    const imgElemnt = event.target as HTMLImageElement;
+    imgElemnt.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  }
+
+
+
 }

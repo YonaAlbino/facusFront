@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Universidad } from 'src/app/modelo/universidad';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 
 @Component({
@@ -32,7 +33,7 @@ mensajeError!: string;
     descripcion?: string, 
     direccionWeb?: string, 
   ) {
-    const universidad: Universidad = {
+    const universidad: UniversidadDTO = {
       nombre: nombre,
       imagen: imagen || '',
       direccion: direccion || '',
@@ -71,7 +72,7 @@ mensajeError!: string;
     descripcion?: string, 
     direccionWeb?: string, 
   ) {
-    const universidad: Universidad = {
+    const universidad: UniversidadDTO = {
       id:id,
       nombre: nombre,
       imagen: imagen || '',

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Reaccion } from 'src/app/modelo/reaccion';
+import { ReaccionDTO } from 'src/app/modelo/ReaccionDTO';
 import { ReaccionService } from 'src/app/servicios/reaccion.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class ReaccionComponent {
 
   crearReaccion(meGusta: number, noMegusta: number) {
     console.log(noMegusta)
-    const reaccion: Reaccion = {
+    const reaccion: ReaccionDTO = {
       meGusta: meGusta,
       noMegusta: noMegusta
     }
@@ -55,7 +55,7 @@ export class ReaccionComponent {
   }
 
   editReaccion(id:number, meGusta: number, noMegusta: number) {
-    const reaccion: Reaccion = {
+    const reaccion: ReaccionDTO = {
       id:id,
       meGusta: meGusta,
       noMegusta: noMegusta

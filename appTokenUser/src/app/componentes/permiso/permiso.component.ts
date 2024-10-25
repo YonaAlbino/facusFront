@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Permiso } from 'src/app/modelo/permiso';
+import { PermisoDTO } from 'src/app/modelo/PermisoDTO';
 import { PermisoService } from 'src/app/servicios/permiso.service';
 
 @Component({
@@ -46,7 +46,7 @@ export class PermisoComponent {
   }
 
   crearPermiso(nombrePermiso: string) {
-    const permiso: Permiso = {
+    const permiso: PermisoDTO = {
       nombrePermiso: nombrePermiso,
     };
     this.permisoService
@@ -65,7 +65,7 @@ export class PermisoComponent {
   }
 
   editPermiso(id: number, nombrePermiso: string) {
-    const permiso: Permiso = {
+    const permiso: PermisoDTO = {
       id: id,
       nombrePermiso: nombrePermiso,
     };

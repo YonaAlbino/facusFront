@@ -12,7 +12,7 @@ import { NotificacionesComponent } from './componentes/notificaciones/notificaci
 import { DetalleNotificacionComponent } from './componentes/detalle-notificacion/detalle-notificacion.component';
 import { ComentarioComponent } from './componentes/comentario/comentario.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErroresComponent } from './componentes/errores/errores.component';
 import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
 import { UsuarioComponent } from './componentes/usuario/usuario.component';
@@ -30,6 +30,8 @@ import { CuerpoComponent } from './componentes/cuerpo/cuerpo.component';
 import { BarraBusquedaComponent } from './componentes/barra-busqueda/barra-busqueda.component';
 import { FooterComponent } from './componentes/footer/footer.component';
 import { ErrorComponent } from './componentes/error/error.component';
+import { AgregarUniversidadComponent } from './componentes/agregar-universidad/agregar-universidad.component';
+import { PuntuacionComponent } from './componentes/puntuacion/puntuacion.component';
 
 
 
@@ -55,6 +57,7 @@ const routes: Routes = [
   { path: 'cuerpo', component: CuerpoComponent},
   { path: 'barraBusqueda', component: BarraBusquedaComponent},
   { path: 'footer', component: FooterComponent},
+  { path: 'agregarUniversidad', component: AgregarUniversidadComponent},
   // Otras rutas
 ];
 
@@ -83,6 +86,8 @@ const routes: Routes = [
     BarraBusquedaComponent,
     FooterComponent,
     ErrorComponent,
+    AgregarUniversidadComponent,
+    PuntuacionComponent,
   
   ],
   imports: [
@@ -91,6 +96,7 @@ const routes: Routes = [
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

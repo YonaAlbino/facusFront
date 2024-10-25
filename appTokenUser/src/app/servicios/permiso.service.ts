@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Rutas } from '../enumerables/rutas';
 import { Observable } from 'rxjs';
-import { Permiso } from '../modelo/permiso';
+
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { PermisoDTO } from '../modelo/PermisoDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +14,27 @@ export class PermisoService {
   private baseUrl = Rutas.RUTA_BASE;
   private rutaEndPoint = "/permiso";
 
-  getPermisos(): Observable<Permiso[]> {
-    return this.http.get<Permiso[]>(this.baseUrl + this.rutaEndPoint);
+  getPermisos(): Observable<PermisoDTO[]> {
+    return this.http.get<PermisoDTO[]>(this.baseUrl + this.rutaEndPoint);
   }
 
-  getPermisoById(id:number): Observable<Permiso> {
-    return this.http.get<Permiso>(this.baseUrl + this.rutaEndPoint + "/" + id);
+  getPermisoById(id:number): Observable<PermisoDTO> {
+    return this.http.get<PermisoDTO>(this.baseUrl + this.rutaEndPoint + "/" + id);
   }
   
-  editPermiso(permiso:Permiso):Observable<Permiso>{
-    return this.http.put(this.baseUrl + this.rutaEndPoint, permiso);
+  editPermiso(permiso:PermisoDTO):Observable<PermisoDTO>{
+    const permisoClass = {
+      ...permiso,  
+      '@class': EnumsDTOs.PermisoDTO  
+    };
+    return this.http.put(this.baseUrl + this.rutaEndPoint, permisoClass);
   }
 
-  crearPermiso(permiso:Permiso):Observable<Permiso>{
-    return this.http.post(this.baseUrl + this.rutaEndPoint, permiso);
+  crearPermiso(permiso:PermisoDTO):Observable<PermisoDTO>{
+    const permisoClass = {
+      ...permiso,  
+      '@class': EnumsDTOs.PermisoDTO  
+    };
+    return this.http.post(this.baseUrl + this.rutaEndPoint, permisoClass);
   }
 }

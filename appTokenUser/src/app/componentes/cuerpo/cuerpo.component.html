@@ -5,7 +5,9 @@
         <app-errores [mensajeError]="mensajeError"></app-errores>
     </div>
 
-    <app-barra-busqueda (universdiadEncontrada)="manejadorUniversdiadEncontrada($event)"></app-barra-busqueda>
+    <div style="margin-top: 60px;">
+        <app-barra-busqueda (universdiadEncontrada)="manejadorUniversdiadEncontrada($event)"></app-barra-busqueda>
+    </div>
     <div class="btn-recargar">
         <button class="btn btn-primary" [disabled]="recarga" (click)="recargar()">Recargar</button>
     </div>
@@ -17,7 +19,7 @@
 
     <div class="container contenedor-universidades">
         <div class="card" *ngFor="let universidad of universidades" style="width: 18rem; margin-bottom: 20px;">
-            <img [src]="universidad.imagen" class="card-img-top" alt="Imagen de {{ universidad.nombre }}">
+            <img [src]="universidad.imagen" class="card-img-top" alt="Imagen de {{ universidad.nombre }}" (error)="imagenNoCargada($event)">
 
             <div class="card-body">
                 <h5 class="card-title">{{ universidad.nombre }}</h5>
@@ -30,7 +32,7 @@
                         [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
                 </ng-container>
 
-                <a [routerLink]="['/detalle', universidad.id]" class="btn btn-primary">Ver</a>
+                <a [routerLink]="['/detalleUniversidad', universidad.id]" class="btn btn-primary">Ver</a>
                 <a [routerLink]="['/edicionUniversdiad', universidad.id]" class="btn btn-primary">Editar</a>
             </div>
         </div>

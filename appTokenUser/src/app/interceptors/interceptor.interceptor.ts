@@ -12,8 +12,9 @@ import { Router } from '@angular/router';
 import { UtilService } from '../servicios/util.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
-import { Usuario } from '../modelo/usuario';
+
 import { ErrorServiceService } from '../servicios/error-service.service';
+import { UsuarioDTO } from '../modelo/UsuarioDTO';
 
 @Injectable()
 export class InterceptorInterceptor implements HttpInterceptor {
@@ -74,8 +75,10 @@ export class InterceptorInterceptor implements HttpInterceptor {
     }
     // Obtiene el usuario y su refreshToken
     return this.usuarioService.getIdRefreshToken(idUsuario).pipe(
-      switchMap((usuario: Usuario) => {
+      switchMap((usuario: UsuarioDTO) => {
+        console.log("el usuario es " + usuario)
         const refreshToken = usuario.refreshToken?.token;
+        console.log("token refresco "  + refreshToken)
         // Si no hay refresh token, se lanza un error.
         if (!refreshToken) {
           return throwError(() => new Error('No hay refresh token disponible'));
@@ -107,35 +110,27 @@ export class InterceptorInterceptor implements HttpInterceptor {
       })
     );
   }
-
-
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let mensajeError = 'Error desconocido'; // Mensaje de error por defecto.
+    let mensajeError = 'Error desconocido';
 
-    if (error.status === 401) {
-      mensajeError += ' - Necesitas volver a iniciar sesión';
-      // Mostramos un mensaje y redirigimos al usuario a la página de login.
-      this.util.cuentaAtras("Token caducado, necesitas volver a iniciar sesión", 3000, () => {
-        this.router.navigate(['/loguin']); // Redirigir a la página de login.
-      });
+    if (error.error instanceof ErrorEvent) {
+        mensajeError = `Error del cliente: ${error.error.message}`;
+    } else {
+        mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
     }
 
-    // Si el error es del cliente (ErrorEvent), obtenemos el mensaje de error del cliente.
-    // if (error.error instanceof ErrorEvent) {
-    //   mensajeError = `Error del cliente: ${error.error.message}`;
-    // } else {
-    //   // Si es un error del servidor, obtenemos el estado HTTP y el mensaje del servidor.
-    //   mensajeError = `Error del servidor: ${error.status} - ${error.error.message}`;
-    // }
-    // // Si el error es un 401 (no autorizado), posiblemente el token ha expirado o es inválido.
-
-    // if (error.status === 403) {
-    //   mensajeError += ' -No tienes los permisos necesarios para realizar esta acción';
-    // }
-    // Imprimir el error en la consola para depuración.
-    this.errorService.reportError(error.message);
+    // Llama a reportError con el mensaje de error detallado
+    this.errorService.reportError(mensajeError);
     
-    // Devolvemos un error utilizando throwError para que sea capturado por quien llamó al interceptor.
+    // Si el error es un 401
+    if (error.status === 401) {
+        this.util.cuentaAtras("Token caducado, necesitas volver a iniciar sesión", 3000, () => {
+            this.router.navigate(['/loguin']);
+        });
+    }
+
     return throwError(() => new Error(mensajeError));
-  }
+}
+
+  
 }

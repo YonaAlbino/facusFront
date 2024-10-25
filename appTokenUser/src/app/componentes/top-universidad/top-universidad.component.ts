@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Universidad } from 'src/app/modelo/universidad';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 
 @Component({
@@ -8,44 +8,40 @@ import { UniversidadService } from 'src/app/servicios/universidad.service';
   templateUrl: './top-universidad.component.html',
   styleUrls: ['./top-universidad.component.css']
 })
-export class TopUniversidadComponent {
+export class TopUniversidadComponent implements OnInit {
 
-  listaTopUniversidades: Universidad[] = [];
-  pagina: number = 0;
-  registrosPorPagina = 5;
-  totalUniversidades: number = 0; // Para almacenar el total de universidades
-  errorMessage: string | null = null; // Para manejar errores
+  listaTopUniversidades: UniversidadDTO[] = []; // Lista de universidades
+  pagina: number = 0; // Página actual para la paginación
+  registrosPorPagina: number = 3; // Número de registros por página
+  totalUniversidades: number = 0; // Total de universidades
+  mensajeError: string | null = null; // Mensaje de error en caso de fallo
 
   constructor(private universidadService: UniversidadService) { }
-  mensajeError!: string;
 
   ngOnInit(): void {
-    this.cargarUniversidades();
+    this.cargarUniversidades(); // Cargar las universidades al iniciar el componente
   }
 
-  cargarUniversidades() {
+  // Método para cargar las universidades basadas en la página actual
+  cargarUniversidades(): void {
     this.universidadService.obtenerTopUniversidades(this.pagina, this.registrosPorPagina)
-      .pipe(catchError((error: string) => {
-        this.mensajeError = error;
-        return EMPTY;
-      })).subscribe({
-        next: (universidades) => {
-          this.listaTopUniversidades = universidades;
-          this.totalUniversidades = universidades.length;
-        }
-      })
+      .subscribe((universidades: UniversidadDTO[]) => {
+        this.listaTopUniversidades = universidades;
+        this.totalUniversidades = universidades.length;
+      });
   }
 
-  cargarMasUniversidades() {
-    this.pagina += 1;
+  // Cargar más universidades (incrementar la página actual)
+  cargarMasUniversidades(): void {
+    this.pagina++;
     this.cargarUniversidades();
   }
 
-  cargarMenosUniversidades() {
+  // Cargar menos universidades (decrementar la página actual)
+  cargarMenosUniversidades(): void {
     if (this.pagina > 0) {
-      this.pagina -= 1;
+      this.pagina--;
       this.cargarUniversidades();
     }
   }
-
 }

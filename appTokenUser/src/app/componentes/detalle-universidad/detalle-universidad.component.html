@@ -1,1 +1,72 @@
-<p>detalle-universidad works!</p>
+<div *ngIf="universidad">
+    <div class="titulo text-center my-4">
+        <h1>{{ universidad.nombre }}</h1>
+    </div>
+
+    <div class="row cabezera-descripcion align-items-center mb-4">
+        <div class="col-md-4 text-center">
+            <img [src]="universidad.imagen" alt="Imagen de la universidad" class="img-fluid" />
+        </div>
+        <div class="col-md-8">
+            <div class="text-center mb-3">
+                <p>Puntuar:</p>
+                <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+            </div>
+
+            <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0" class="text-center">
+                <span>
+                    <app-promedio-calificacion
+                        [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="descripcion-universidad container mb-4">
+        <p>{{ universidad.descripcion }}</p>
+    </div>
+
+    <div class="container contenedor-global">
+        <div class="contenedor-cabecera mb-4">
+            <h2>Datos Básicos</h2>
+            <p>
+                Sitio web:
+                <a [href]="universidad.direccionWeb" target="_blank">{{ universidad.direccionWeb }}</a>
+            </p>
+            <p>Dirección: {{ universidad.direccion }}</p>
+
+            <div class="form-group">
+                <label for="selectCarrera" class="form-label">Lista de carreras</label>
+                <select id="selectCarrera" class="form-select" (change)="mostrarDatosCarrera($event)">
+                    <option disabled selected>Selecciona una carrera</option>
+                    <option *ngFor="let carrera of listaCarreras" [value]="carrera.id">{{ carrera.nombre }}</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Componente de carrera -->
+        <app-carrera *ngIf="mostrarCarreraComponent" [carrera]="carreraDeCarreraComponent"></app-carrera>
+
+        <!-- Comentarios y campo de agregar comentario -->
+        <div *ngIf="!mostrarCarreraComponent">
+            <app-comentario *ngIf="universidad.listaComentarios && variableDeEjemplo"
+                [Universidad]="universidad"></app-comentario>
+
+            <div class="agregarComentario container">
+                <div class="cabecera mb-3">
+                    <h2>Deja un comentario</h2>
+                    <p>Conectado como...</p>
+                </div>
+
+                <div class="mb-3">
+                    <textarea id="texto_area" name="comentario" rows="5" class="form-control"
+                        [(ngModel)]="nuevoComentario" placeholder="Escribe aquí..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" [disabled]="nuevoComentario.trim() === ''" (click)="crearNuevoComentario(nuevoComentario)">Enviar
+                    comentario</button>
+            </div>
+        </div>
+    </div>
+
+</div>

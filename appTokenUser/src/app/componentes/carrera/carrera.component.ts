@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Calificacion } from 'src/app/modelo/calificacion';
-import { Carrera } from 'src/app/modelo/carrera';
-import { Comentario } from 'src/app/modelo/comentario';
+import { CalificacionDTO } from 'src/app/modelo/calificacion';
+import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
+import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
+
 import { CarreraService } from 'src/app/servicios/carrera.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { CarreraService } from 'src/app/servicios/carrera.service';
 export class CarreraComponent {
 
   constructor(private carreraService: CarreraService) { }
+  @Input() carrera!: CarreraDTO;
 
    mensajeError!: string;
 
@@ -40,13 +42,13 @@ export class CarreraComponent {
       })
   }
 
-  crearCarrera(nombre: string, grado?: string, duracion?: string, activa?: boolean, listaComentarios?: Comentario[], listaCalificacion?: Calificacion[]) {
-    const carrera: Carrera = {
+  crearCarrera(nombre: string, grado?: string, duracion?: string, activa?: boolean, listaComentarios?: ComentarioDTO[], listaCalificacion?: CalificacionDTO[]) {
+    const carrera: CarreraDTO = {
       nombre: nombre,
       grado: grado,
       duracion: duracion,
       activa: activa,
-      listaComentarios: listaComentarios,
+      listaComentario: listaComentarios,
       listaCalificacion: listaCalificacion
     }
     this.carreraService.crearCarrera(carrera)
@@ -60,14 +62,14 @@ export class CarreraComponent {
       })
   }
 
-  editCarrera(id:number, nombre?: string, grado?: string, duracion?: string, activa?: boolean, listaComentarios?: Comentario[], listaCalificacion?: Calificacion[]) {
-    const carrera: Carrera = {
+  editCarrera(id:number, nombre?: string, grado?: string, duracion?: string, activa?: boolean, listaComentarios?: ComentarioDTO[], listaCalificacion?: CalificacionDTO[]) {
+    const carrera: CarreraDTO = {
       id:id,
       nombre: nombre,
       grado: grado,
       duracion: duracion,
       activa: activa,
-      listaComentarios: listaComentarios,
+      listaComentario: listaComentarios,
       listaCalificacion: listaCalificacion
     }
     this.carreraService.editCarrera(carrera)

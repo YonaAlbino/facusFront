@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Calificacion } from 'src/app/modelo/calificacion';
+import { CalificacionDTO } from 'src/app/modelo/calificacion';
+
 import { CalificacionService } from 'src/app/servicios/calificacion.service';
 
 @Component({
@@ -38,7 +39,7 @@ export class CalificacionComponent {
   }
 
   public crearCalificacion(nota: number) {
-    const calificacion: Calificacion = {
+    const calificacion: CalificacionDTO = {
       nota: nota
     }
     this.calificacionService.crearCalificacion(calificacion)
@@ -54,7 +55,7 @@ export class CalificacionComponent {
 
   
   public editCalificacion(id:number,nota: number) {
-    const calificacion: Calificacion = {
+    const calificacion: CalificacionDTO = {
       id:id,
       nota: nota
     }

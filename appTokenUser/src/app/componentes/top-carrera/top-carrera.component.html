@@ -1,7 +1,15 @@
-<h2 style="text-align: center;">Top Carreras</h2>
+<h2 class="text-center">Top Carreras</h2>
 
 <!-- Tabla para mostrar las carreras mejor calificadas -->
-<table class="table" style="border: 1px solid;">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Posición</th>
+            <th>Carrera</th>
+            <th>Universidad</th>
+            <th>Calificación</th>
+        </tr>
+    </thead>
     <tbody>
         <!-- Recorremos la lista de carreras -->
         <tr *ngFor="let carrera of listaTopCarreras; let i = index">
@@ -10,42 +18,39 @@
 
             <!-- Columna con el nombre de la carrera -->
             <td>
-                <a [routerLink]="['/detalle', carrera.id]"
-                    style="text-decoration: none; color: black; font-weight: bold;">
+                <a [routerLink]="['/detalle', carrera.id]" class="font-weight-bold text-dark text-decoration-none">
                     {{ carrera.nombre }}
                 </a>
             </td>
 
             <!-- Columna con el botón para ver la universidad asociada -->
-            <td style="text-align: center;">
-                <input type="button" value="Ver universidad" (click)="buscarUniversidadPorIdCarrera(carrera, i)"
-                    style="background-color: white; border: none;">
+            <td class="text-center">
+                <button class="btn btn-link" (click)="buscarUniversidadPorIdCarrera(carrera, i)">Ver
+                    universidad</button>
 
                 <!-- Mostrar la universidad seleccionada si coincide con el índice -->
                 <div *ngIf="universidad && indiceCarreraSeleccionada === i">
-                    <a [routerLink]="['/detalleUniversidad', universidad.id]">{{ universidad.nombre }}</a>
+                    <a [routerLink]="['/detalleUniversidad', universidad.id]" class="text-info">
+                        {{ universidad.nombre }}
+                    </a>
                 </div>
             </td>
 
             <!-- Columna con la lista de calificaciones (si existen) -->
-            <td>
-                <p *ngIf="carrera.listaCalificacion && carrera.listaCalificacion.length > 0">
-                    <app-promedio-calificacion 
-              [listaCalificacion]="carrera.listaCalificacion">
-          </app-promedio-calificacion>
-                </p>
+            <td *ngIf="carrera.listaCalificacion && carrera.listaCalificacion.length > 0">
+                <app-promedio-calificacion [listaCalificacion]="carrera.listaCalificacion"></app-promedio-calificacion>
             </td>
         </tr>
     </tbody>
 </table>
 
 <!-- Botones de paginación -->
-<div style="text-align: center; margin-top: 20px;">
-    <!-- Botón para cargar más carreras -->
-    <input type="button" value="Siguiente" (click)="cargarMasCarreras(listaTopCarreras.length)"
-        [disabled]="listaTopCarreras.length < registrosPorPagina" style="background-color: white; border: 1px solid;">
-
-    <!-- Botón para cargar menos carreras -->
-    <input type="button" value="Anterior" (click)="cargarMenosCarreras()" [disabled]="paginaActual === 0"
-        style="background-color: white; border: 1px solid;">
+<div class="text-center mt-4">
+    <button class="btn btn-outline-primary" (click)="cargarMenosCarreras()" [disabled]="paginaActual === 0">
+        Anterior
+    </button>
+    <button class="btn btn-outline-primary" (click)="cargarMasCarreras(listaTopCarreras.length)"
+        [disabled]="listaTopCarreras.length < registrosPorPagina">
+        Siguiente
+    </button>
 </div>

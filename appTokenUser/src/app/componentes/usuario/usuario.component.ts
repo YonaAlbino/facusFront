@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
-import { Calificacion } from 'src/app/modelo/calificacion';
-import { Comentario } from 'src/app/modelo/comentario';
-import { Reaccion } from 'src/app/modelo/reaccion';
-import { RefreshToken } from 'src/app/modelo/refresh-token';
-import { Rol } from 'src/app/modelo/rol';
-import { Universidad } from 'src/app/modelo/universidad';
-import { Usuario } from 'src/app/modelo/usuario';
+import { CalificacionDTO } from 'src/app/modelo/calificacion';
+import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
+import { ReaccionDTO } from 'src/app/modelo/ReaccionDTO';
+import { RefreshTokenDTO } from 'src/app/modelo/RefreshTokenDTO';
+import { RolDTO } from 'src/app/modelo/RolDTO';
+import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 
 @Component({
@@ -46,7 +47,7 @@ export class UsuarioComponent {
   }
 
   crearUsuario(nombreUsuario: string, contrasenia: string) {
-    const usuarioAGuardar: Usuario = {
+    const usuarioAGuardar: UsuarioDTO = {
       username: nombreUsuario,
       password: contrasenia
     }
@@ -70,14 +71,14 @@ export class UsuarioComponent {
     accountNotExpired?: boolean,
     accountNotLocked?: boolean,
     credentialNotExpired?: boolean,
-    listaRoles?: Rol[],
-    listaUniversidad?: Universidad[],
-    listaCalificacion?: Calificacion[],
-    refreshToken?: RefreshToken,
-    listaComentarios?: Comentario[],
-    listaReaccion?: Reaccion[]
+    listaRoles?: RolDTO[],
+    listaUniversidad?: UniversidadDTO[],
+    listaCalificacion?: CalificacionDTO[],
+    refreshToken?: RefreshTokenDTO,
+    listaComentarios?: ComentarioDTO[],
+    listaReaccion?: ReaccionDTO[]
   ) {
-    const usuarioEdit: Usuario = {
+    const usuarioEdit: UsuarioDTO = {
       id: id,
       username: username || '',
       password: password || '',
@@ -93,16 +94,13 @@ export class UsuarioComponent {
       listaReaccion: listaReaccion || []
     };
 
-    this.usuarioService.editUsuario( usuarioEdit)
-    .pipe(catchError((error:string) => {
-      this.mensajeError = error;
-      return EMPTY;
-    })).subscribe({
-      next:(usuario) => {
-        console.log(usuario);
-      }
-    })
-}
+    this.usuarioService.editUsuario(usuarioEdit)
+      .subscribe({
+        next: (usuario) => {
+          console.log(usuario);
+        }
+      })
+  }
 
 
 }

@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Rutas } from '../enumerables/rutas';
 import { Observable } from 'rxjs';
-import { Calificacion } from '../modelo/calificacion';
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { CalificacionDTO } from '../modelo/calificacion';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +14,30 @@ export class CalificacionService {
   private baseUrl = Rutas.RUTA_BASE;
   private rutaEndPoint = "/calificacion";
 
-  getCalificaciones():Observable<Calificacion[]>{
-    return this.http.get<Calificacion[]>(this.baseUrl + this.rutaEndPoint);
+  getCalificaciones():Observable<CalificacionDTO[]>{
+    return this.http.get<CalificacionDTO[]>(this.baseUrl + this.rutaEndPoint);
   }
 
-  getCalificacionById(id:number):Observable<Calificacion>{
-    return this.http.get<Calificacion>(this.baseUrl + this.rutaEndPoint + "/" + id);
+  getCalificacionById(id:number):Observable<CalificacionDTO>{
+    return this.http.get<CalificacionDTO>(this.baseUrl + this.rutaEndPoint + "/" + id);
   }
   
-  crearCalificacion(calificacion:Calificacion):Observable<Calificacion>{
-    return this.http.post<Calificacion>(this.baseUrl + this.rutaEndPoint, calificacion);
+  crearCalificacion(calificacion:CalificacionDTO):Observable<CalificacionDTO>{
+    const calificacionClass = {
+      ...calificacion,  
+      '@class': EnumsDTOs.CalificacionDTO  
+    };
+  
+    return this.http.post<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacionClass);
   }
   
-  editCalificacion(calificacion:Calificacion):Observable<Calificacion>{
-    return this.http.put<Calificacion>(this.baseUrl + this.rutaEndPoint, calificacion);
+  editCalificacion(calificacion:CalificacionDTO):Observable<CalificacionDTO>{
+    const calificacionClass = {
+      ...calificacion,  
+      '@class': EnumsDTOs.CalificacionDTO  
+    };
+  
+    return this.http.put<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacionClass);
   }
   
 

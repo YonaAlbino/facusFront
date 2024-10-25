@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { Notificacion } from 'src/app/modelo/notificacion';
-import { Usuario } from 'src/app/modelo/usuario';
+import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+
 import { NotificacionService } from 'src/app/servicios/notificacion.service';
 import { SocketService } from 'src/app/servicios/socket.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
@@ -13,7 +14,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 })
 export class NotificacionesComponent implements OnInit {
 
-  notificaciones: Notificacion[] = [];
+  notificaciones: NotificacionDTO[] = [];
   idUsuario: number = Number(localStorage.getItem('userID'));
   mensajeError!: string;
 
@@ -43,7 +44,7 @@ export class NotificacionesComponent implements OnInit {
 
   getnotificationsByIdUser(idUsuario: number) {
     this.notificacionService.getNotificacionesByUserId(idUsuario).subscribe(
-      (notificaciones: Notificacion[]) => {
+      (notificaciones: NotificacionDTO[]) => {
         this.notificaciones = notificaciones;
       },
       (error) => {
@@ -119,8 +120,8 @@ export class NotificacionesComponent implements OnInit {
     leida?:boolean;
   */
 
-  crearNotificacion(informacion?:string, idRedireccionamiento?:string, listaUsuarios?:Usuario[], leida?:boolean){
-    const notificacionCreada: Notificacion = {
+  crearNotificacion(informacion?:string, idRedireccionamiento?:string, listaUsuarios?:UsuarioDTO[], leida?:boolean){
+    const notificacionCreada: NotificacionDTO = {
       informacion: informacion
     }
     this.notificacionService.crearNotificacion(notificacionCreada)
@@ -138,8 +139,8 @@ export class NotificacionesComponent implements OnInit {
     })
   }
 
-  editNotificacion(id:number,informacion?:string, idRedireccionamiento?:number, listaUsuarios?:Usuario[], leida?:boolean){
-    const notificacionEditada: Notificacion = {
+  editNotificacion(id:number,informacion?:string, idRedireccionamiento?:number, listaUsuarios?:UsuarioDTO[], leida?:boolean){
+    const notificacionEditada: NotificacionDTO = {
       id:id,
       informacion: informacion,
       idRedireccionamiento: idRedireccionamiento,

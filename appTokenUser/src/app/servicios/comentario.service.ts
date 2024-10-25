@@ -1,11 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, EMPTY, Observable, throwError } from 'rxjs';
-import { Comentario } from '../modelo/comentario';
-import { UtilService } from './util.service';
-import { Reaccion } from '../modelo/reaccion';
-import { Usuario } from '../modelo/usuario';
 import { Rutas } from '../enumerables/rutas';
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { ComentarioDTO } from '../modelo/ComentarioDTO';
 
 
 @Injectable({
@@ -18,24 +16,41 @@ export class ComentarioService {
 
   constructor(private http: HttpClient) { }
 
-  getComentarios(): Observable<Comentario[]> {
-    return this.http.get<Comentario[]>(this.rutaBase + this.rutaEndpoint);
+  getComentarios(): Observable<ComentarioDTO[]> {
+    return this.http.get<ComentarioDTO[]>(this.rutaBase + this.rutaEndpoint);
   }
 
-  getComentarioById(id: number): Observable<Comentario> {
-    return this.http.get<Comentario>(this.rutaBase  + this.rutaEndpoint + "/" + id);
+  getComentarioById(id: number): Observable<ComentarioDTO> {
+    return this.http.get<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint + "/" + id);
   }
 
-  guardarComentario(comentario: Comentario): Observable<Comentario> {
-    return this.http.post<Comentario>(this.rutaBase  + this.rutaEndpoint, comentario);
+  guardarComentario(comentario: ComentarioDTO, idUsuario:number): Observable<ComentarioDTO> {
+    const comentarioClass = {
+      ...comentario,  
+      '@class': EnumsDTOs.ComentarioDTO  
+    };
+    return this.http.post<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentarioClass);
   }
 
   eliminarComentario(id: number): Observable<string> {
     return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);
   }
 
-  editComentario(comentario:Comentario): Observable<Comentario> {
-    return this.http.put<Comentario>(this.rutaBase  + this.rutaEndpoint, comentario);
+  editComentario(comentario:ComentarioDTO): Observable<ComentarioDTO> {
+    const comentarioClass = {
+      ...comentario,  
+      '@class': EnumsDTOs.ComentarioDTO  
+    };
+    return this.http.put<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentarioClass);
   }
+
+  CargarComentariosPaginadosCarrera(pagina:number, tamanio:number, idCarrera:number):Observable<ComentarioDTO[]>{
+    return this.http.get<ComentarioDTO[]>(this.rutaBase+"/comentario/encontrarComentariosPorIdCarrera/"+idCarrera+"?pagina="+pagina+"&tamanio="+tamanio);
+  }
+
+  CargarComentariosPaginadosUniversidad(pagina:number, tamanio:number, idUniversidad:number):Observable<ComentarioDTO[]>{
+    return this.http.get<ComentarioDTO[]>(this.rutaBase+"/comentario/encontrarComentariosPorIdUniversidad/"+idUniversidad+"?pagina="+pagina+"&tamanio="+tamanio);
+  }
+  
 
 }

@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Notificacion } from '../modelo/notificacion';
 import { UtilService } from './util.service';
 import { Rutas } from '../enumerables/rutas';
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { NotificacionDTO } from '../modelo/NotificacionDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,16 @@ export class NotificacionService {
 
   constructor(private http: HttpClient) { }
 
-  getNotificacionesByUserId(idUser: number): Observable<Notificacion[]> {
-    return this.http.get<Notificacion[]>(`${this.baseUrl + this.rutaEndpoint + "/byUserId"}/${idUser}`);
+  getNotificacionesByUserId(idUser: number): Observable<NotificacionDTO[]> {
+    return this.http.get<NotificacionDTO[]>(`${this.baseUrl + this.rutaEndpoint + "/byUserId"}/${idUser}`);
   }
 
   // getNotificacionesFalseByUserId(idUser:number):Observable<Notificacion[]>{
   //   return this.http.get<Notificacion[]>(`${this.baseUrl}/false/${idUser}`);
   // }
 
-  getNotificacionesNoLeidas(idUser: number): Observable<Notificacion[]> {
-    return this.http.get<Notificacion[]>(this.baseUrl + this.rutaEndpoint + "/noLeidas/" + idUser);
+  getNotificacionesNoLeidas(idUser: number): Observable<NotificacionDTO[]> {
+    return this.http.get<NotificacionDTO[]>(this.baseUrl + this.rutaEndpoint + "/noLeidas/" + idUser);
   }
 
   visualizarNotificacionesByUserID(userId: number): Observable<string> {
@@ -43,23 +44,31 @@ export class NotificacionService {
     return this.http.put<string>(url, {});
   }
 
-  getNotificaciones(): Observable<Notificacion[]> {
-    return this.http.get<Notificacion[]>(this.baseUrl + this.rutaEndpoint);
+  getNotificaciones(): Observable<NotificacionDTO[]> {
+    return this.http.get<NotificacionDTO[]>(this.baseUrl + this.rutaEndpoint);
   }
 
-  getNotificacionById(id:number):Observable<Notificacion>{
-    return this.http.get<Notificacion>(this.baseUrl + this.rutaEndpoint + "/" + id);
+  getNotificacionById(id:number):Observable<NotificacionDTO>{
+    return this.http.get<NotificacionDTO>(this.baseUrl + this.rutaEndpoint + "/" + id);
   }
 
   eliminarNotificacion(id:number):Observable<string>{
     return this.http.delete<string>(this.baseUrl + this.rutaEndpoint + "/" + id);
   }
 
-  crearNotificacion(notificacion:Notificacion):Observable<Notificacion>{
-    return this.http.post(this.baseUrl + this.rutaEndpoint, notificacion);
+  crearNotificacion(notificacion:NotificacionDTO):Observable<NotificacionDTO>{
+    const notificacionClass = {
+      ...notificacion,  
+      '@class': EnumsDTOs.NotificacionDTO  
+    };
+    return this.http.post(this.baseUrl + this.rutaEndpoint, notificacionClass);
   }
 
-  editNotificacion(notificacion:Notificacion):Observable<Notificacion>{
-    return this.http.put(this.baseUrl + this.rutaEndpoint,notificacion);
+  editNotificacion(notificacion:NotificacionDTO):Observable<NotificacionDTO>{
+    const notificacionClass = {
+      ...notificacion,  
+      '@class': EnumsDTOs.NotificacionDTO  
+    };
+    return this.http.put(this.baseUrl + this.rutaEndpoint,notificacionClass);
   }
 }

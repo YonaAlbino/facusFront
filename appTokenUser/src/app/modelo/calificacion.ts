@@ -1,4 +1,4 @@
-export interface Calificacion {
-    id?:number,
-    nota?:number,
+export interface CalificacionDTO {
+    id?: number;
+    nota?: number;
 }

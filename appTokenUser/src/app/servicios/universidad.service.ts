@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Rutas } from '../enumerables/rutas';
 import { Observable } from 'rxjs';
-import { Universidad } from '../modelo/universidad';
+
+import { EnumsDTOs } from '../enums/enums-dtos';
+import { UniversidadDTO } from '../modelo/UniversidadDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -13,53 +15,61 @@ export class UniversidadService {
   private baseUrl = Rutas.RUTA_BASE;
   private rutaEndPoint = "/universidad"
 
-  public getUniversidades(): Observable<Universidad[]> {
+  public getUniversidades(): Observable<UniversidadDTO[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<Universidad[]>(this.baseUrl + this.rutaEndPoint, {headers});
+    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint, {headers});
   }
 
-  public getUniversidadById(id: number): Observable<Universidad> {
-    return this.http.get<Universidad>(this.baseUrl + this.rutaEndPoint + "/" + id);
+  public getUniversidadById(id: number): Observable<UniversidadDTO> {
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/" + id);
   }
 
-  public crearUniversidad(universidad: Universidad): Observable<Universidad> {
-    return this.http.post(this.baseUrl + this.rutaEndPoint, universidad);
+  public crearUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
+    const universidadClass = {
+      ...universidad,
+      '@class': EnumsDTOs.UniversidadDTO
+    };
+    return this.http.post(this.baseUrl + this.rutaEndPoint, universidadClass);
   }
 
-  public editUniversidad(universidad: Universidad): Observable<Universidad> {
-    return this.http.put(this.baseUrl + this.rutaEndPoint, universidad);
+  public editUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
+    const universidadClass = {
+      ...universidad,
+      '@class': EnumsDTOs.UniversidadDTO
+    };
+    return this.http.put(this.baseUrl + this.rutaEndPoint, universidadClass);
   }
 
-  public obtenerTopUniversidades(pagina: number, tamanio: number): Observable<Universidad[]> {
+  public obtenerTopUniversidades(pagina: number, tamanio: number): Observable<UniversidadDTO[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<Universidad[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers });
+    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers });
   }
 
 
-  getuniversidadIdCarrera(idCarrera: number): Observable<Universidad> {
-    return this.http.get<Universidad>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera);
+  getuniversidadIdCarrera(idCarrera: number): Observable<UniversidadDTO> {
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera);
   }
   
-  obtenerUniversidadesPaginadas(pagina:number, tamanio:number):Observable<Universidad[]>{
+  obtenerUniversidadesPaginadas(pagina:number, tamanio:number):Observable<UniversidadDTO[]>{
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<Universidad[]>(`${this.baseUrl}${this.rutaEndPoint}/paginadas?pagina=${pagina}&tamanio=${tamanio}`, {headers});
+    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/paginadas?pagina=${pagina}&tamanio=${tamanio}`, {headers});
   }
 
-  public buscarUniversidadesPorNombre(name:string):Observable<Universidad[]>{
+  public buscarUniversidadesPorNombre(name:string):Observable<UniversidadDTO[]>{
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<Universidad[]>(this.baseUrl + this.rutaEndPoint + "/findUniversidadByName/" + name, {headers});
+    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint + "/findUniversidadByName/" + name, {headers});
   }
 
 }

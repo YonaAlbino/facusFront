@@ -12,7 +12,7 @@ import { UsuarioService } from './usuario.service';
 })
 export class UtilService {
 
-  constructor(private router: Router, private socket: SocketService, private usuarioService:UsuarioService) { }
+  constructor(private router: Router, private socket: SocketService, private usuarioService: UsuarioService) { }
   private baseUrl = 'http://localhost:8080';
 
   public agregarCredencialesASesion(authLoguinResponseDTO: AuthLoguinResponseDTO) {
@@ -37,7 +37,7 @@ export class UtilService {
       this.socket.iniciarConexionSocket(rol);
       // Redirigir inmediatamente
       this.router.navigate(['/']);
-     // window.location.reload();
+      // window.location.reload();
     } else {
       console.warn('No se encontró userID en localStorage');
       this.router.navigate(['/']);
@@ -48,7 +48,7 @@ export class UtilService {
     return this.baseUrl;
   }
 
-  public cuentaAtras(titulo:string, tiempo:number, callback:() => void): void {
+  public cuentaAtras(titulo: string, tiempo: number, callback: () => void): void {
     let timerInterval: any // Define el tipo para el intervalo del temporizador
     Swal.fire({
       title: titulo,
@@ -71,20 +71,22 @@ export class UtilService {
       // Manejo de despidos
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
-        if(callback)
+        if (callback)
           callback();
       }
-      
+
     });
   }
-  
-  public verificarTokenInactivo():boolean{
+
+  public verificarTokenInactivo(): boolean {
     const token = localStorage.getItem('authToken');
     const expiracionEnSegundos = jwtDecode(token!).exp;
     const expiracionEnMilisegundos = expiracionEnSegundos! * 1000; // Convertir a milisegundos
     const fechaExpiracion = new Date(expiracionEnMilisegundos - 60000); // Crear un objeto Date
-    if(fechaExpiracion.getTime() <= Date.now())
+    if (fechaExpiracion.getTime() <= Date.now())
       return true;
     return false;
   }
+
+
 }
