@@ -6,10 +6,11 @@ export interface ComentarioDTO {
     id?: number;
     mostrarFormularioEdicion?: boolean;
     mostrarFormularioRespuesta?: boolean;
-    usuario?:UsuarioDTO;
+    usuarioId?:number;
     fecha?: string;
     mostrarRespuestas?:boolean;
     mensaje?: string;
     listaReaccion?: ReaccionDTO[];
     listaRespuesta?: RespuestaDTO[];
+    username?:string;
 }

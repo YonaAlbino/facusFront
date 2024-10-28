@@ -4,6 +4,7 @@ import { CalificacionDTO } from 'src/app/modelo/calificacion';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
@@ -57,7 +58,6 @@ export class DetalleUniversidadComponent implements OnInit {
   buscarUniversidad(id: number): void {
     this.uniService.getUniversidadById(id).subscribe(
       (universidad: UniversidadDTO) => {
-        console.log(universidad.listaCalificacion?.length)
         this.universidad = universidad;
         this.filtrarCarrerasActivas();
         this.listaComentarios = universidad.listaComentarios;
@@ -79,7 +79,7 @@ export class DetalleUniversidadComponent implements OnInit {
       this.universidad.listaCalificacion.push(calificacion);
       this.uniService.editUniversidad(this.universidad).subscribe(
         (universidad: UniversidadDTO) => {
-          console.log('Universidad actualizada:', universidad);
+
         },
         (error: any) => {
           console.error('Error al actualizar la universidad:', error);
@@ -125,13 +125,13 @@ export class DetalleUniversidadComponent implements OnInit {
 }
 
 private crearComentario(mensaje: string): ComentarioDTO {
-    // const usuario: Usuario = {
+    // const usuario: UsuarioDTO = {
     //     id: Number(localStorage.getItem('userID'))
     // };
 
     return {
         mensaje: mensaje,
-        //usuario: usuario,
+        usuarioId: Number(localStorage.getItem('userID')),
         fecha:new Date().toISOString()
         //listaComentario: []
     };
@@ -140,11 +140,12 @@ private crearComentario(mensaje: string): ComentarioDTO {
 private guardarComentario(comentario: ComentarioDTO): void {
     this.comentarioService.guardarComentario(comentario, Number(this.idUsuarioActual)).subscribe(
         (comentarioGuardado: ComentarioDTO) => {
-          const comentario:ComentarioDTO = {
-            id:comentarioGuardado.id,
-            //fecha:new Date().toISOString()
-          }
-            this.universidad.listaComentarios?.push(comentario);
+          // const comentario:ComentarioDTO = {
+          //   id:comentarioGuardado.id,
+          //   //fecha:new Date().toISOString()
+          // }
+          console.log(comentarioGuardado)
+            this.universidad.listaComentarios?.push(comentarioGuardado);
             this.actualizarUniversidad();
         }
     );

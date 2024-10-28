@@ -36,11 +36,8 @@ export class UniversidadService {
   }
 
   public editUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
-    const universidadClass = {
-      ...universidad,
-      '@class': EnumsDTOs.UniversidadDTO
-    };
-    return this.http.put(this.baseUrl + this.rutaEndPoint, universidadClass);
+    console.log(universidad)
+    return this.http.put(this.baseUrl + this.rutaEndPoint, universidad);
   }
 
   public obtenerTopUniversidades(pagina: number, tamanio: number): Observable<UniversidadDTO[]> {

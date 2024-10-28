@@ -15,7 +15,8 @@
             <img width="3%" style="border-radius: 50%"
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="" />
           </div>
-          <p *ngIf="comentario.usuario">{{comentario.usuario.username}}</p>
+          <p *ngIf="comentario.usuarioId">{{comentario.username}}</p>
+        
         </div>
         <div class="fecha">
           <p style="font-size: 14px"> {{ comentario.fecha | date : "medium" }} </p>
@@ -98,8 +99,9 @@
             <img width="3%" style="border-radius: 50%"
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="" />
           </div>
-          <p *ngIf="respuesta.usuario && respuesta.usuario.username" style="font-size: 14px">
-            {{respuesta.usuario.username}}</p>
+          <p *ngIf="respuesta.usuarioId && respuesta.username" style="font-size: 14px">
+            {{respuesta.username}}</p>
+            pepe
         </div>
         <div class="fecha">
           <p style="font-size: 14px">{{ respuesta.fecha | date : "medium" }}</p>
@@ -108,7 +110,7 @@
       <p style="font-weight: bold; color: rgb(28, 10, 10)"> {{ respuesta.mensaje }} </p>
       <!-- Botón para mostrar respuestas -->
       <button class="mostrarRespuesta" (click)="toggleRespuestasDelComentario(respuesta)"> Mostrar respuestas ({{
-        respuesta.listaRespuesta.length }}) </button>
+        respuesta.listaRespuesta?.length }}) </button>
       <!-- Botón para responder al comentario -->
       <button class="botonResponder" (click)="responderRespuestas(respuesta)"> Responder </button>
       <button class="botonEliminar">Eliminar</button>

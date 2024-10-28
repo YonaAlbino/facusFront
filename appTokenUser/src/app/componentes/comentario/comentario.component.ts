@@ -44,6 +44,7 @@ export class ComentarioComponent implements OnInit {
   idUsuarioActual: number | undefined;
 
   ngOnInit(): void {
+ 
 
     this.userService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null)
@@ -78,7 +79,7 @@ export class ComentarioComponent implements OnInit {
   actualizarComentario(comentarioAguardar: ComentarioDTO) {
     this.comentarioService.editComentario(comentarioAguardar).subscribe(
       (comentario: ComentarioDTO) => {
-        console.log('comentario guardado ' + comentario);
+      
       }
     );
   }
@@ -111,7 +112,6 @@ export class ComentarioComponent implements OnInit {
 
   //metodo para responder al comentario
   responderComentario(comentario: ComentarioDTO) {
-    console.log(comentario)
     comentario.mostrarFormularioRespuesta =
       !comentario.mostrarFormularioRespuesta;
   }
@@ -172,10 +172,14 @@ export class ComentarioComponent implements OnInit {
     //   id: Number(localStorage.getItem('userID'))
     // };
 
+    const usuario:UsuarioDTO = {
+      id: this.idUsuarioActual!
+    }
+
     let nuevaRespuesta: RespuestaDTO = {
       mensaje: mensaje,
       fecha: new Date().toISOString(),
-      //usuario: usuario
+      usuarioId: Number(localStorage.getItem('userID'))
     };
     return this.respuestaService.guardarRespuesta(nuevaRespuesta, this.idUsuarioActual!);
   }
@@ -236,8 +240,10 @@ export class ComentarioComponent implements OnInit {
       )
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
+
           this.listaComentarios = listaComentarios;
           this.paginaActual++;
+          console.log(listaComentarios)
         },
         (error) => console.error(error)
       );
@@ -428,7 +434,7 @@ export class ComentarioComponent implements OnInit {
       mensaje: mensaje,
       listaReaccion: listaReaccion,
       //listaComentario: listaComentario,
-      usuario: usuario,
+      usuarioId: Number(localStorage.getItem('userID')),
     };
 
     this.comentarioService

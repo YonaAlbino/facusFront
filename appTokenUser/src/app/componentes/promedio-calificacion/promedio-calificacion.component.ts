@@ -18,7 +18,6 @@ export class PromedioCalificacionComponent implements OnInit {
   cantidadCalificaciones: number = 0;
 
   ngOnInit(): void {
-    console.log("<21321321asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaapp-top-universidad321")
     this.promedio = this.calcularPromedio();
     this.pintarEstrellas(this.promedio);
   }

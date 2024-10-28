@@ -31,12 +31,9 @@ export class RespuestaService implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    const respuestaClass = {
-      ...respuesta,
-      '@class': EnumsDTOs.RespuestaDTO
-    };
+    console.log(respuesta)
 
-    return this.http.post<RespuestaDTO>(this.rutaBase + this.rutaEndpoint + "/guardar/" + idUsuario, respuestaClass, { headers: headers })
+    return this.http.post<RespuestaDTO>(this.rutaBase + this.rutaEndpoint, respuesta, { headers: headers })
       .pipe(
         map((respuesta: RespuestaDTO) => {
           const respuestaJSON = JSON.stringify(respuesta);

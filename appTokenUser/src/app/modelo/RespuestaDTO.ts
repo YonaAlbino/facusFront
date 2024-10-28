@@ -10,5 +10,6 @@ export interface RespuestaDTO {
     fecha?: string;
     listaRespuesta?: RespuestaDTO[];
     listaReaccion?: ReaccionDTO[];
-    usuario?: UsuarioDTO;
+    usuarioId?:number;
+    username?:string;
 }

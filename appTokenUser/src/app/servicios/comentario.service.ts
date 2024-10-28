@@ -25,11 +25,7 @@ export class ComentarioService {
   }
 
   guardarComentario(comentario: ComentarioDTO, idUsuario:number): Observable<ComentarioDTO> {
-    const comentarioClass = {
-      ...comentario,  
-      '@class': EnumsDTOs.ComentarioDTO  
-    };
-    return this.http.post<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentarioClass);
+    return this.http.post<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentario);
   }
 
   eliminarComentario(id: number): Observable<string> {
