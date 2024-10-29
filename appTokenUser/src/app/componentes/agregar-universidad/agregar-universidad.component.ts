@@ -88,7 +88,7 @@ export class AgregarUniversidadComponent implements OnInit {
 
   agregarCarreras() {
     const carrera: CarreraDTO = {
-    
+      activa:true,
       nombre: this.formularioAltaUniversidad.get('nombreCarrera')?.value,
       grado: this.formularioAltaUniversidad.get('gradoCarrera')?.value,
       duracion: this.formularioAltaUniversidad.get('duracionCarrera')?.value

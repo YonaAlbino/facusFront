@@ -1,7 +1,20 @@
-<p>carrera works!</p>
+<app-comentario [carrera]="carrera"></app-comentario>
 
-<div *ngIf="mensajeError">
-    <app-errores [mensajeError]="mensajeError"></app-errores>
+<div>
+    <div class="agregarComentario container">
+        <div class="cabecera mb-3">
+            <h2>Deja un comentario</h2>
+            <p>Conectado como...</p>
+        </div>
+
+        <div class="mb-3">
+            <textarea id="texto_area" name="comentario" rows="5" class="form-control" [(ngModel)]="nuevoComentario"
+                placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" [disabled]="nuevoComentario.trim() === ''"
+            (click)="crearNuevoComentario(nuevoComentario)">Enviar
+            comentario</button>
+    </div>
 </div>
-
-<input type="submit" (click)="editCarrera(1, 'unam 23')"> probar
+<!-- <input type="submit" (click)="editCarrera(1, 'unam 23')"> probar -->

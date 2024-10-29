@@ -8,6 +8,6 @@ export interface CarreraDTO {
     grado?: string;
     duracion?: string;
     activa?: boolean;
-    listaComentario?: ComentarioDTO[];
+    listaComentarios?: ComentarioDTO[];
     listaCalificacion?: CalificacionDTO[];
 }

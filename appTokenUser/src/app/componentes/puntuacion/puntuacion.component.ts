@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalificacionDTO } from 'src/app/modelo/calificacion';
 
 import { CalificacionService } from 'src/app/servicios/calificacion.service';
@@ -12,24 +12,35 @@ export class PuntuacionComponent {
 
   puntuacion: number = 0.0;
 
-
   constructor(private calificacionService: CalificacionService) { }
 
   @Output() calificacionGuardada: EventEmitter<CalificacionDTO> = new EventEmitter<CalificacionDTO>();
-
+  @Input() esEditable: boolean = false;  
+  @Input() idCalificacion: number = 0; 
+  @Input() idUsuario: number = 0; 
 
   capturarPuntacion(event: Event) {
-    console.log("puntiacion!!!")
     let puntos: string = (<HTMLInputElement>event.target).value;
     this.puntuacion = parseFloat(puntos);
 
     let calificacion: CalificacionDTO = {
+      usuarioId: Number(localStorage.getItem('userID')),
       nota: this.puntuacion
     }
 
-    this.calificacionService.crearCalificacion(calificacion).subscribe((calificacion) => {
-      this.calificacionGuardada.emit(calificacion);
-    });
+    if(!this.esEditable){
+      console.log(this.esEditable)
+      this.calificacionService.crearCalificacion(calificacion).subscribe((calificacion) => {
+        this.calificacionGuardada.emit(calificacion);
+      });
+    }else{
+      const calificacion:CalificacionDTO = {
+        id:this.idCalificacion,
+        nota: this.puntuacion,
+        usuarioId:this.idUsuario
+      }
+      this.calificacionService.editCalificacion(calificacion).subscribe();
+    }
   }
 
 }

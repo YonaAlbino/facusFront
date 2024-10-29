@@ -24,7 +24,7 @@ export class ComentarioService {
     return this.http.get<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint + "/" + id);
   }
 
-  guardarComentario(comentario: ComentarioDTO, idUsuario:number): Observable<ComentarioDTO> {
+  guardarComentario(comentario: ComentarioDTO): Observable<ComentarioDTO> {
     return this.http.post<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentario);
   }
 

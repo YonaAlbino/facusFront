@@ -27,7 +27,7 @@ export class DetalleUniversidadComponent implements OnInit {
   carreraDeCarreraComponent!: CarreraDTO;
   listaComentarios?: ComentarioDTO[] = [];
   variableDeEjemplo: boolean = true;
-  idUsuarioActual: number | undefined ;
+  idUsuarioActual: number | undefined;
 
 
   constructor(
@@ -37,9 +37,14 @@ export class DetalleUniversidadComponent implements OnInit {
     // private respuestaService: RespuestaService, 
     private router: Router,
     private carreraService: CarreraService,
-    private userService:UsuarioService
+    private userService: UsuarioService
     //private alertas: AlertasService
   ) { }
+
+  calificacionEsEditable:boolean = false;
+  idCalificacionEditar: number = 0;
+  idUsuarioCalificacion: number = 0;
+
 
   ngOnInit(): void {
     this.idUniversidad = this.route.snapshot.params["id"];
@@ -61,6 +66,8 @@ export class DetalleUniversidadComponent implements OnInit {
         this.universidad = universidad;
         this.filtrarCarrerasActivas();
         this.listaComentarios = universidad.listaComentarios;
+        //if(universidad.listaCalificacion)
+          this.calificacionEditable(universidad.listaCalificacion!);
       },
       (error: any) => {
         console.error('Error al obtener la universidad:', error);
@@ -88,78 +95,49 @@ export class DetalleUniversidadComponent implements OnInit {
     }
   }
 
-  // crearNuevoComentario(mensaje: string): void {
-
-  //   const usuario: Usuario = {
-  //     id: Number(localStorage.getItem('userID'))
-  //   };
-
-  //   const nuevoComentario: Comentario = {
-  //     mensaje: mensaje,
-  //     usuario:usuario
-  //     //listaComentario: []
-  //   };
-
-  //   this.comentarioService.guardarComentario(nuevoComentario).subscribe(
-  //     (comentario: Comentario) => {
-  //       this.universidad.listaComentarios?.push(comentario);
-  //       console.log(comentario);
-  //       console.log(this.universidad)
-  //       this.uniService.editUniversidad(this.universidad).subscribe(
-  //         (universidad: Universidad) => {
-  //           this.universidad = universidad;
-  //           this.variableDeEjemplo = true;
-  //           // this.alertas.alertaExito("Comentario guardado");
-  //         }
-  //       );
-  //       this.nuevoComentario = "";
-  //     }
-  //   );
-  // }
-
 
   crearNuevoComentario(mensaje: string): void {
     const nuevoComentario = this.crearComentario(mensaje);
     this.guardarComentario(nuevoComentario);
     this.nuevoComentario = "";
-}
+  }
 
-private crearComentario(mensaje: string): ComentarioDTO {
+  private crearComentario(mensaje: string): ComentarioDTO {
     // const usuario: UsuarioDTO = {
     //     id: Number(localStorage.getItem('userID'))
     // };
 
     return {
-        mensaje: mensaje,
-        usuarioId: Number(localStorage.getItem('userID')),
-        fecha:new Date().toISOString()
-        //listaComentario: []
+      mensaje: mensaje,
+      usuarioId: Number(localStorage.getItem('userID')),
+      fecha: new Date().toISOString()
+      //listaComentario: []
     };
-}
+  }
 
-private guardarComentario(comentario: ComentarioDTO): void {
-    this.comentarioService.guardarComentario(comentario, Number(this.idUsuarioActual)).subscribe(
-        (comentarioGuardado: ComentarioDTO) => {
-          // const comentario:ComentarioDTO = {
-          //   id:comentarioGuardado.id,
-          //   //fecha:new Date().toISOString()
-          // }
-          console.log(comentarioGuardado)
-            this.universidad.listaComentarios?.push(comentarioGuardado);
-            this.actualizarUniversidad();
-        }
+  private guardarComentario(comentario: ComentarioDTO): void {
+    this.comentarioService.guardarComentario(comentario).subscribe(
+      (comentarioGuardado: ComentarioDTO) => {
+        // const comentario:ComentarioDTO = {
+        //   id:comentarioGuardado.id,
+        //   //fecha:new Date().toISOString()
+        // }
+        console.log(comentarioGuardado)
+        this.universidad.listaComentarios?.push(comentarioGuardado);
+        this.actualizarUniversidad();
+      }
     );
-}
+  }
 
-private actualizarUniversidad(): void {
+  private actualizarUniversidad(): void {
     this.uniService.editUniversidad(this.universidad).subscribe(
-        (universidadActualizada: UniversidadDTO) => {
-            this.universidad = universidadActualizada;
-            this.variableDeEjemplo = true;
-            // this.alertas.alertaExito("Comentario guardado");
-        }
+      (universidadActualizada: UniversidadDTO) => {
+        this.universidad = universidadActualizada;
+        this.variableDeEjemplo = true;
+        // this.alertas.alertaExito("Comentario guardado");
+      }
     );
-}
+  }
 
 
   eliminarUniversidad(idUniversidad: number): void {
@@ -173,13 +151,37 @@ private actualizarUniversidad(): void {
       this.carreraService.getCarreraByID(id).subscribe(
         (carrera: CarreraDTO) => {
           this.carreraDeCarreraComponent = carrera;
+
           this.mostrarCarreraComponent = true;
-        },
-        (error: any) => {
-          console.error('Error al buscar la carrera:', error);
         }
       );
     }
   }
+
+  // calificacionEditable(listaCalificaciones: CalificacionDTO[]) {
+  //   const idUsuario: Number = Number(localStorage.getItem('userID'));
+  //   listaCalificaciones.forEach((calificacion: CalificacionDTO) => {
+  //     if(calificacion.usuarioId == idUsuario){
+  //       this.calificacionEsEditable = true;
+  //       this.idUsuarioCalificacion = Number(idUsuario);
+  //       this.idCalificacionEditar = calificacion.id!;
+  //     }
+  // });
+  //   //this.calificacionEsEditable = listaCalificaciones.some((calificacion) => calificacion.usuarioId === idUsuario);
+  // }
+  
+
+  calificacionEditable(listaCalificaciones: CalificacionDTO[]): void {
+    const idUsuario = Number(localStorage.getItem('userID'));
+    const calificacionEncontrada = listaCalificaciones.find(calificacion => calificacion.usuarioId === idUsuario);
+
+    if (calificacionEncontrada) {
+        this.calificacionEsEditable = true;
+        this.idUsuarioCalificacion = idUsuario;
+        this.idCalificacionEditar = calificacionEncontrada.id!;
+    } else {
+        this.calificacionEsEditable = false; 
+    }
+}
 
 }

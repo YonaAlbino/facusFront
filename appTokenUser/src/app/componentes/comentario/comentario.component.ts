@@ -243,7 +243,7 @@ export class ComentarioComponent implements OnInit {
 
           this.listaComentarios = listaComentarios;
           this.paginaActual++;
-          console.log(listaComentarios)
+
         },
         (error) => console.error(error)
       );
@@ -253,7 +253,6 @@ export class ComentarioComponent implements OnInit {
 
   //Metodo para cargar comentarios paginados
   CargarComentariosPaginadosCarrera() {
-    console.log(this.carrera!.id);
     this.comentarioService
       .CargarComentariosPaginadosCarrera(
         this.paginaActual,
@@ -263,6 +262,7 @@ export class ComentarioComponent implements OnInit {
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
+          console.log( listaComentarios)
           this.paginaActual++;
         },
         (error) => console.error(error)
@@ -406,7 +406,7 @@ export class ComentarioComponent implements OnInit {
       fecha: new Date().toISOString(),
     };
     this.comentarioService
-      .guardarComentario(comentarioAGuardar, Number(this.idUsuarioActual))
+      .guardarComentario(comentarioAGuardar)
       .pipe(
         catchError((error: string) => {
           //this.mensajeError = error; // Guardar el mensaje de error en una propiedad

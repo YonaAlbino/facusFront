@@ -8,10 +8,16 @@
             <img [src]="universidad.imagen" alt="Imagen de la universidad" class="img-fluid" />
         </div>
         <div class="col-md-8">
-            <div class="text-center mb-3">
-                <p>Puntuar:</p>
-                <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+            <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
+                <p>ya existe una puntuacion tuya:</p>
+                <app-puntuacion [esEditable]="true" [idUsuario]="idUsuarioCalificacion" [idCalificacion]="idCalificacionEditar" (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
             </div>
+            
+            <ng-template #notEditable>
+                <p>no existe una puntuacion de usted:</p>
+                <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+            </ng-template>
+            
 
             <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0" class="text-center">
                 <span>
