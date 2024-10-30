@@ -37,7 +37,7 @@
           <!-- <p *ngFor="let comentario of comentario.listaReaccion"> -->
           <div style="display: flex; margin-right: 20px">
             <!-- <input type="submit" value="Me gusta" (click)="megusta(comentario)" /> -->
-            <button class="botonLike" (click)="megusta(comentario)">
+            <button class="botonLike" (click)="meGustaComentario(comentario)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                 <path
@@ -48,7 +48,7 @@
           </div>
           <div style="display: flex">
             <!-- <input type="submit" value="No me gusta" (click)="noMeGusta(comentario)" /> -->
-            <button class="botonLike" (click)="noMeGusta(comentario)">
+            <button class="botonLike" (click)="noMegustaComentario(comentario)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                 <path

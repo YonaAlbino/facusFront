@@ -44,7 +44,7 @@ export class ComentarioComponent implements OnInit {
   idUsuarioActual: number | undefined;
 
   ngOnInit(): void {
- 
+
 
     this.userService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null)
@@ -79,7 +79,7 @@ export class ComentarioComponent implements OnInit {
   actualizarComentario(comentarioAguardar: ComentarioDTO) {
     this.comentarioService.editComentario(comentarioAguardar).subscribe(
       (comentario: ComentarioDTO) => {
-      
+
       }
     );
   }
@@ -172,7 +172,7 @@ export class ComentarioComponent implements OnInit {
     //   id: Number(localStorage.getItem('userID'))
     // };
 
-    const usuario:UsuarioDTO = {
+    const usuario: UsuarioDTO = {
       id: this.idUsuarioActual!
     }
 
@@ -262,7 +262,7 @@ export class ComentarioComponent implements OnInit {
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
-          console.log( listaComentarios)
+          console.log(listaComentarios)
           this.paginaActual++;
         },
         (error) => console.error(error)
@@ -304,15 +304,63 @@ export class ComentarioComponent implements OnInit {
     }
   }
 
+
+
   //Metodo para añadir reacion de megusta
-  megusta(comentario: ComentarioDTO) {
-    console.log(comentario);
-    this.reaccionService
-      .guardarReaccion(this.crearReaccion(1))
-      .subscribe((reaccion: ReaccionDTO) => {
-        comentario.listaReaccion?.push(reaccion);
-        this.actualizarComentario(comentario);
+  reaccionar(elemento: { listaReaccion?: ReaccionDTO[]; usuarioId?: number }, like: boolean, comentario:boolean) {
+    const idUsuarioActual = Number(localStorage.getItem('userID'));
+    const listaReaccion: ReaccionDTO[] = elemento.listaReaccion!;
+    const reaccionEncontrada = listaReaccion.find(reaccion => reaccion.usuarioId === idUsuarioActual);
+
+    if (reaccionEncontrada) {
+      if (like) {
+        reaccionEncontrada.noMegusta = 0;
+        if (reaccionEncontrada.meGusta === 1) {
+          reaccionEncontrada.meGusta = 0;
+        } else {
+          reaccionEncontrada.meGusta = 1;
+        }
+      } else {
+        reaccionEncontrada.meGusta = 0;
+        if (reaccionEncontrada.noMegusta === 1) {
+          reaccionEncontrada.noMegusta = 0;
+        } else {
+          reaccionEncontrada.noMegusta = 1;
+        }
+      }
+
+      this.reaccionService.editarReaccion(reaccionEncontrada).subscribe({
+        error: (err) => console.error("Error al editar la reacción:", err),
       });
+    } else {
+      const nuevaReaccion = like ? this.crearReaccion(1) : this.crearReaccion(0);
+      this.reaccionService.guardarReaccion(nuevaReaccion).subscribe({
+        next: (reaccion: ReaccionDTO) => {
+          elemento.listaReaccion?.push(reaccion);
+          if(comentario)
+            this.actualizarComentario(elemento);
+          else 
+          this.respuestaService.actualizarRespuesta(elemento).subscribe();
+        },
+        error: (err) => console.error("Error al guardar la reacción:", err),
+      });
+    }
+  }
+
+  meGustaComentario(comentario:ComentarioDTO){
+    this.reaccionar(comentario, true,true);
+  }
+
+  noMegustaComentario(comentario: ComentarioDTO) {
+    this.reaccionar(comentario, false,true);
+  }
+
+  megustaRespuesta(respuesta: RespuestaDTO) {
+    this.reaccionar(respuesta, true,false);
+  }
+
+  noMeGustaRespuesta(respuesta: RespuestaDTO) {
+    this.reaccionar(respuesta, false,false);
   }
 
   //Metodo para crear una  instancia de una reaccion
@@ -320,18 +368,19 @@ export class ComentarioComponent implements OnInit {
     let reaccion: ReaccionDTO = {}; // Inicializa como un objeto vacío
     if (megustaNoMeGusta === 1) reaccion.meGusta = 1;
     if (megustaNoMeGusta === 0) reaccion.noMegusta = 1;
+    reaccion.usuarioId = Number(localStorage.getItem('userID'));
     return reaccion;
   }
 
-  //Metodo para añadir reaccion de no me gusta
-  noMeGusta(comentario: ComentarioDTO) {
-    this.reaccionService
-      .guardarReaccion(this.crearReaccion(0))
-      .subscribe((reaccion: ReaccionDTO) => {
-        comentario.listaReaccion?.push(reaccion);
-        this.actualizarComentario(comentario);
-      });
-  }
+  // //Metodo para añadir reaccion de no me gusta
+  // noMeGusta(comentario: ComentarioDTO) {
+  //   console.log(comentario);
+  //   this.reaccionService.guardarReaccion(this.crearReaccion(0))
+  //     .subscribe((reaccion: ReaccionDTO) => {
+  //       comentario.listaReaccion?.push(reaccion);
+  //       this.actualizarComentario(comentario);
+  //     });
+  // }
 
   calcularSumaMeGusta(comentarios: any[]): number {
     let suma = 0;
@@ -349,24 +398,7 @@ export class ComentarioComponent implements OnInit {
     return suma;
   }
 
-  megustaRespuesta(respuesta: RespuestaDTO) {
-    console.log('oeoe');
-    this.reaccionService
-      .guardarReaccion(this.crearReaccion(1))
-      .subscribe((reaccion: ReaccionDTO) => {
-        respuesta.listaReaccion?.push(reaccion);
-        this.actualizarRespuesta(respuesta);
-      });
-  }
 
-  noMeGustaRespuesta(respuesta: RespuestaDTO) {
-    this.reaccionService
-      .guardarReaccion(this.crearReaccion(0))
-      .subscribe((reaccion: ReaccionDTO) => {
-        respuesta.listaReaccion?.push(reaccion);
-        this.actualizarRespuesta(respuesta);
-      });
-  }
 
   deleteComentarioById(id: number) {
     this.comentarioService
