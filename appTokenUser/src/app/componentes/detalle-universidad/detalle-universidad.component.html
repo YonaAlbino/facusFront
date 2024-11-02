@@ -55,7 +55,7 @@
 
         <!-- Comentarios y campo de agregar comentario -->
         <div *ngIf="!mostrarCarreraComponent">
-            <app-comentario *ngIf="universidad.listaComentarios && variableDeEjemplo"
+            <app-comentario *ngIf="universidad.listaComentarios && recargaComponenteComentario"
                 [Universidad]="universidad"></app-comentario>
 
             <div class="agregarComentario container">

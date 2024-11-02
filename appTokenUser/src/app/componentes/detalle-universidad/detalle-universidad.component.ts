@@ -26,7 +26,7 @@ export class DetalleUniversidadComponent implements OnInit {
   listaCarreras: CarreraDTO[] = [];
   carreraDeCarreraComponent!: CarreraDTO;
   listaComentarios?: ComentarioDTO[] = [];
-  variableDeEjemplo: boolean = true;
+  recargaComponenteComentario: boolean = true;
   idUsuarioActual: number | undefined;
 
 
@@ -58,6 +58,7 @@ export class DetalleUniversidadComponent implements OnInit {
 
   cargarDatos(id: number): void {
     this.buscarUniversidad(this.idUniversidad);
+  
   }
 
   buscarUniversidad(id: number): void {
@@ -122,7 +123,6 @@ export class DetalleUniversidadComponent implements OnInit {
         //   id:comentarioGuardado.id,
         //   //fecha:new Date().toISOString()
         // }
-        console.log(comentarioGuardado)
         this.universidad.listaComentarios?.push(comentarioGuardado);
         this.actualizarUniversidad();
       }
@@ -130,10 +130,11 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   private actualizarUniversidad(): void {
+    this.recargaComponenteComentario = false;
     this.uniService.editUniversidad(this.universidad).subscribe(
       (universidadActualizada: UniversidadDTO) => {
         this.universidad = universidadActualizada;
-        this.variableDeEjemplo = true;
+        this.recargaComponenteComentario = true;
         // this.alertas.alertaExito("Comentario guardado");
       }
     );

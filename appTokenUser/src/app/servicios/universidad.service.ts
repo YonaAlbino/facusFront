@@ -68,5 +68,12 @@ export class UniversidadService {
     });
     return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint + "/findUniversidadByName/" + name, {headers});
   }
-
+  
+  public getAllComents(idUniversidad:number):Observable<Number>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.get<Number>(this.baseUrl + this.rutaEndPoint + "/getAllComents/" + idUniversidad, {headers});
+  }
 }

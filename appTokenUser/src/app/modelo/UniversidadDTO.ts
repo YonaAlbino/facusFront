@@ -10,6 +10,7 @@ export interface UniversidadDTO {
     direccion?: string;
     descripcion?: string;
     direccionWeb?: string;
+    usuarioId?:number;
     listaCarreras?: CarreraDTO[];
     listaCalificacion?: CalificacionDTO[];
     listaComentarios?: ComentarioDTO[];

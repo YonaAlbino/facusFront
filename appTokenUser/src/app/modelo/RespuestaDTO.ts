@@ -4,6 +4,7 @@ import { UsuarioDTO } from "./UsuarioDTO";
 
 export interface RespuestaDTO {
     mostrarFormularioRespuesta?: boolean;
+    mostrarFormularioEdicion?: boolean;
     mostrarRespuestas?: boolean;
     id?: number;
     mensaje?: string;
@@ -12,4 +13,5 @@ export interface RespuestaDTO {
     listaReaccion?: ReaccionDTO[];
     usuarioId?:number;
     username?:string;
+    editado?: boolean;
 }

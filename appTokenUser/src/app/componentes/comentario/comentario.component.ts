@@ -11,6 +11,7 @@ import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
 import { ReaccionService } from 'src/app/servicios/reaccion.service';
 import { RespuestaService } from 'src/app/servicios/respuesta.service';
+import { UniversidadService } from 'src/app/servicios/universidad.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 
 @Component({
@@ -19,6 +20,8 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
   styleUrls: ['./comentario.component.css'],
 })
 export class ComentarioComponent implements OnInit {
+
+
   eliminarComentario() {
     throw new Error('Method not implemented.');
   }
@@ -27,7 +30,8 @@ export class ComentarioComponent implements OnInit {
     private userService: UsuarioService,
     private comentarioService: ComentarioService,
     private respuestaService: RespuestaService,
-    private reaccionService: ReaccionService
+    private reaccionService: ReaccionService,
+    private universidadService:UniversidadService
   ) { }
 
   respuestaDeLaRespuestaDelComentario: string | undefined;
@@ -38,31 +42,40 @@ export class ComentarioComponent implements OnInit {
   paginaActual: number = 0;
   cantidadRegistros: number = 10;
   edicionComentario: string | undefined;
+  edicionRespuesta: string | undefined;
+  cantidadComentarios: Number | undefined;
 
   @Input() Universidad: UniversidadDTO | undefined;
   @Input() carrera: CarreraDTO | undefined;
   idUsuarioActual: number | undefined;
 
   ngOnInit(): void {
-
-
-    this.userService.idUsuarioActual.subscribe(idUsuario => {
-      if (idUsuario !== null)
-        this.idUsuarioActual = idUsuario;
+    this.userService.idUsuarioActual.subscribe((idUsuario) => {
+      if (idUsuario !== null) this.idUsuarioActual = idUsuario;
     });
     //console.log(this.idUsuarioActual);
-    this.comentarioService.getComentarios().subscribe({
-      // next: (comentarios) => {
-      //   // this.comentarios = comentarios;
-      // },
-    });
+    // this.comentarioService.getComentarios().subscribe({
+    //   // next: (comentarios) => {
+    //   //   // this.comentarios = comentarios;
+    //   // },
+    // });
 
     if (this.carrera) {
       this.CargarComentariosPaginadosCarrera();
+      this.carreraService.getAllComents(this.carrera.id!).subscribe(
+        (cantidadComentarios:Number) => {
+          this.cantidadComentarios = cantidadComentarios
+        }
+      );
     }
 
     if (this.Universidad) {
       this.CargarComentariosPaginadosUniversidad();
+      this.universidadService.getAllComents(this.Universidad.id!).subscribe(
+        (cantidadComentarios:Number) => {
+          this.cantidadComentarios = cantidadComentarios
+        }
+      );
     }
   }
 
@@ -74,14 +87,11 @@ export class ComentarioComponent implements OnInit {
     return nuevoComentario;
   }
 
-
   //Metodo para actualizar la lista de respuestas del comentario
   actualizarComentario(comentarioAguardar: ComentarioDTO) {
-    this.comentarioService.editComentario(comentarioAguardar).subscribe(
-      (comentario: ComentarioDTO) => {
-
-      }
-    );
+    this.comentarioService
+      .editComentario(comentarioAguardar)
+      .subscribe((comentario: ComentarioDTO) => { });
   }
 
   //Metodo para actualizar la lista de respuestas del la respuesta de un comentario
@@ -118,23 +128,47 @@ export class ComentarioComponent implements OnInit {
 
   //metodo para mostrar campo de texto para editar el comentario
   public editarComentario(comentario: ComentarioDTO) {
-    this.rellenarCampoTexto(comentario.mensaje!);
-    comentario.mostrarFormularioEdicion =
-      !comentario.mostrarFormularioEdicion;
+    this.rellenarCampoEdicionComentario(comentario.mensaje!);
+    comentario.mostrarFormularioEdicion = !comentario.mostrarFormularioEdicion;
   }
 
   //metodo que coloca el mensaje del comentario a editar en el campo de texo
-  public rellenarCampoTexto(texto: string) {
+  public rellenarCampoEdicionComentario(texto: string) {
     this.edicionComentario = texto;
   }
 
   //metodo envio del comentario a editar al back
   public enviarComentarioEditado(comentario: ComentarioDTO) {
     comentario.mensaje = this.edicionComentario;
-    this.comentarioService.editComentario(comentario).subscribe((comentario: ComentarioDTO) => {
-      console.log(comentario);
-    })
+    comentario.editado = true;
+    this.comentarioService
+      .editComentario(comentario)
+      .subscribe((comentario: ComentarioDTO) => {
+        console.log(comentario);
+      });
+      comentario.mostrarFormularioEdicion = !comentario.mostrarFormularioEdicion;
   }
+
+  editarRespuesta(respuesta: RespuestaDTO) {
+    this.rellenarCampoEdicionRespuesta(respuesta.mensaje!);
+    respuesta.mostrarFormularioEdicion = !respuesta.mostrarFormularioEdicion;
+  }
+
+  rellenarCampoEdicionRespuesta(contenidoRespuesta: string) {
+   this.edicionRespuesta = contenidoRespuesta;
+  }
+
+    //metodo envio del comentario a editar al back
+    public enviarRespuestaEditada(respuesta: RespuestaDTO) {
+      respuesta.mensaje = this.edicionRespuesta;
+      respuesta.editado = true;
+      this.respuestaService
+        .actualizarRespuesta(respuesta)
+        .subscribe((respuesta: RespuestaDTO) => {
+ 
+        });
+        respuesta.mostrarFormularioEdicion = !respuesta.mostrarFormularioEdicion;
+    }
 
   //Meotodo para guardar la respuesta de la respuesta del comentario
   guardarRespuestaDelComen(respuesta: RespuestaDTO) {
@@ -157,6 +191,7 @@ export class ComentarioComponent implements OnInit {
     this.crearRespuesta(this.respuestaDesdeElInput!).subscribe(
       (respuesta: RespuestaDTO) => {
         // respuesta.listaRespuesta = [];
+        console.log(respuesta)
         comentario.listaRespuesta?.push(respuesta);
         this.actualizarComentario(comentario);
       }
@@ -164,6 +199,7 @@ export class ComentarioComponent implements OnInit {
 
     this.respuestaDesdeElInput = '';
     comentario.mostrarFormularioRespuesta = false;
+    comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
   }
 
   //Metodo para crear una nueva instancia de una Respuesta
@@ -173,24 +209,28 @@ export class ComentarioComponent implements OnInit {
     // };
 
     const usuario: UsuarioDTO = {
-      id: this.idUsuarioActual!
-    }
+      id: this.idUsuarioActual!,
+    };
 
     let nuevaRespuesta: RespuestaDTO = {
       mensaje: mensaje,
       fecha: new Date().toISOString(),
-      usuarioId: Number(localStorage.getItem('userID'))
+      usuarioId: Number(localStorage.getItem('userID')),
     };
-    return this.respuestaService.guardarRespuesta(nuevaRespuesta, this.idUsuarioActual!);
+    return this.respuestaService.guardarRespuesta(
+      nuevaRespuesta,
+      this.idUsuarioActual!
+    );
   }
-
 
   traerComentariosMasRecientes() {
     // Asegúrate de que listaComentarios no esté vacío
     if (!this.listaComentarios.length) return;
 
     // Filtrar comentarios con fechas válidas
-    const comentariosConFechasValidas = this.listaComentarios.filter(comment => comment.fecha !== undefined && comment.fecha !== null);
+    const comentariosConFechasValidas = this.listaComentarios.filter(
+      (comment) => comment.fecha !== undefined && comment.fecha !== null
+    );
 
     // Ordenar la lista de comentarios por fecha de manera descendente
     comentariosConFechasValidas.sort((a, b) => {
@@ -210,7 +250,9 @@ export class ComentarioComponent implements OnInit {
     if (!this.listaComentarios.length) return;
 
     // Filtrar comentarios con fechas válidas
-    const comentariosConFechasValidas = this.listaComentarios.filter(comment => comment.fecha !== undefined && comment.fecha !== null);
+    const comentariosConFechasValidas = this.listaComentarios.filter(
+      (comment) => comment.fecha !== undefined && comment.fecha !== null
+    );
 
     // Ordenar la lista de comentarios por fecha de manera ascendente
     comentariosConFechasValidas.sort((a, b) => {
@@ -223,7 +265,6 @@ export class ComentarioComponent implements OnInit {
     // Opcional: Si deseas reemplazar la lista original con la ordenada
     this.listaComentarios = comentariosConFechasValidas;
   }
-
 
   //Metodo para ocultar los comentarios
   ocultarComentarios() {
@@ -240,10 +281,8 @@ export class ComentarioComponent implements OnInit {
       )
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
-
           this.listaComentarios = listaComentarios;
           this.paginaActual++;
-
         },
         (error) => console.error(error)
       );
@@ -262,7 +301,7 @@ export class ComentarioComponent implements OnInit {
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
-          console.log(listaComentarios)
+          console.log(listaComentarios);
           this.paginaActual++;
         },
         (error) => console.error(error)
@@ -304,13 +343,17 @@ export class ComentarioComponent implements OnInit {
     }
   }
 
-
-
   //Metodo para añadir reacion de megusta
-  reaccionar(elemento: { listaReaccion?: ReaccionDTO[]; usuarioId?: number }, like: boolean, comentario:boolean) {
+  reaccionar(
+    elemento: { listaReaccion?: ReaccionDTO[]; usuarioId?: number },
+    like: boolean,
+    comentario: boolean
+  ) {
     const idUsuarioActual = Number(localStorage.getItem('userID'));
     const listaReaccion: ReaccionDTO[] = elemento.listaReaccion!;
-    const reaccionEncontrada = listaReaccion.find(reaccion => reaccion.usuarioId === idUsuarioActual);
+    const reaccionEncontrada = listaReaccion.find(
+      (reaccion) => reaccion.usuarioId === idUsuarioActual
+    );
 
     if (reaccionEncontrada) {
       if (like) {
@@ -330,37 +373,39 @@ export class ComentarioComponent implements OnInit {
       }
 
       this.reaccionService.editarReaccion(reaccionEncontrada).subscribe({
-        error: (err) => console.error("Error al editar la reacción:", err),
+        error: (err) => console.error('Error al editar la reacción:', err),
       });
     } else {
-      const nuevaReaccion = like ? this.crearReaccion(1) : this.crearReaccion(0);
+      const nuevaReaccion = like
+        ? this.crearReaccion(1)
+        : this.crearReaccion(0);
       this.reaccionService.guardarReaccion(nuevaReaccion).subscribe({
         next: (reaccion: ReaccionDTO) => {
           elemento.listaReaccion?.push(reaccion);
-          if(comentario)
-            this.actualizarComentario(elemento);
-          else 
-          this.respuestaService.actualizarRespuesta(elemento).subscribe();
+          if (comentario) this.actualizarComentario(elemento);
+          else this.respuestaService.actualizarRespuesta(elemento).subscribe();
         },
-        error: (err) => console.error("Error al guardar la reacción:", err),
+        error: (err) => console.error('Error al guardar la reacción:', err),
       });
     }
   }
 
-  meGustaComentario(comentario:ComentarioDTO){
-    this.reaccionar(comentario, true,true);
+  meGustaComentario(comentario: ComentarioDTO) {
+    this.reaccionar(comentario, true, true);
   }
 
   noMegustaComentario(comentario: ComentarioDTO) {
-    this.reaccionar(comentario, false,true);
+    this.reaccionar(comentario, false, true);
   }
 
   megustaRespuesta(respuesta: RespuestaDTO) {
-    this.reaccionar(respuesta, true,false);
+   if(respuesta.listaReaccion == null)
+    respuesta.listaReaccion=[];
+    this.reaccionar(respuesta, true, false);
   }
 
   noMeGustaRespuesta(respuesta: RespuestaDTO) {
-    this.reaccionar(respuesta, false,false);
+    this.reaccionar(respuesta, false, false);
   }
 
   //Metodo para crear una  instancia de una reaccion
@@ -371,16 +416,6 @@ export class ComentarioComponent implements OnInit {
     reaccion.usuarioId = Number(localStorage.getItem('userID'));
     return reaccion;
   }
-
-  // //Metodo para añadir reaccion de no me gusta
-  // noMeGusta(comentario: ComentarioDTO) {
-  //   console.log(comentario);
-  //   this.reaccionService.guardarReaccion(this.crearReaccion(0))
-  //     .subscribe((reaccion: ReaccionDTO) => {
-  //       comentario.listaReaccion?.push(reaccion);
-  //       this.actualizarComentario(comentario);
-  //     });
-  // }
 
   calcularSumaMeGusta(comentarios: any[]): number {
     let suma = 0;
@@ -397,8 +432,6 @@ export class ComentarioComponent implements OnInit {
     });
     return suma;
   }
-
-
 
   deleteComentarioById(id: number) {
     this.comentarioService
@@ -483,4 +516,6 @@ export class ComentarioComponent implements OnInit {
         },
       });
   }
+
+
 }

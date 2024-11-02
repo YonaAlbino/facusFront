@@ -31,20 +31,9 @@ export class RespuestaService implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    console.log(respuesta)
 
-    return this.http.post<RespuestaDTO>(this.rutaBase + this.rutaEndpoint, respuesta, { headers: headers })
-      .pipe(
-        map((respuesta: RespuestaDTO) => {
-          const respuestaJSON = JSON.stringify(respuesta);
-          const respuestaObjeto = JSON.parse(respuestaJSON);
-          return respuestaObjeto;
-        }),
-        catchError((error) => {
-          console.log(error);
-          throw error;
-        })
-      );
+    return this.http.post<RespuestaDTO>(this.rutaBase + this.rutaEndpoint, respuesta, { headers: headers });
+
   }
 
 
@@ -70,4 +59,7 @@ export class RespuestaService implements OnInit {
     return this.http.put(this.rutaBase + this.rutaEndpoint, respuestaClass);
   }
 
+  findRespuestaById(id:number):Observable<RespuestaDTO>{
+    return this.http.get<RespuestaDTO>(this.rutaBase + this.rutaEndpoint + "/" + id);
+  }
 }

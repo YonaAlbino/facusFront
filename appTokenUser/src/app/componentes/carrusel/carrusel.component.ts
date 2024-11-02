@@ -28,7 +28,6 @@ export class CarruselComponent {
       })).subscribe({
         next: (universidades) => {
           this.universidades = universidades;
-          console.log(universidades)
           if (universidades.length < 3) {
             this.completarCampos(this.universidades);
           }

@@ -10,4 +10,6 @@ export interface CarreraDTO {
     activa?: boolean;
     listaComentarios?: ComentarioDTO[];
     listaCalificacion?: CalificacionDTO[];
+    universidadId?: number;
+
 }

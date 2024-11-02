@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,7 +9,6 @@ import { PrincipalComponent } from './componentes/componente principal/principal
 import { LogueoComponent } from './componentes/logueo/logueo.component';
 import { EsuchaSocketComponent } from './componentes/esucha-socket/esucha-socket.component';
 import { NotificacionesComponent } from './componentes/notificaciones/notificaciones.component';
-import { DetalleNotificacionComponent } from './componentes/detalle-notificacion/detalle-notificacion.component';
 import { ComentarioComponent } from './componentes/comentario/comentario.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -32,6 +31,7 @@ import { FooterComponent } from './componentes/footer/footer.component';
 import { ErrorComponent } from './componentes/error/error.component';
 import { AgregarUniversidadComponent } from './componentes/agregar-universidad/agregar-universidad.component';
 import { PuntuacionComponent } from './componentes/puntuacion/puntuacion.component';
+import { DetallesNotificacionComponent } from './componentes/detalles-notificacion/detalles-notificacion.component';
 
 
 
@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'loguin', component: LogueoComponent }, 
   { path: 'escucha', component: EsuchaSocketComponent },
   { path: 'notificaciones', component: NotificacionesComponent },
-  { path: 'detalleNotificacion/:id', component: DetalleNotificacionComponent},
+  { path: 'detalleNotificacion/:id', component: DetallesNotificacionComponent},
   { path: 'comentarios', component: ComentarioComponent},
   { path: 'loguin', component: LogueoComponent},
   { path: 'usuario', component: UsuarioComponent},
@@ -88,6 +88,7 @@ const routes: Routes = [
     ErrorComponent,
     AgregarUniversidadComponent,
     PuntuacionComponent,
+    DetallesNotificacionComponent,
   
   ],
   imports: [
@@ -96,7 +97,8 @@ const routes: Routes = [
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
   ],
   providers: [
     {

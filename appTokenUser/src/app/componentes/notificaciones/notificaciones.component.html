@@ -1,6 +1,6 @@
 <div *ngFor="let notificacion of notificaciones">
   <p>{{ notificacion.informacion }}</p>
-  <a [routerLink]="['/detalleNotificacion', notificacion.idRedireccionamiento]">
+  <a style="color: blue; cursor: pointer;" (click)="irADetalleNotificacion(notificacion)">
     Ver detalles
   </a>
     <div *ngFor="let usuario of notificacion.listaUsuarios">

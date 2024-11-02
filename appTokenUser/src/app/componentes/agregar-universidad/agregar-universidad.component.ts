@@ -4,10 +4,13 @@ import { Router } from '@angular/router';
 import { CalificacionDTO } from 'src/app/modelo/calificacion';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { UsuarioLeidoDTO } from 'src/app/modelo/UsuarioLeidoDTO';
 
 
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
 // import { AlertasService } from 'src/app/servicios/alertas.service';
 
 @Component({
@@ -16,8 +19,11 @@ import { UniversidadService } from 'src/app/servicios/universidad.service';
   styleUrls: ['./agregar-universidad.component.css']
 })
 export class AgregarUniversidadComponent implements OnInit {
-  constructor(private fb: FormBuilder, private router: Router, private carreraService: CarreraService,
-    private universidadService: UniversidadService) { }
+
+  constructor(private fb: FormBuilder, private router: Router,
+    private carreraService: CarreraService,
+    private universidadService: UniversidadService,
+    private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
     this.formularioAltaUniversidad = this.iniciarFormAltaUniversidad();
@@ -30,6 +36,7 @@ export class AgregarUniversidadComponent implements OnInit {
   imagenCargada: boolean = false;
   listaCarrerasUniversidad: CarreraDTO[] = [];
   listaCalificacionUniversidad: CalificacionDTO[] = [];
+
 
   imagenPorDefecto: string = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrtrI3kER6PYUADR5tjXQtwVvqj4kjiDZgRUf1SFWNQ&s";
 
@@ -58,29 +65,64 @@ export class AgregarUniversidadComponent implements OnInit {
     this.listaCalificacionUniversidad.push(calificacion);
   }
 
-  enviarFormulario(event: Event) {
-
+  enviarFormulario(event: Event): void {
     event.preventDefault();
-   
+
+    const userId = Number(localStorage.getItem('userID'));
+    if (!userId) {
+      console.error('User ID no encontrado en localStorage');
+      return;
+    }
+
+    const { nombre, direccionWeb, direccionFisica, descripcion } = this.formularioAltaUniversidad.value;
+
     const universidad: UniversidadDTO = {
-      nombre: this.formularioAltaUniversidad.get('nombre')?.value,
-      direccionWeb: this.formularioAltaUniversidad.get('direccionWeb')?.value,
-      direccion: this.formularioAltaUniversidad.get('direccionFisica')?.value,
-      descripcion: this.formularioAltaUniversidad.get('descripcion')?.value,
+      nombre,
+      usuarioId: userId,
+      direccionWeb,
+      direccion: direccionFisica,
+      descripcion,
       imagen: this.imagenPorDefecto,
       listaCarreras: this.listaCarrerasUniversidad,
-      listaCalificacion: this.listaCalificacionUniversidad
+      listaCalificacion: this.listaCalificacionUniversidad,
     };
 
-    this.universidadService.crearUniversidad(universidad).subscribe(() => {
-      console.log(universidad)
-     // this.router.navigate([""]);
-      //this.alertas.alertaTrabajoRealizado();
-    }, (error) => {
-     // this.alertas.alertaError();
-      console.error(error);
+    this.crearUniversidadYAsociarAUsuario(universidad, userId);
+  }
+
+  private crearUniversidadYAsociarAUsuario(universidad: UniversidadDTO, userId: number): void {
+    this.universidadService.crearUniversidad(universidad).subscribe({
+      next: (universidadCreada: UniversidadDTO) => {
+        this.agregarUniversidadAUsuario(universidadCreada, userId);
+        this.asociarCarrerasAuniversidad(universidadCreada);
+      },
+      error: (err) => console.error('Error al crear la universidad:', err)
     });
   }
+
+  private agregarUniversidadAUsuario(universidad: UniversidadDTO, userId: number): void {
+    this.usuarioService.getUsuarioById(userId).subscribe({
+      next: (usuario: UsuarioDTO) => {
+        usuario.listaUniversidad = usuario.listaUniversidad || [];
+        usuario.listaUniversidad.push(universidad);
+        this.usuarioService.editUsuario(usuario).subscribe({
+          next: () => console.log('Universidad agregada al usuario con éxito'),
+          error: (err) => console.error('Error al actualizar el usuario:', err)
+        });
+      },
+      error: (err) => console.error('Error al obtener el usuario:', err)
+    });
+  }
+
+
+  asociarCarrerasAuniversidad(universidad: UniversidadDTO) {
+    universidad.listaCarreras?.forEach(carrera => {
+      carrera.universidadId = universidad.id;
+      this.carreraService.editCarrera(carrera).subscribe();
+    });
+  }
+
+
 
   // mostrarCamposAgregarCarrera() {
   //   this.visualizarCamposCarrera = !this.visualizarCamposCarrera;
@@ -88,7 +130,7 @@ export class AgregarUniversidadComponent implements OnInit {
 
   agregarCarreras() {
     const carrera: CarreraDTO = {
-      activa:true,
+      activa: true,
       nombre: this.formularioAltaUniversidad.get('nombreCarrera')?.value,
       grado: this.formularioAltaUniversidad.get('gradoCarrera')?.value,
       duracion: this.formularioAltaUniversidad.get('duracionCarrera')?.value

@@ -1,0 +1,76 @@
+<div *ngIf="carrera" class="section carrera">
+    <h2 class="section-title">{{ carreraBuscada?.nombre }}</h2>
+    <p class="detail">Duración: {{ carreraBuscada?.duracion }}</p>
+    <p class="detail">Grado: {{ carreraBuscada?.grado }}</p>
+    <p class="usuario">Por: <span class="username">{{usuarioPropietario?.username}}</span></p>
+    <p class="usuario-id">ID de Usuario: {{usuarioPropietario?.id}}</p>
+    <div class="respuesta-actions">
+        <button class="btn eliminar">Eliminar</button>
+        <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+    </div>
+</div>
+
+<div *ngIf="respuesta" class="section respuesta">
+    <h2 class="section-title">Respuesta</h2>
+    <div class="respuesta-container">
+        <p class="mensaje">{{respuestaBuscada?.mensaje}}</p>
+        <div class="respuesta-details">
+            <p class="fecha">{{respuestaBuscada?.fecha | date: 'medium'}}</p>
+            <p class="editado" *ngIf="respuestaBuscada?.editado">(Editado)</p>
+            <p class="usuario">Por: <span class="username">{{respuestaBuscada?.username}}</span></p>
+            <p class="usuario-id">ID de Usuario: {{respuestaBuscada?.usuarioId}}</p>
+        </div>
+        <div class="respuesta-actions">
+            <button class="btn eliminar">Eliminar</button>
+            <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="permiso" class="section permiso">
+    <h2 class="section-title">Permiso</h2>
+    <p>{{ permisoBuscado?.nombrePermiso }}</p>
+    <div class="permiso-actions">
+        <button class="btn eliminar">Eliminar</button>
+        <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+    </div>
+</div>
+
+<div *ngIf="comentario" class="section comentario">
+    <h2 class="section-title">Comentario</h2>
+    <div class="respuesta-container">
+        <p class="mensaje">{{cometarioBuscado?.mensaje}}</p>
+        <div class="respuesta-details">
+            <p class="fecha">{{cometarioBuscado?.fecha | date: 'medium'}}</p>
+            <p class="editado" *ngIf="cometarioBuscado?.editado">(Editado)</p>
+            <p class="usuario">Por: <span class="username">{{cometarioBuscado?.username}}</span></p>
+            <p class="usuario-id">ID de Usuario: {{cometarioBuscado?.usuarioId}}</p>
+        </div>
+        <div class="respuesta-actions">
+            <button class="btn eliminar">Eliminar</button>
+            <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="usuario" class="section usuario">
+    <h2 class="section-title">Usuario</h2>
+    <p>{{ usuarioBuscado?.username }}</p>
+    <div class="usuario-actions">
+        <button class="btn eliminar">Eliminar</button>
+        <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+    </div>
+</div>
+
+<div *ngIf="universidad" class="section universidad">
+    <h2 class="section-title">{{ universidadBuscada?.nombre }}</h2>
+    <p class="description">{{ universidadBuscada?.descripcion }}</p>
+    <p class="address">Dirección: {{ universidadBuscada?.direccion }}</p>
+    <p> Usuario ID: {{universidadBuscada?.usuarioId}}</p>
+    <p class="usuario">Por: <span class="username">{{usuarioPropietario?.username}}</span></p>
+    <img style="width: 50%; border: 1px solid;" class="university-image" src="{{ universidadBuscada?.imagen }}" alt="Imagen de la universidad" />
+    <div class="universidad-actions">
+        <button class="btn eliminar">Eliminar</button>
+        <button class="btn eliminar-reportar">Eliminar y Reportar</button>
+    </div>
+</div>

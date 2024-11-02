@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
@@ -18,11 +19,32 @@ export class NotificacionesComponent implements OnInit {
   idUsuario: number = Number(localStorage.getItem('userID'));
   mensajeError!: string;
 
-  constructor(private notificacionService: NotificacionService, private userService:UsuarioService) { }
+  constructor(private notificacionService: NotificacionService,
+    private userService: UsuarioService,
+    private router: Router) { }
+
+  // carrera: boolean | undefined
+  // comentario: boolean | undefined;
+  // usuario: boolean | undefined;
+  // universidad: boolean | undefined;
+
 
   ngOnInit(): void {
     this.getnotificationsByIdUser(this.idUsuario);
     this.visualizarNotificacionesByUserID();
+  }
+
+  irADetalleNotificacion(notificacion:NotificacionDTO) {
+    this.router.navigate(['/detalleNotificacion', notificacion.idRedireccionamiento], {
+      state: {
+        carrera: notificacion.carrera,
+        comentario: notificacion.comentario,
+        usuario: notificacion.usuario,
+        universidad: notificacion.universidad,
+        permiso:notificacion.permiso,
+        respuesta:notificacion.respuesta
+      }
+    });
   }
 
   // eliminarNotificacion(idNotificacion: number | undefined, idUsuario: number | undefined) {
@@ -53,54 +75,54 @@ export class NotificacionesComponent implements OnInit {
     )
   }
 
-  visualizarNotificacionesByUserID(){
+  visualizarNotificacionesByUserID() {
     this.notificacionService.visualizarNotificacionesByUserID(this.idUsuario)
-      .subscribe((respuesta:string) => {
+      .subscribe((respuesta: string) => {
         //this.getnotificationsByIdUser(this.idUsuario);
         this.userService.setUserId(this.idUsuario);
       },
-    (error) => {
-      console.error("Hubo un error al intentar marcar las notificaciones como 'vistas'", error);
-    });
+        (error) => {
+          console.error("Hubo un error al intentar marcar las notificaciones como 'vistas'", error);
+        });
   }
 
-  getNotificaciones(){
+  getNotificaciones() {
     this.notificacionService.getNotificaciones()
-    .pipe(
-      catchError(
-        (error:string) => {
-          this.mensajeError = error;
-          return EMPTY;
-        }
-      )
-    ).subscribe({
-      next: (notificaciones) => {
-        console.log(notificaciones);
-      }
-    })
-  }
-
-  getNotificacionById(id:number){
-    this.notificacionService.getNotificacionById(id)
-    .pipe(
-      catchError(
-        (eror:string) => {
-          this.mensajeError = eror;
-          return EMPTY;
-        }
-      )
-    ).subscribe({
-      next: (notificacion) => {
-        console.log(notificacion);
-      }
-    })
-  }
-
-  eliminarNotificacion(id:number){
-      this.notificacionService.eliminarNotificacion(id)
       .pipe(
         catchError(
-          (error:string) => {
+          (error: string) => {
+            this.mensajeError = error;
+            return EMPTY;
+          }
+        )
+      ).subscribe({
+        next: (notificaciones) => {
+          console.log(notificaciones);
+        }
+      })
+  }
+
+  getNotificacionById(id: number) {
+    this.notificacionService.getNotificacionById(id)
+      .pipe(
+        catchError(
+          (eror: string) => {
+            this.mensajeError = eror;
+            return EMPTY;
+          }
+        )
+      ).subscribe({
+        next: (notificacion) => {
+          console.log(notificacion);
+        }
+      })
+  }
+
+  eliminarNotificacion(id: number) {
+    this.notificacionService.eliminarNotificacion(id)
+      .pipe(
+        catchError(
+          (error: string) => {
             this.mensajeError = error;
             return EMPTY;
           }
@@ -120,45 +142,45 @@ export class NotificacionesComponent implements OnInit {
     leida?:boolean;
   */
 
-  crearNotificacion(informacion?:string, idRedireccionamiento?:string, listaUsuarios?:UsuarioDTO[], leida?:boolean){
+  crearNotificacion(informacion?: string, idRedireccionamiento?: string, listaUsuarios?: UsuarioDTO[], leida?: boolean) {
     const notificacionCreada: NotificacionDTO = {
       informacion: informacion
     }
     this.notificacionService.crearNotificacion(notificacionCreada)
-    .pipe(
-      catchError(
-        (error:string) => {
-          this.mensajeError = error;
-          return EMPTY;
+      .pipe(
+        catchError(
+          (error: string) => {
+            this.mensajeError = error;
+            return EMPTY;
+          }
+        )
+      ).subscribe({
+        next: (notificacion) => {
+          console.log(notificacion);
         }
-      )
-    ).subscribe({
-      next: (notificacion) => {
-        console.log(notificacion);
-      }
-    })
+      })
   }
 
-  editNotificacion(id:number,informacion?:string, idRedireccionamiento?:number, listaUsuarios?:UsuarioDTO[], leida?:boolean){
+  editNotificacion(id: number, informacion?: string, idRedireccionamiento?: number, listaUsuarios?: UsuarioDTO[], leida?: boolean) {
     const notificacionEditada: NotificacionDTO = {
-      id:id,
+      id: id,
       informacion: informacion,
       idRedireccionamiento: idRedireccionamiento,
-      listaUsuarios:listaUsuarios,
-      leida:leida
+      listaUsuarios: listaUsuarios,
+      leida: leida
     }
     this.notificacionService.editNotificacion(notificacionEditada)
-    .pipe(
-      catchError(
-        (error:string) => {
-          this.mensajeError = error;
-          return EMPTY;
+      .pipe(
+        catchError(
+          (error: string) => {
+            this.mensajeError = error;
+            return EMPTY;
+          }
+        )
+      ).subscribe({
+        next: (notificacion) => {
+          console.log(notificacion);
         }
-      )
-    ).subscribe({
-      next:(notificacion) => {
-        console.log(notificacion);
-      }
-    })
+      })
   }
 }
