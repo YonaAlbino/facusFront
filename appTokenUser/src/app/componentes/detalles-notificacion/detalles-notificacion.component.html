@@ -4,6 +4,7 @@
     <p class="detail">Grado: {{ carreraBuscada?.grado }}</p>
     <p class="usuario">Por: <span class="username">{{usuarioPropietario?.username}}</span></p>
     <p class="usuario-id">ID de Usuario: {{usuarioPropietario?.id}}</p>
+    <p class="usuario-id">Infracciones: {{usuarioPropietario?.numeroInfracciones}}</p>
     <div class="respuesta-actions">
         <button class="btn eliminar">Eliminar</button>
         <button class="btn eliminar-reportar">Eliminar y Reportar</button>
@@ -18,6 +19,7 @@
             <p class="fecha">{{respuestaBuscada?.fecha | date: 'medium'}}</p>
             <p class="editado" *ngIf="respuestaBuscada?.editado">(Editado)</p>
             <p class="usuario">Por: <span class="username">{{respuestaBuscada?.username}}</span></p>
+            <p class="usuario-id">Infracciones: {{usuarioPropietario?.numeroInfracciones}}</p>
             <p class="usuario-id">ID de Usuario: {{respuestaBuscada?.usuarioId}}</p>
         </div>
         <div class="respuesta-actions">
@@ -45,6 +47,7 @@
             <p class="editado" *ngIf="cometarioBuscado?.editado">(Editado)</p>
             <p class="usuario">Por: <span class="username">{{cometarioBuscado?.username}}</span></p>
             <p class="usuario-id">ID de Usuario: {{cometarioBuscado?.usuarioId}}</p>
+            <p class="usuario-id">Infracciones: {{usuarioPropietario?.numeroInfracciones}}/3</p>
         </div>
         <div class="respuesta-actions">
             <button class="btn eliminar">Eliminar</button>
@@ -56,6 +59,7 @@
 <div *ngIf="usuario" class="section usuario">
     <h2 class="section-title">Usuario</h2>
     <p>{{ usuarioBuscado?.username }}</p>
+    <p class="usuario-id">Infracciones: {{usuarioBuscado?.numeroInfracciones}}</p>
     <div class="usuario-actions">
         <button class="btn eliminar">Eliminar</button>
         <button class="btn eliminar-reportar">Eliminar y Reportar</button>
@@ -67,7 +71,9 @@
     <p class="description">{{ universidadBuscada?.descripcion }}</p>
     <p class="address">Dirección: {{ universidadBuscada?.direccion }}</p>
     <p> Usuario ID: {{universidadBuscada?.usuarioId}}</p>
+    <p class="usuario-id">Infracciones: {{usuarioPropietario?.numeroInfracciones}}</p>
     <p class="usuario">Por: <span class="username">{{usuarioPropietario?.username}}</span></p>
+    
     <img style="width: 50%; border: 1px solid;" class="university-image" src="{{ universidadBuscada?.imagen }}" alt="Imagen de la universidad" />
     <div class="universidad-actions">
         <button class="btn eliminar">Eliminar</button>

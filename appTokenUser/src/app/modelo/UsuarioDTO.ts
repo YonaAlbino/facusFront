@@ -23,4 +23,5 @@ export interface UsuarioDTO {
     listaComentarios?: ComentarioDTO[];
     listaRespuesta?: RespuestaDTO[];
     listaReaccion?: ReaccionDTO[];
+    numeroInfracciones?:number;
 }

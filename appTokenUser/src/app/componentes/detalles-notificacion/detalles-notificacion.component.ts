@@ -130,6 +130,11 @@ export class DetallesNotificacionComponent implements OnInit {
     this.comentarioService.getComentarioById(this.id!).subscribe(
       (comentario: ComentarioDTO) => {
         this.cometarioBuscado = comentario;
+        this.usuarioService.getUsuarioById(comentario.usuarioId!).subscribe(
+          (usuario:UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          }
+        )
       }
     )
   }
