@@ -6,13 +6,17 @@ export interface NotificacionDTO {
     informacion?: string;
     idRedireccionamiento?: number;
     leida?: boolean;
-    listaUsuarios?: UsuarioDTO[];
-    listaDeusuariosLeidos?: UsuarioLeidoDTO[];
-    carrera?:boolean;
-    comentario?:boolean;
-    usuario?:boolean;
-    universidad?:boolean;
-    permiso?:boolean;
-    respuesta?:boolean;
+    carrera?: boolean;
+    comentario?: boolean;
+    usuario?: boolean;
+    universidad?: boolean;
+    permiso?: boolean;
+    respuesta?: boolean;
+    
+    // Representa solo los IDs de los usuarios en la lista
+    listaUsuariosIds?: number[];
+  
+    // Representa solo los IDs de los usuarios leídos
+    listaDeusuariosLeidosIds?: number[];
 
 }

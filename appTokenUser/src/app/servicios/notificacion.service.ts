@@ -65,10 +65,6 @@ export class NotificacionService {
   }
 
   editNotificacion(notificacion:NotificacionDTO):Observable<NotificacionDTO>{
-    const notificacionClass = {
-      ...notificacion,  
-      '@class': EnumsDTOs.NotificacionDTO  
-    };
-    return this.http.put(this.baseUrl + this.rutaEndpoint,notificacionClass);
+    return this.http.put(this.baseUrl + this.rutaEndpoint,notificacion);
   }
 }

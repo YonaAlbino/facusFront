@@ -71,19 +71,12 @@ export class UsuarioService {
   }
 
   public crearUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
-    const usuarioClass = {
-      ...usuario,
-      '@class': EnumsDTOs.UsuarioDTO
-    };
-    return this.HttpClient.post(this.baseUrl + this.rutaEndPoint, usuarioClass);
+
+    return this.HttpClient.post(this.baseUrl + this.rutaEndPoint, usuario);
   }
 
   public editUsuario(usuario: UsuarioDTO): Observable<UsuarioDTO> {
-    const usuarioClass = {
-      ...usuario,
-      '@class': EnumsDTOs.UsuarioDTO
-    };
-    return this.HttpClient.put(this.baseUrl + this.rutaEndPoint, usuarioClass);
+    return this.HttpClient.put(this.baseUrl + this.rutaEndPoint, usuario);
   }
 
 

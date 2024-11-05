@@ -1,20 +1,23 @@
-<div *ngFor="let notificacion of notificaciones">
-  <p>{{ notificacion.informacion }}</p>
-  <a style="color: blue; cursor: pointer;" (click)="irADetalleNotificacion(notificacion)">
-    Ver detalles
-  </a>
-    <div *ngFor="let usuario of notificacion.listaUsuarios">
-      <button *ngIf="usuario.id === idUsuario"
-              (click)="editNotificacion(2, 'juan')"
-              class="btn btn-primary">
-        Eliminar
-      </button>
-    </div>
-  </div>
+<div *ngFor="let notificacion of notificaciones" class="card mb-3">
+  <div class="card-body">
+    <!-- Información de la notificación -->
+    <p class="card-text">{{ notificacion.informacion }}</p>
 
-  <div *ngIf="mensajeError">
-    <app-errores [mensajeError]="mensajeError"></app-errores>
-  </div>
+    <!-- Enlace para ver detalles -->
+    <a class="text-primary text-decoration-underline" (click)="irADetalleNotificacion(notificacion)">
+      Ver detalles
+    </a>
 
-  <button (click)="visualizarNotificacionesByUserID()">marcar las notificaciones como vistas</button>
-  
+    <!-- Botón para eliminar notificación -->
+    <button (click)="eliminarNotificacion(notificacion)" class="btn btn-danger btn-sm mt-2">
+      Eliminar
+    </button>
+  </div>
+</div>
+
+<!-- Botón para marcar notificaciones como vistas -->
+<div class="text-center my-4">
+  <button (click)="visualizarNotificacionesByUserID()" class="btn btn-success">
+    Marcar notificaciones como vistas
+  </button>
+</div>
