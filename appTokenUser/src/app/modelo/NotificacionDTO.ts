@@ -12,7 +12,7 @@ export interface NotificacionDTO {
     universidad?: boolean;
     permiso?: boolean;
     respuesta?: boolean;
-    
+    publicacionComentada?:boolean;
     // Representa solo los IDs de los usuarios en la lista
     listaUsuariosIds?: number[];
   

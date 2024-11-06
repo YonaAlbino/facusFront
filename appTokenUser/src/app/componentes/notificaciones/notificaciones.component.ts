@@ -26,10 +26,17 @@ export class NotificacionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getnotificationsByIdUser(this.idUsuario);
-    this.visualizarNotificacionesByUserID();
+    //this.visualizarNotificacionesByUserID();
+    this.notificacionService.visualizarNotificacionesByUserID(this.idUsuario).subscribe();
   }
 
   irADetalleNotificacion(notificacion: NotificacionDTO) {
+    if (notificacion.publicacionComentada) {
+      if (notificacion.universidad) {
+        this.router.navigate(
+          ['/detalleUniversidad', notificacion.idRedireccionamiento])
+      }
+    }else{
     this.router.navigate(
       ['/detalleNotificacion', notificacion.idRedireccionamiento],
       {
@@ -43,6 +50,7 @@ export class NotificacionesComponent implements OnInit {
         },
       }
     );
+  }
   }
 
   getnotificationsByIdUser(idUsuario: number) {
