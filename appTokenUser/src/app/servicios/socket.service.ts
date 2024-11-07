@@ -1,4 +1,3 @@
-
 import { Injectable, OnDestroy } from '@angular/core';
 import { Stomp, CompatClient } from '@stomp/stompjs';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -12,14 +11,13 @@ export class SocketService implements OnDestroy {
   private stompClient: CompatClient | null = null;
   private readonly maxIntentosSubscribicionToken = 5;
   private intentosSubscribicionTopic = 0;
-  private topics: string[] = []; // Lista para múltiples topics
-  private messageSubjects: { [topic: string]: Subject<string> } = {}; // Almacenar subjects para cada topic
+  private topics: string[] = [];
+  private messageSubjects: { [topic: string]: Subject<string> } = {}; 
   private connectionState = new BehaviorSubject<boolean>(false); // Estado de conexión  
   private idUsuario:number | undefined;
-  private readonly WEBSOCKET_URL = "http://localhost:8080/websocket"; // Centralizamos la URL
+  private readonly WEBSOCKET_URL = "http://localhost:8080/websocket"; 
 
   constructor(private userService: UsuarioService) {
-
     this.userService.idUsuarioActual.subscribe(id => {
       if(id){
         this.idUsuario = id;
@@ -29,28 +27,28 @@ export class SocketService implements OnDestroy {
           }
         });
       }
-    })
+    });
   }
 
-  // Definir los topics en función del rol del usuario
   private capturarTopics(rolUsuario: string) {
     this.topics = []; // Limpiar la lista de topics previos
     if (rolUsuario === 'ROLE_ADMIN') {
       this.topics.push('/tema/admin/notificacion');
-      this.topics.push('/tema/usuario/' + this.idUsuario); // Añadir segundo topic para admin
+      this.topics.push('/tema/usuario/' + this.idUsuario);
     } else if (rolUsuario === 'ROLE_USER') {
       this.topics.push('/tema/usuario/notificacion');
-      this.topics.push('/tema/usuario/' + this.idUsuario); // Añadir segundo topic para usuario
+      this.topics.push('/tema/usuario/' + this.idUsuario);
     }
+
     // Crear un `Subject` para cada topic
     this.topics.forEach(topic => {
       this.messageSubjects[topic] = new Subject<string>();
     });
   }
 
-  // Iniciar conexión WebSocket
+  // Iniciar conexión WebSocket y esperar hasta que esté conectada
   public iniciarConexionSocket(rolUsuario: string) {
-    this.capturarTopics(rolUsuario); // Actualiza los topics basados en el rol
+    this.capturarTopics(rolUsuario);  // Actualiza los topics basados en el rol
     const socket = new SockJS(this.WEBSOCKET_URL);
     this.stompClient = Stomp.over(socket);
 
@@ -65,7 +63,6 @@ export class SocketService implements OnDestroy {
     });
   }
 
-  // Suscribirse a múltiples topics
   private suscribirseATopics() {
     if (this.stompClient?.connected) {
       this.topics.forEach(topic => {
@@ -76,7 +73,6 @@ export class SocketService implements OnDestroy {
     }
   }
 
-  // Suscribirse a un solo topic
   private suscribirseAlTopic(topic: string) {
     if (this.stompClient?.connected) {
       this.stompClient.subscribe(topic, (respuesta: any) => {
@@ -90,11 +86,10 @@ export class SocketService implements OnDestroy {
     }
   }
 
-  // Intentar resuscribir con retardo exponencial
   private reSuscribirseAlTopic(intentos: number, topic: string) {
     if (intentos < this.maxIntentosSubscribicionToken) {
       this.intentosSubscribicionTopic++;
-      const delay = Math.min(3000 * Math.pow(2, intentos), 60000); // Retardo exponencial
+      const delay = Math.min(3000 * Math.pow(2, intentos), 60000); 
       setTimeout(() => {
         this.suscribirseAlTopic(topic);
       }, delay);
@@ -103,7 +98,6 @@ export class SocketService implements OnDestroy {
     }
   }
 
-  // Método para reconectar WebSocket
   private reconectarWebSocket(rolUsuario: string) {
     setTimeout(() => {
       console.log('Intentando reconectar WebSocket...');
@@ -111,9 +105,9 @@ export class SocketService implements OnDestroy {
     }, 5000); // Intentar reconectar en 5 segundos
   }
 
-  // Obtener observable de mensajes para un topic
+  // Método para escuchar los mensajes después de que la conexión se haya establecido
   public getMessages(topic: string) {
-    return this.messageSubjects[topic]?.asObservable();
+    return this.messageSubjects[topic]?.asObservable(); 
   }
 
   // Obtener el estado de conexión
@@ -121,12 +115,10 @@ export class SocketService implements OnDestroy {
     return this.connectionState.asObservable();
   }
 
-  // Desconectar WebSocket al destruir el servicio
   ngOnDestroy() {
     this.desconectarWebSocket();
   }
 
-  // Desconectar WebSocket manualmente
   private desconectarWebSocket() {
     if (this.stompClient && this.stompClient.connected) {
       this.stompClient.disconnect(() => {

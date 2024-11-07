@@ -32,7 +32,7 @@ export class PrincipalComponent implements OnInit {
         token:token,
         id:Number(idUsuaruio)
       }
-      console.log(authLoguinResponseDTO.role)
+     // console.log(authLoguinResponseDTO.role)
       this.util.agregarCredencialesASesion(authLoguinResponseDTO);
       // localStorage.setItem('authToken', token!);
       // localStorage.setItem('userRole', role!);

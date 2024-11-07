@@ -54,6 +54,10 @@ export class DetalleUniversidadComponent implements OnInit {
       if (idUsuario !== null)
         this.idUsuarioActual = idUsuario;
     });
+
+    this.route.queryParams.subscribe(params => {
+      this.mostrarCarreraComponent = params['activo'] === 'true'; 
+    });
   }
 
   cargarDatos(id: number): void {

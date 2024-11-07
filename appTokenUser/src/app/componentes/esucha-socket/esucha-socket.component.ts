@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
 import { NotificacionService } from 'src/app/servicios/notificacion.service';
 
+
 import { SocketService } from 'src/app/servicios/socket.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 
@@ -11,17 +12,15 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
   styleUrls: ['./esucha-socket.component.css']
 })
 export class EsuchaSocketComponent implements OnInit {
+  notificaciones: number = 0;
 
-  // public messages: string[] = [];
-  public notificaciones: number = 0;
-  //idUser: number = Number(localStorage.getItem('userID'));
-  private idUsuario:number | undefined;
-  
-  constructor(private webSocketService: SocketService,
-    private notificacionesService: NotificacionService,
-    private usuarioService: UsuarioService, private usarioService:UsuarioService) { }
+  constructor(
+    private socketService: SocketService,
+    private usuarioService: UsuarioService,
+    private notificacionesService:NotificacionService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.usuarioService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null) {
         this.escucharSocket(idUsuario);
@@ -30,27 +29,17 @@ export class EsuchaSocketComponent implements OnInit {
             this.notificaciones = notificaciones.length;
           });
       }
-    })
-  }
-
-  escucharSocket(idUser:number) {
-    this.webSocketService.getMessages("/tema/admin/notificacion").subscribe((mensaje) => {
-      //this.messages.push(mensaje);
-      this.notificaciones++;
-    });
-
-    this.webSocketService.getMessages("/tema/usuario/" + idUser).subscribe((mensaje) => {
-      //this.messages.push(mensaje);
-      this.notificaciones++;
     });
   }
 
-  obtenerIdUsuario(){
-    this.usarioService.idUsuarioActual.subscribe(id => {
-      if(id){
-        this.idUsuario = id;
-      }
-    })
+  escucharSocket(idUser: number) {
+    const topic = `/tema/admin/notificacion`;  // Aquí puedes personalizar el topic
+    if (this.socketService.getMessages(topic)) {
+      this.socketService.getMessages(topic).subscribe((mensaje) => {
+        this.notificaciones++;
+      });
+    } else {
+      console.error(`El topic ${topic} no está disponible aún.`);
+    }
   }
-  
 }

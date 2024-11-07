@@ -36,21 +36,24 @@ export class NotificacionesComponent implements OnInit {
         this.router.navigate(
           ['/detalleUniversidad', notificacion.idRedireccionamiento])
       }
-    }else{
-    this.router.navigate(
-      ['/detalleNotificacion', notificacion.idRedireccionamiento],
-      {
-        state: {
-          carrera: notificacion.carrera,
-          comentario: notificacion.comentario,
-          usuario: notificacion.usuario,
-          universidad: notificacion.universidad,
-          permiso: notificacion.permiso,
-          respuesta: notificacion.respuesta,
-        },
+      if (notificacion.carrera) {
+        this.router.navigate(['detalleUniversidad', notificacion.idRedireccionamiento], { queryParams: { carrera: true } });
       }
-    );
-  }
+    } else {
+      this.router.navigate(
+        ['/detalleNotificacion', notificacion.idRedireccionamiento],
+        {
+          state: {
+            carrera: notificacion.carrera,
+            comentario: notificacion.comentario,
+            usuario: notificacion.usuario,
+            universidad: notificacion.universidad,
+            permiso: notificacion.permiso,
+            respuesta: notificacion.respuesta,
+          },
+        }
+      );
+    }
   }
 
   getnotificationsByIdUser(idUsuario: number) {
