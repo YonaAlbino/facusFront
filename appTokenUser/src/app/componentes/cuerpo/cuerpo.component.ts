@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
 import { UniversidadService } from 'src/app/servicios/universidad.service';
-import { catchError, EMPTY, Observable } from 'rxjs';
 import { UtilService } from 'src/app/servicios/util.service';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 
@@ -15,70 +13,73 @@ export class CuerpoComponent implements OnInit {
   registrosPorPagina = 8;
   paginaActual = 0;
   cantidadPaginas = 0;
-  universidadBuscada = false;
-  recarga = false;
-  mensajeError!:string;
+  universidadNoEncontrada = false;
+  mensajeError!: string;
 
-  constructor(private universidadService: UniversidadService, private util:UtilService) { }
+  constructor(
+    private universidadService: UniversidadService,
+    private util: UtilService
+  ) { }
 
   ngOnInit() {
-    this.cargarUniversidades();
+    this.inicializarUniversidades();
   }
 
-  cargarUniversidades() {
-    this.universidadService.getUniversidades().subscribe(data => {
-      this.cantidadPaginas = Math.ceil(data.length / this.registrosPorPagina);
-      this.obtenerUniversidadesPaginadas();
-    }, error => {
-      console.log(error);
+  private inicializarUniversidades() {
+    this.universidadService.getUniversidades().subscribe({
+      next: data => {
+        this.cantidadPaginas = Math.ceil(data.length / this.registrosPorPagina);
+        this.cargarUniversidadesPorPagina();
+      },
+      error: (error) => this.manejarError(error)
     });
   }
 
-  obtenerUniversidadesPaginadas() {
+  private cargarUniversidadesPorPagina() {
     this.universidadService.obtenerUniversidadesPaginadas(this.paginaActual, this.registrosPorPagina)
       .subscribe({
-        next: (universidades) => {
+        next: universidades => {
           this.universidades = universidades;
-        }
+        },
+        error: (error) => this.manejarError(error)
       });
   }
-  
-  cambiarPagina(pagina: number) {
-    if (pagina < 0 || pagina >= this.cantidadPaginas) {
-      return; // Evitar paginaciones fuera de rango
+
+  cambiarPagina(nuevaPagina: number) {
+    if (nuevaPagina >= 0 && nuevaPagina < this.cantidadPaginas) {
+      this.paginaActual = nuevaPagina;
+      this.cargarUniversidadesPorPagina();
     }
-    this.paginaActual = pagina;
-    this.obtenerUniversidadesPaginadas();
   }
 
-  manejadorUniversdiadEncontrada(universidades: UniversidadDTO[]) {
+  manejarUniversidadesEncontradas(universidades: UniversidadDTO[]) {
     if (universidades.length > 0) {
       this.universidades = universidades;
-      this.universidadBuscada = false;
-      return;
+      this.universidadNoEncontrada = false;
+    } else {
+      this.mostrarMensajeUniversidadNoEncontrada();
+      this.cargarUniversidadesPorPagina();
     }
-    this.mostrarAlertaUniNoEncontrada();
-    this.obtenerUniversidadesPaginadas();
   }
 
-  mostrarAlertaUniNoEncontrada() {
-    this.universidadBuscada = true;
+  private mostrarMensajeUniversidadNoEncontrada() {
+    this.universidadNoEncontrada = true;
     setTimeout(() => {
-      this.universidadBuscada = false;
+      this.universidadNoEncontrada = false;
     }, 3000);
   }
 
-  recargar() {
-    this.recarga = true;
-    this.obtenerUniversidadesPaginadas();
-    this.recarga = false;
+  recargarUniversidades() {
+    this.cargarUniversidadesPorPagina();
   }
 
-  imagenNoCargada(event: Event) {
-    const imgElemnt = event.target as HTMLImageElement;
-    imgElemnt.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  manejarImagenNoCargada(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
   }
 
-
-
+  private manejarError(error: any) {
+    console.error("Ocurrió un error al cargar los datos:", error);
+    this.mensajeError = "No se pudieron cargar los datos. Por favor, intente de nuevo.";
+  }
 }

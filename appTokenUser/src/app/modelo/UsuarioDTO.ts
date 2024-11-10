@@ -24,4 +24,5 @@ export interface UsuarioDTO {
     listaRespuesta?: RespuestaDTO[];
     listaReaccion?: ReaccionDTO[];
     numeroInfracciones?:number;
+    emailVerified?:boolean;
 }

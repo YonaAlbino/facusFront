@@ -28,6 +28,7 @@ export class NotificacionesComponent implements OnInit {
     this.getnotificationsByIdUser(this.idUsuario);
     //this.visualizarNotificacionesByUserID();
     this.notificacionService.visualizarNotificacionesByUserID(this.idUsuario).subscribe();
+
   }
 
   irADetalleNotificacion(notificacion: NotificacionDTO) {
@@ -60,6 +61,7 @@ export class NotificacionesComponent implements OnInit {
     this.notificacionService.getNotificacionesByUserId(idUsuario).subscribe(
       (notificaciones: NotificacionDTO[]) => {
         this.notificaciones = notificaciones;
+
       },
       (error) => {
         console.error('Error al obtener las notificaciones:', error);
