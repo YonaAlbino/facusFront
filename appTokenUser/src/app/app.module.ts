@@ -32,6 +32,7 @@ import { ErrorComponent } from './componentes/error/error.component';
 import { AgregarUniversidadComponent } from './componentes/agregar-universidad/agregar-universidad.component';
 import { PuntuacionComponent } from './componentes/puntuacion/puntuacion.component';
 import { DetallesNotificacionComponent } from './componentes/detalles-notificacion/detalles-notificacion.component';
+import { TokenVerificacionErrorComponent } from './componentes/token-verificacion-error/token-verificacion-error.component';
 
 
 
@@ -58,6 +59,8 @@ const routes: Routes = [
   { path: 'barraBusqueda', component: BarraBusquedaComponent},
   { path: 'footer', component: FooterComponent},
   { path: 'agregarUniversidad', component: AgregarUniversidadComponent},
+  { path: 'error/token/:idTokenVerificador', component: TokenVerificacionErrorComponent }
+
   // Otras rutas
 ];
 
@@ -89,6 +92,7 @@ const routes: Routes = [
     AgregarUniversidadComponent,
     PuntuacionComponent,
     DetallesNotificacionComponent,
+    TokenVerificacionErrorComponent,
   
   ],
   imports: [

@@ -27,6 +27,7 @@ export class PrincipalComponent implements OnInit {
 
 
     if (token && role && idUsuaruio) {
+      console.log(token+" "+role+" "+idUsuaruio)
       const authLoguinResponseDTO:AuthLoguinResponseDTO = {
         role:role,
         token:token,

@@ -1,0 +1,19 @@
+<div class="container">
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-message">Cargando...</div>
+  
+    <!-- Tarjeta de error -->
+    <div class="card">
+      <h2 class="error-title">Token de Verificación Inválido</h2>
+      <p class="error-message">
+        Tu token de verificación ha expirado o no es válido.
+      </p>
+      <p class="error-instruction">
+        Haz clic en el botón de abajo para solicitar un nuevo token.
+      </p>
+      <button class="btn" [disabled]="cargando" (click)="actualizarTokenVerificacionEmail()">
+        Enviar Nuevo Token
+      </button>
+    </div>
+  </div>
+  
