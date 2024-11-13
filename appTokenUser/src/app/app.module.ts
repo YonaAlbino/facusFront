@@ -33,6 +33,8 @@ import { AgregarUniversidadComponent } from './componentes/agregar-universidad/a
 import { PuntuacionComponent } from './componentes/puntuacion/puntuacion.component';
 import { DetallesNotificacionComponent } from './componentes/detalles-notificacion/detalles-notificacion.component';
 import { TokenVerificacionErrorComponent } from './componentes/token-verificacion-error/token-verificacion-error.component';
+import { RegistroComponent } from './componentes/registro/registro.component';
+import { RecaptchaModule } from 'ng-recaptcha';  // Asegúrate de que esto esté correcto
 
 
 
@@ -59,7 +61,9 @@ const routes: Routes = [
   { path: 'barraBusqueda', component: BarraBusquedaComponent},
   { path: 'footer', component: FooterComponent},
   { path: 'agregarUniversidad', component: AgregarUniversidadComponent},
-  { path: 'error/token/:idTokenVerificador', component: TokenVerificacionErrorComponent }
+  { path: 'error/token/:idTokenVerificador', component: TokenVerificacionErrorComponent },
+  { path: 'registro', component: RegistroComponent },
+
 
   // Otras rutas
 ];
@@ -93,6 +97,7 @@ const routes: Routes = [
     PuntuacionComponent,
     DetallesNotificacionComponent,
     TokenVerificacionErrorComponent,
+    RegistroComponent,
   
   ],
   imports: [
@@ -102,7 +107,7 @@ const routes: Routes = [
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    
+    RecaptchaModule
   ],
   providers: [
     {

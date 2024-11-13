@@ -6,6 +6,8 @@ import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
 import { Rutas } from '../enumerables/rutas';
 import { EnumsDTOs } from '../enums/enums-dtos';
 import { UsuarioDTO } from '../modelo/UsuarioDTO';
+import { MensajeRetornoSimple } from '../modelo/mensaje-retorno-simple';
+import { RegistroRequest } from '../modelo/registro-request';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +81,12 @@ export class UsuarioService {
     return this.HttpClient.put(this.baseUrl + this.rutaEndPoint, usuario);
   }
 
-
+  registro(registroRequest: RegistroRequest): Observable<MensajeRetornoSimple> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.HttpClient.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/registro", registroRequest, { headers: headers });
+  }
 
 }

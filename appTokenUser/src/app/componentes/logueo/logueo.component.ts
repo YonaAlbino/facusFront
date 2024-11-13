@@ -20,6 +20,7 @@ constructor(private pruebaService:PruebaService, private usuarioService:UsuarioS
   
 nombreUsuario: string = "";
 contrasenia: string = "";
+mostrarContrasenia: boolean = false;
 
   logueoOauth() : void{
       this.pruebaService.login();

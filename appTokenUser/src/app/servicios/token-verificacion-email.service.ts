@@ -48,6 +48,10 @@ export class TokenVerificacionEmailService {
   }
 
   public actualizarTokenVerificacion(id:number){
-    return this.http.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/actualizarToken"+ "/"+ id);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true'
+    });
+    return this.http.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/actualizarToken"+ "/"+ id, {headers});
   }
 }
