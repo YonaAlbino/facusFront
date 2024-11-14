@@ -149,6 +149,11 @@
     margin-top: 20px;
     border-radius: 8px;
   }
+
+  .recaptcha-container{
+    margin: auto;
+    margin-bottom: 20px;
+  }
   
   .account-created-container p {
     margin: 10px 0;
@@ -164,3 +169,23 @@
     border-color: #28a745;
   }
   
+  /* Estilos para el bloque de error */
+.error-container {
+  background-color: #f8d7da; /* Fondo rojo suave */
+  color: #721c24; /* Texto rojo oscuro */
+  padding: 15px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  margin-top: 20px; /* Espaciado superior */
+  border: 1px solid #f5c6cb; /* Borde de color más suave */
+  font-family: Arial, sans-serif; /* Fuente simple */
+  font-size: 16px; /* Tamaño de fuente */
+  display: flex; /* Flexbox para alinear el contenido */
+  justify-content: center; /* Centrar el texto horizontalmente */
+  align-items: center; /* Centrar el texto verticalmente */
+}
+
+/* Estilo adicional para el texto dentro del contenedor de error */
+.error-container p {
+  margin: 0; /* Eliminar márgenes alrededor del párrafo */
+  font-weight: bold; /* Negrita en el texto */
+}

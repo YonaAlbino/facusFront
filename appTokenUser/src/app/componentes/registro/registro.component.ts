@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
 import { RegistroRequest } from 'src/app/modelo/registro-request';
+import { PruebaService } from 'src/app/servicios/prueba.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 
 @Component({
@@ -16,8 +17,9 @@ export class RegistroComponent {
   tokenCaptcha: string | undefined;
   cuentaCreada:boolean = false;
   cargando:boolean = false;
+  error: boolean = false;
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {
+  constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private pruebaService:PruebaService) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, this.fortalezaContrasenias]],
@@ -63,8 +65,9 @@ export class RegistroComponent {
           this.cargando = false;
         },
         (error) => {
-          console.error("Error en el registro: ", error);
+          console.error("Error en el registro: ", error.error);
           this.cargando = false;
+          this.error = true;
         }
       );
 
@@ -76,13 +79,15 @@ export class RegistroComponent {
   }
 
   // Método para iniciar sesión con Google
-  logueoOauth() {
-    console.log('Iniciar sesión con Google');
+  logueoOauth(event:Event) {
+    event.preventDefault();
+    this.pruebaService.login();
   }
 
   // Método que se ejecuta cuando el reCAPTCHA es resuelto
   onCaptchaResolved($event: string) {
-    this.tokenCaptcha = $event; // Asignamos el token de reCAPTCHA
+    this.tokenCaptcha = $event; 
+    console.log(this.tokenCaptcha)
     this.registerForm.get('recaptcha')?.setValue(this.tokenCaptcha);
     this.registerForm.get('recaptcha')?.markAsTouched();  // Marcar como tocado
   }

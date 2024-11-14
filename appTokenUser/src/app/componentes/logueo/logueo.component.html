@@ -1,4 +1,4 @@
-<h1>Login</h1>
+<h1 style="margin-top: 50px;">Login</h1>
 
 <div class="container contenedor-formulario">
     <!-- Botón para login con Google -->
@@ -14,11 +14,11 @@
         <div class="password-container">
             <input [type]="mostrarContrasenia ? 'text' : 'password'" placeholder="Ingrese la contraseña"
                 [(ngModel)]="contrasenia" class="input-field" />
-            <label>
-                <input type="checkbox" (change)="mostrarContrasenia = !mostrarContrasenia" />
-                Mostrar contraseña
-            </label>
         </div>
+        <label>
+            <input  type="checkbox" (change)="mostrarContrasenia = !mostrarContrasenia" />
+            Mostrar contraseña
+        </label>
 
         <!-- Botón de login -->
         <input type="submit" value="Ingresar" class="btn btn-primary"

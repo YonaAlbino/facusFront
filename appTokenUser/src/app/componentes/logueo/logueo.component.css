@@ -20,14 +20,14 @@
     padding: 10px;
     margin-bottom: 20px;
     color: #fff;
-    background-color: #4285f4;
+    background-color: #db4437; /* Rojo de Google */
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
   .btn-oauth:hover {
-    background-color: #357ae8;
+    background-color: #c1351d;
   }
   
   /* Estilo del formulario */
