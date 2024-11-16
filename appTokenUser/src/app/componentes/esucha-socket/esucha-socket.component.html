@@ -1,21 +1,3 @@
-<!-- <div *ngFor="let message of messages"> -->
-{{ notificaciones }}
-<!-- </div> -->
-
-<!-- <div *ngFor="let notificacion of notificaciones">
-  <p>{{ notificacion.informacion }}</p>
-  <div *ngFor="let usuario of notificacion.listaUsuarios"
-    (click)="eliminarNotificacion(notificacion.id, usuario.idUsuario)" class="btn btn-primary">Eliminar
-  </div>
-</div> -->
-
-<!-- <div *ngFor="let notificacion of notificaciones">
-  <p>{{ notificacion.informacion }}</p>
-  <div *ngFor="let usuario of notificacion.listaUsuarios">
-    <button *ngIf="usuario.idUsuario === idUsuario"
-            (click)="eliminarNotificacion(notificacion.id, usuario.idUsuario)"
-            class="btn btn-primary">
-      Eliminar
-    </button>
-  </div>
-</div> -->
+<div *ngIf="notificaciones > 0">
+  {{ notificaciones }}
+</div>

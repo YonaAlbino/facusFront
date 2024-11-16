@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthLoguinResponseDTO } from 'src/app/modelo/auth-loguin-response-dto';
 import { CredencialesLogueo } from 'src/app/modelo/credenciales-logueo';
@@ -12,35 +12,42 @@ import { UtilService } from 'src/app/servicios/util.service';
   templateUrl: './logueo.component.html',
   styleUrls: ['./logueo.component.css']
 })
-export class LogueoComponent {
+export class LogueoComponent implements OnInit {
 
-constructor(private pruebaService:PruebaService, private usuarioService:UsuarioService, 
-  private router: Router,
-  private util:UtilService){}
-  
-nombreUsuario: string = "";
-contrasenia: string = "";
-mostrarContrasenia: boolean = false;
-
-  logueoOauth() : void{
-      this.pruebaService.login();
+  ngOnInit(): void {
+    const idUsuario = localStorage.getItem('userID');
+    if (idUsuario)
+      this.router.navigate(['']);
   }
 
-  loguin(nombreUsuario: string,contrasenia: string) {
+  constructor(private pruebaService: PruebaService, private usuarioService: UsuarioService,
+    private router: Router,
+    private util: UtilService) { }
+
+
+  nombreUsuario: string = "";
+  contrasenia: string = "";
+  mostrarContrasenia: boolean = false;
+
+  logueoOauth(): void {
+    this.pruebaService.login();
+  }
+
+  loguin(nombreUsuario: string, contrasenia: string) {
     localStorage.clear();
 
     const credenciales: CredencialesLogueo = {
       nombreUsuario: nombreUsuario,
       contrasenia: contrasenia
-  };
-  
+    };
+
     this.usuarioService.loguin(credenciales).subscribe((AuthLoguinResponseDTO) => {
       this.util.agregarCredencialesASesion(AuthLoguinResponseDTO);
       this.util.redirectToHome();
     }, (error) => {
       console.error(error);
     })
-}
+  }
 
 
 }

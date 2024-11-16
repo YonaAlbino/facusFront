@@ -26,6 +26,8 @@ export class AgregarUniversidadComponent implements OnInit {
     private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
+    if (localStorage.getItem('userRole') == null)
+      this.router.navigate(['']);
     this.formularioAltaUniversidad = this.iniciarFormAltaUniversidad();
   }
 

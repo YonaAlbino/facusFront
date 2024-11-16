@@ -34,7 +34,10 @@ import { PuntuacionComponent } from './componentes/puntuacion/puntuacion.compone
 import { DetallesNotificacionComponent } from './componentes/detalles-notificacion/detalles-notificacion.component';
 import { TokenVerificacionErrorComponent } from './componentes/token-verificacion-error/token-verificacion-error.component';
 import { RegistroComponent } from './componentes/registro/registro.component';
-import { RecaptchaModule } from 'ng-recaptcha';  // Asegúrate de que esto esté correcto
+import { RecaptchaModule } from 'ng-recaptcha';
+import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { RecuperarContraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';  // Asegúrate de que esto esté correcto
+
 
 
 
@@ -63,6 +66,9 @@ const routes: Routes = [
   { path: 'agregarUniversidad', component: AgregarUniversidadComponent},
   { path: 'error/token/:idTokenVerificador', component: TokenVerificacionErrorComponent },
   { path: 'registro', component: RegistroComponent },
+  { path: 'perfil', component: PerfilComponent },
+  { path: 'recuperarContrasenia', component: RecuperarContraseniaComponent },
+
 
 
   // Otras rutas
@@ -98,6 +104,8 @@ const routes: Routes = [
     DetallesNotificacionComponent,
     TokenVerificacionErrorComponent,
     RegistroComponent,
+    PerfilComponent,
+    RecuperarContraseniaComponent,
   
   ],
   imports: [

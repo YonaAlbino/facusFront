@@ -23,7 +23,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
     private router: Router,
     private util: UtilService,
     private usuarioService: UsuarioService,
-    private errorService:ErrorServiceService
+    private errorService: ErrorServiceService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -78,7 +78,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
       switchMap((usuario: UsuarioDTO) => {
         console.log("el usuario es " + usuario)
         const refreshToken = usuario.refreshToken?.token;
-        console.log("token refresco "  + refreshToken)
+        console.log("token refresco " + refreshToken)
         // Si no hay refresh token, se lanza un error.
         if (!refreshToken) {
           return throwError(() => new Error('No hay refresh token disponible'));
@@ -114,23 +114,23 @@ export class InterceptorInterceptor implements HttpInterceptor {
     let mensajeError = 'Error desconocido';
 
     if (error.error instanceof ErrorEvent) {
-        mensajeError = `Error del cliente: ${error.error.message}`;
+      mensajeError = `Error del cliente: ${error.error.message}`;
     } else {
-        mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
+      mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
     }
 
     // Llama a reportError con el mensaje de error detallado
     this.errorService.reportError(mensajeError);
-    
+
     // Si el error es un 401
     if (error.status === 401) {
-        this.util.cuentaAtras("Token caducado, necesitas volver a iniciar sesión", 3000, () => {
-            this.router.navigate(['/loguin']);
-        });
+      this.util.cuentaAtras("Token caducado, necesitas volver a iniciar sesión", 3000, () => {
+        this.router.navigate(['/loguin']);
+      });
     }
 
     return throwError(() => new Error(mensajeError));
-}
+  }
 
-  
+
 }
