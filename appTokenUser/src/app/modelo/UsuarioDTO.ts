@@ -25,4 +25,5 @@ export interface UsuarioDTO {
     listaReaccion?: ReaccionDTO[];
     numeroInfracciones?:number;
     emailVerified?:boolean;
+    imagen?:string;
 }

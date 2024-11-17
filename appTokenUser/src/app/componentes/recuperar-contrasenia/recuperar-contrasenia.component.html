@@ -2,9 +2,9 @@
 <p>Ingresa tu email para comenzar con el proceso de recuperación</p>
 
 <!-- Indicador de carga -->
-<div *ngIf="cargando" class="loading-container">
-  <div class="loading-spinner"></div>
-  <p>Cargando....</p>
+<!-- Pantalla de carga -->
+<div *ngIf="cargando" class="loading-message">
+  <p style="color:#007bff;">Cargando...</p>
 </div>
 
 <!-- Mensaje de error -->
@@ -13,7 +13,7 @@
 </div>
 
 <!-- Mensaje de éxito -->
-<div *ngIf="exito" class="message success">
+<div *ngIf="exito" class="message exito">
   <p>El email de recuperación se te ha enviado exitosamente.</p>
 </div>
 

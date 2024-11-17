@@ -13,9 +13,9 @@ import { TokenVerificacionEmailService } from 'src/app/servicios/token-verificac
 export class RecuperarContraseniaComponent {
 
   emailForm: FormGroup;
-  cargando:boolean = false;
-  error:boolean = false;
-exito: boolean = false;
+  cargando: boolean = false;
+  error: boolean = false;
+  exito: boolean = false;
 
   constructor(private tokenContrasenia: TokenVerificacionContraseniaService) {
     this.emailForm = new FormGroup({
@@ -38,9 +38,8 @@ exito: boolean = false;
         (error) => {
           // Manejo de error: muestra el error en la consola
           console.error('Ocurrió un error al intentar recuperar la contraseña:', error);
-  
+
           // Opcional: puedes mostrar un mensaje en la UI en caso de error
-          alert('Hubo un problema al recuperar la contraseña. Intenta nuevamente.');
           this.cargando = false;
           this.error = true;
         }
@@ -49,5 +48,5 @@ exito: boolean = false;
       console.log('Formulario no válido');
     }
   }
-  
+
 }

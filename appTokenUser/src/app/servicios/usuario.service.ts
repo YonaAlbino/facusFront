@@ -89,4 +89,16 @@ export class UsuarioService {
     return this.HttpClient.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/registro", registroRequest, { headers: headers });
   }
 
+
+  cambiarContrasenia(idUsuario: number, contrasenia: string): Observable<MensajeRetornoSimple> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true'
+    });
+    return this.HttpClient.post<MensajeRetornoSimple>(
+      `${this.baseUrl}${this.rutaEndPoint}/cambiarContrasenia?idUsuario=${idUsuario}&contrasenia=${contrasenia}`,
+      { headers: headers }
+    );
+  }
+
 }

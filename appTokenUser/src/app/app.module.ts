@@ -36,7 +36,8 @@ import { TokenVerificacionErrorComponent } from './componentes/token-verificacio
 import { RegistroComponent } from './componentes/registro/registro.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
-import { RecuperarContraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';  // Asegúrate de que esto esté correcto
+import { RecuperarContraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
+import { ReestablecerContraseniaComponent } from './componentes/reestablecer-contrasenia/reestablecer-contrasenia.component';  // Asegúrate de que esto esté correcto
 
 
 
@@ -68,6 +69,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'recuperarContrasenia', component: RecuperarContraseniaComponent },
+  { path: 'reestablecerContrasenia', component: ReestablecerContraseniaComponent },
 
 
 
@@ -106,6 +108,7 @@ const routes: Routes = [
     RegistroComponent,
     PerfilComponent,
     RecuperarContraseniaComponent,
+    ReestablecerContraseniaComponent,
   
   ],
   imports: [

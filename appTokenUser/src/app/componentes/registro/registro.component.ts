@@ -57,7 +57,7 @@ export class RegistroComponent implements OnInit {
 
   // Método que se ejecuta cuando se envía el formulario
   enviar() {
-    if (this.registerForm.valid && this.tokenCaptcha) { // Verificamos que el reCAPTCHA esté resuelto
+    if (this.registerForm.valid && this.tokenCaptcha) { 
       this.cargando = true;
       const registroRequest: RegistroRequest = {
         captchaToken: this.tokenCaptcha, // Token obtenido del reCAPTCHA
@@ -95,7 +95,7 @@ export class RegistroComponent implements OnInit {
   // Método que se ejecuta cuando el reCAPTCHA es resuelto
   onCaptchaResolved($event: string) {
     this.tokenCaptcha = $event;
-    console.log(this.tokenCaptcha)
+  
     this.registerForm.get('recaptcha')?.setValue(this.tokenCaptcha);
     this.registerForm.get('recaptcha')?.markAsTouched();  // Marcar como tocado
   }

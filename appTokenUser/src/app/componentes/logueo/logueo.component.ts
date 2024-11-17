@@ -16,8 +16,7 @@ export class LogueoComponent implements OnInit {
 
   ngOnInit(): void {
     const idUsuario = localStorage.getItem('userID');
-    if (idUsuario)
-      this.router.navigate(['']);
+
   }
 
   constructor(private pruebaService: PruebaService, private usuarioService: UsuarioService,

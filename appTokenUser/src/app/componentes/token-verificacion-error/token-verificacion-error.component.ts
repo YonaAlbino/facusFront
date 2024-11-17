@@ -15,9 +15,11 @@ export class TokenVerificacionErrorComponent implements OnInit {
   cargando: boolean | undefined;
   email: boolean | null = null;
   contrasenia: boolean | null = null;
+  exito: boolean = false;
+  error: boolean = false;
 
-  constructor(private route: ActivatedRoute, private tokenVerificacionEmail: TokenVerificacionEmailService, 
-    private tokenVerficicacionContrasenia:TokenVerificacionContraseniaService) { }
+  constructor(private route: ActivatedRoute, private tokenVerificacionEmail: TokenVerificacionEmailService,
+    private tokenVerficicacionContrasenia: TokenVerificacionContraseniaService) { }
 
   ngOnInit(): void {
     this.capturarIdTokenUrl();
@@ -31,11 +33,13 @@ export class TokenVerificacionErrorComponent implements OnInit {
           next: (response) => {
             console.log('Token email actualizado con éxito', response);
             this.cargando = false;
+            this.exito = true;
           },
           error: (error) => {
             // Aquí se maneja el error
             console.error('Error al actualizar el token:', error);
             this.cargando = false;
+            this.error = true;
           }
         });
     } else if (this.contrasenia) {
@@ -44,11 +48,13 @@ export class TokenVerificacionErrorComponent implements OnInit {
           next: (response) => {
             console.log('Token contraseña actualizado con éxito', response);
             this.cargando = false;
+            this.exito = true;
           },
           error: (error) => {
             // Aquí se maneja el error
             console.error('Error al actualizar el token:', error);
             this.cargando = false;
+            this.error = true;
           }
         });
     }
@@ -58,6 +64,7 @@ export class TokenVerificacionErrorComponent implements OnInit {
     this.idTokenVerificador = this.route.snapshot.paramMap.get('idTokenVerificador');
     this.email = this.route.snapshot.queryParamMap.get('email') === 'true';
     this.contrasenia = this.route.snapshot.queryParamMap.get('contrasenia') === 'true';
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
 
 }

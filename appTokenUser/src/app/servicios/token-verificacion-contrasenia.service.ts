@@ -29,7 +29,7 @@ export class TokenVerificacionContraseniaService {
     });
 
     // Se construye la URL para la solicitud
-    const url = `${this.baseUrl}${this.rutaEndPoint}/recuperarContraseñ/${email}`;
+    const url = `${this.baseUrl}${this.rutaEndPoint}/recuperarContraseña/${email}`;
 
     // Enviar la solicitud POST con el email como parámetro
     return this.http.post<MensajeRetornoSimple>(url, {}, { headers });
