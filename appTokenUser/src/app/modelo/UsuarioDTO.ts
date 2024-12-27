@@ -23,7 +23,9 @@ export interface UsuarioDTO {
     listaComentarios?: ComentarioDTO[];
     listaRespuesta?: RespuestaDTO[];
     listaReaccion?: ReaccionDTO[];
-    numeroInfracciones?:number;
     emailVerified?:boolean;
     imagen?:string;
+    infracciones?:number;
+    baneada?:boolean;
+    TokenRecuperacionContraseniaId?:number;
 }

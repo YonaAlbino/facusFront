@@ -8,6 +8,8 @@ import { EnumsDTOs } from '../enums/enums-dtos';
 import { UsuarioDTO } from '../modelo/UsuarioDTO';
 import { MensajeRetornoSimple } from '../modelo/mensaje-retorno-simple';
 import { RegistroRequest } from '../modelo/registro-request';
+import { ActualizarContraseniaRequest } from '../modelo/actualizar-contrasenia-request';
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +54,7 @@ export class UsuarioService {
       'Authorization': `Bearer ${token}`,
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    console.log("juan")
+
     return this.HttpClient.post<AuthLoguinResponseDTO>(this.baseUrl + "/getAccesToken", token, { headers: headers });
   }
 
@@ -96,9 +98,32 @@ export class UsuarioService {
       'Skip-Interceptor': 'true'
     });
     return this.HttpClient.post<MensajeRetornoSimple>(
-      `${this.baseUrl}${this.rutaEndPoint}/cambiarContrasenia?idUsuario=${idUsuario}&contrasenia=${contrasenia}`,
+      `${this.baseUrl}${this.rutaEndPoint}/cambiarContrasenia?idUsuario=${idUsuario}&nuevaContrasena=${contrasenia}`,
       { headers: headers }
     );
+  }
+
+
+  actualizarContrasenia(idUser: number, contraseniaActual: string, nuevaContrasenia: string): Observable<MensajeRetornoSimple> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true'
+    });
+    const actualizarContrasenia: ActualizarContraseniaRequest = {
+      idUsuario: idUser,
+      nuevaContrasenia: nuevaContrasenia,
+      contraseniaActual: contraseniaActual
+    }
+    return this.HttpClient.post<MensajeRetornoSimple>(
+      `${this.baseUrl}${this.rutaEndPoint}/actualizarContrasenia`,
+      actualizarContrasenia,
+      { headers: headers }
+    );
+  }
+
+
+  public infraccionarUsuario(id: number): Observable<MensajeRetornoSimple> {
+    return this.HttpClient.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/infraccionar/" + id, null);
   }
 
 }

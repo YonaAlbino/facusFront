@@ -31,7 +31,6 @@ export class RecuperarContraseniaComponent {
       this.tokenContrasenia.recuperarContrasenia(this.emailForm.get('email')?.value).subscribe(
         (respuesta: MensajeRetornoSimple) => {
           // Éxito: muestra la respuesta en la consola
-          console.log(respuesta);
           this.cargando = false;
           this.exito = true;
         },

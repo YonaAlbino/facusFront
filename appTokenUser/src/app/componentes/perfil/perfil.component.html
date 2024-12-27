@@ -1,1 +1,73 @@
-<p>perfil works!</p>
+<div class="contenedor-perfil">
+    <h2>Mi perfil</h2>
+    <p class="username">Usuario: {{usuario?.username}}</p>
+    <img class="imagen-usuario"
+        [src]="usuario?.imagen ? usuario?.imagen : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"
+        alt="imagen usuario">
+    <div class="contenedor-botones">
+        <button class="boton-primario" (click)="cambiarImagen()">Cambiar imagen de perfil</button>
+        <button class="boton-secundario" (click)="mostrarFormularioContrasenia()">Cambiar contraseña</button>
+    </div>
+</div>
+
+<div class="contenedor-perfil" *ngIf="editarImagen">
+    <p>Vista previa</p>
+    <input type="text" [(ngModel)]="nuevaImagenPerfil" placeholder="Ingresa tu nueva imagen de perfil">
+    <img class="imagen-usuario"
+        [src]="nuevaImagenPerfil ? nuevaImagenPerfil : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"
+        alt="imagen usuario">
+    <button class="boton-primario" (click)="guardarNuevaImagenUsuario()">Guardar</button>
+</div>
+
+
+
+<div *ngIf="cambioContrasenia && formularioContrasenia" class="contenedor-perfil">
+    <p>Cambiar contraseña</p>
+    <form [formGroup]="formularioCambioContrasenia" (ngSubmit)="enviarFormularioCambioContrasenias()">
+        <div class="campos-contrasenias">
+            <input [type]="mostrarContrasenia ? 'text' : 'password'" class="form-control"
+                formControlName="nuevaContrasenia" name="" placeholder="Ingresa tu nueva contraseña" id="">
+            <input [type]="mostrarContrasenia ? 'text' : 'password'" class="form-control "
+                formControlName="repetirContrasenia" name="" placeholder="Repeti tu nueva contraseña" id="">
+            <input [type]="mostrarContrasenia ? 'text' : 'password'" class="form-control"
+                formControlName="contraseniaActual" name="" placeholder="Ingresa tu contraseña actual" id="">
+        </div>
+
+        <div  class="error-message"
+            *ngIf="formularioCambioContrasenia.get('nuevaContrasenia')?.touched && formularioCambioContrasenia.get('nuevaContrasenia')?.invalid">
+            <span *ngIf="formularioCambioContrasenia.get('nuevaContrasenia')?.errors?.['required']">Este campo es
+                obligatorio.</span>
+            <span *ngIf="formularioCambioContrasenia.get('nuevaContrasenia')?.errors?.['contraseniaValida']">
+                La contraseña debe contener al menos una mayúscula, un número y un carácter especial.
+            </span>
+        </div>
+
+        <div class="error-message"
+            *ngIf="formularioCambioContrasenia.get('repetirContrasenia')?.touched && formularioCambioContrasenia.get('repetirContrasenia')?.invalid">
+            <span *ngIf="formularioCambioContrasenia.get('repetirContrasenia')?.errors?.['required']">Este campo es
+                obligatorio
+            </span>
+            <span *ngIf="formularioCambioContrasenia.get('repetirContrasenia')?.errors?.['coincidencia']">
+                contraseñas no coinciden
+            </span>
+        </div>
+
+        <div class="error-message"
+            *ngIf="formularioCambioContrasenia.get('contraseniaActual')?.touched && formularioCambioContrasenia.get('contraseniaActual')?.invalid">
+            <span *ngIf="formularioCambioContrasenia.get('contraseniaActual')?.errors?.['required']">Este campo es
+                obligatorio
+            </span>
+        </div>
+
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="show-password" (change)="mostrarContrasenia = !mostrarContrasenia" />
+            <label for="show-password">Mostrar contraseña</label>
+        </div>
+
+
+        <button style="margin-top: 20px;" class="btn btn-primary"
+            [disabled]="formularioCambioContrasenia.invalid">Enviar</button>
+    </form>
+</div>
+

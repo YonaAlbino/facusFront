@@ -18,10 +18,13 @@
           <p *ngIf="comentario.usuarioId">{{comentario.username}}</p>
         </div>
         <div class="fecha">
-          <p style="font-size: 14px"> {{ comentario.fecha | date : "medium" }} <span *ngIf="comentario.editado" >(editado)</span></p>
+          <p style="font-size: 14px"> {{ comentario.fecha | date : "medium" }} <span
+              *ngIf="comentario.editado">(editado)</span></p>
         </div>
       </div>
-      <p style="font-weight: bold">{{ comentario.mensaje }}</p>
+      <p [ngClass]="{ 'comentario-eliminado': comentario.eliminado }">
+        {{ comentario.mensaje }}
+      </p>
       <!-- Botón para mostrar respuestas -->
       <button *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length != null" class="mostrarRespuesta"
         (click)="toggleRespuestas(comentario)"> Mostrar respuestas ({{ comentario.listaRespuesta.length }}) </button>
@@ -102,7 +105,8 @@
             {{respuesta.username}}</p>
         </div>
         <div class="fecha">
-          <p style="font-size: 14px">{{ respuesta.fecha | date : "medium" }} <span *ngIf="respuesta.editado" >(editado)</span></p>
+          <p style="font-size: 14px">{{ respuesta.fecha | date : "medium" }} <span
+              *ngIf="respuesta.editado">(editado)</span></p>
         </div>
       </div>
       <p style="font-weight: bold; color: rgb(28, 10, 10)"> {{ respuesta.mensaje }} </p>
@@ -110,10 +114,10 @@
       <button class="mostrarRespuesta" (click)="toggleRespuestasDelComentario(respuesta)"> Mostrar respuestas ({{
         respuesta.listaRespuesta?.length }}) </button>
       <!-- Botón para responder al comentario -->
-      <button class="botonResponder"  *ngIf="respuesta.usuarioId && respuesta.usuarioId != idUsuarioActual"
-       (click)="responderRespuestas(respuesta)"> Responder </button>
-       <button class="botonResponder"  *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual"
-       (click)="editarRespuesta(respuesta)"> Editar </button>
+      <button class="botonResponder" *ngIf="respuesta.usuarioId && respuesta.usuarioId != idUsuarioActual"
+        (click)="responderRespuestas(respuesta)"> Responder </button>
+      <button class="botonResponder" *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual"
+        (click)="editarRespuesta(respuesta)"> Editar </button>
       <button class="botonEliminar">Eliminar</button>
       <div *ngIf="respuesta.mostrarFormularioEdicion" style="margin-top: 20px">
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->

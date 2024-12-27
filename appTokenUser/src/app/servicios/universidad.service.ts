@@ -76,4 +76,12 @@ export class UniversidadService {
     });
     return this.http.get<Number>(this.baseUrl + this.rutaEndPoint + "/getAllComents/" + idUniversidad, {headers});
   }
+
+  public eliminarUniversidad(id:number):Observable<string>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.delete<string>(this.baseUrl + this.rutaEndPoint + "/" + id, {headers});
+  }
 }

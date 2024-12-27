@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthLoguinResponseDTO } from 'src/app/modelo/auth-loguin-response-dto';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { EmailService } from 'src/app/servicios/email.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { UtilService } from 'src/app/servicios/util.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reestablecer-contrasenia',
@@ -17,8 +21,9 @@ export class ReestablecerContraseniaComponent implements OnInit {
   contraseniaRestablecida: boolean = false;
   error: boolean = false;
   restablecerForm: FormGroup;
+  email: string = "";
 
-  constructor(private fb: FormBuilder, private util: UtilService, private usuarioService: UsuarioService) {
+  constructor(private fb: FormBuilder, private util: UtilService, private usuarioService: UsuarioService, private emailService: EmailService, private router: Router) {
     this.restablecerForm = this.fb.group(
       {
         password: ['', [Validators.required, this.fortalezaContrasenias]],
@@ -34,7 +39,16 @@ export class ReestablecerContraseniaComponent implements OnInit {
       const authLoguinResponseDTO = this.crearAuthLoguinResponseDTO(params);
       this.actualizarEstadoHistorial();
       this.guardarCredencialesEnSesion(authLoguinResponseDTO);
+      this.obtenerEmail(authLoguinResponseDTO.id!);
     }
+  }
+
+  private obtenerEmail(IdUsuario: number) {
+    this.usuarioService.getUsuarioById(IdUsuario).subscribe(
+      (usuario: UsuarioDTO) => {
+        this.email = usuario.username!;
+      }
+    )
   }
 
   private obtenerRoleDeLocalStorage(): string | null {
@@ -88,14 +102,59 @@ export class ReestablecerContraseniaComponent implements OnInit {
     return esValida ? null : { contraseniaValida: true };
   }
 
+
   enviar() {
     if (this.restablecerForm.valid) {
-      this.usuarioService.cambiarContrasenia(Number(localStorage.getItem('userID')), this.restablecerForm.get('password')?.value).subscribe(
-        (respuesta: MensajeRetornoSimple) => {
-          console.log("se actualizo perro "+respuesta)
-        }
-      )
+      this.cargando = true;
+      const userID = Number(localStorage.getItem('userID'));
+      const nuevaContrasenia = this.restablecerForm.get('password')?.value;
+      this.cambiarContrasenia(userID, nuevaContrasenia);
+
     }
   }
 
-}
+
+  
+  private cambiarContrasenia(userID: number, nuevaContrasenia: string) {
+    this.usuarioService.cambiarContrasenia(userID, nuevaContrasenia).subscribe({
+      next: (respuesta: MensajeRetornoSimple) => {
+        this.enviarEmail(nuevaContrasenia);
+  
+      },
+      error: (error) => {
+        this.manejarError("Error al cambiar la contraseña:", error);
+      }
+    });
+  }
+  
+  private enviarEmail(nuevaContrasenia: string) {
+    this.emailService.enviarEmail(this.email, "Contraseña modificada", `Tu nueva contraseña es: ${nuevaContrasenia}`)
+      .subscribe({
+        next: (respuesta: MensajeRetornoSimple) => {
+          console.log(respuesta);
+          this.finalizarProceso();
+        },
+        error: (error) => {
+          this.manejarError("Error al enviar el correo:", error);
+        }
+      });
+  }
+  
+  private finalizarProceso() {
+    this.contraseniaRestablecida = true;
+    this.cargando = false;
+    setTimeout(() => {
+      this.router.navigate(['']);
+    }, 3000);
+  }
+  
+  private manejarError(message: string, error: any) {
+    console.error(message, error);
+    this.error = true;
+    this.cargando = false;
+  }
+  
+
+  }
+
+

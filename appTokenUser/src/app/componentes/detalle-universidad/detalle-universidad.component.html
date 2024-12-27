@@ -4,20 +4,21 @@
     </div>
 
     <div class="row cabezera-descripcion align-items-center mb-4">
-        <div class="col-md-4 text-center">
-            <img [src]="universidad.imagen" alt="Imagen de la universidad" class="img-fluid" />
+        <div class="" style="display: flex; flex-direction: row; justify-content: center; width: 100%; height: 400px;">
+            <img style="width: 100%; object-fit: contain;" [src]="universidad.imagen" alt="Imagen de la universidad" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" style="margin: auto;">
             <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
-                <p>ya existe una puntuacion tuya:</p>
-                <app-puntuacion [esEditable]="true" [idUsuario]="idUsuarioCalificacion" [idCalificacion]="idCalificacionEditar" (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+                <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
+                <app-puntuacion [esEditable]="true" [idUsuario]="idUsuarioCalificacion"
+                    [idCalificacion]="idCalificacionEditar"
+                    (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
             </div>
-            
+
             <ng-template #notEditable>
-                <p>no existe una puntuacion de usted:</p>
+                <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
                 <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
             </ng-template>
-            
 
             <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0" class="text-center">
                 <span>
@@ -28,8 +29,14 @@
         </div>
     </div>
 
-    <div class="descripcion-universidad container mb-4">
-        <p>{{ universidad.descripcion }}</p>
+    <div
+        style="border: 2px solid rgb(235, 232, 232); padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 90%; margin: auto; border-radius: 5px; margin-bottom: 50px;">
+        <p
+            style="font-family: Roboto ; font-weight: 400;  font-style: normal; font-size: 24px; text-decoration: underline;">
+            Opinión del autor</p>
+        <div class="descripcion-universidad container mb-4">
+            <p style="text-align: center">{{ universidad.descripcion }}</p>
+        </div>
     </div>
 
     <div class="container contenedor-global">
@@ -69,7 +76,8 @@
                         [(ngModel)]="nuevoComentario" placeholder="Escribe aquí..."></textarea>
                 </div>
 
-                <button class="btn btn-primary" [disabled]="nuevoComentario.trim() === ''" (click)="crearNuevoComentario(nuevoComentario)">Enviar
+                <button class="btn btn-primary" [disabled]="nuevoComentario.trim() === ''"
+                    (click)="crearNuevoComentario(nuevoComentario)">Enviar
                     comentario</button>
             </div>
         </div>

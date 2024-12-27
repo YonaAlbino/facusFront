@@ -14,4 +14,5 @@ export interface ComentarioDTO {
     listaRespuesta?: RespuestaDTO[];
     username?:string;
     editado?: boolean;
+    eliminado?:boolean;
 }

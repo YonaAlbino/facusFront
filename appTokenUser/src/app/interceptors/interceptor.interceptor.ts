@@ -76,9 +76,8 @@ export class InterceptorInterceptor implements HttpInterceptor {
     // Obtiene el usuario y su refreshToken
     return this.usuarioService.getIdRefreshToken(idUsuario).pipe(
       switchMap((usuario: UsuarioDTO) => {
-        console.log("el usuario es " + usuario)
         const refreshToken = usuario.refreshToken?.token;
-        console.log("token refresco " + refreshToken)
+        console.log(refreshToken)
         // Si no hay refresh token, se lanza un error.
         if (!refreshToken) {
           return throwError(() => new Error('No hay refresh token disponible'));
@@ -111,6 +110,12 @@ export class InterceptorInterceptor implements HttpInterceptor {
     );
   }
   private handleError(error: HttpErrorResponse): Observable<never> {
+    if (error.status === 401) {
+      this.util.cuentaAtras("El token ha expirado, necesitas volver a iniciar sesión", 3000, () => {
+        this.router.navigate(['/loguin']);
+      });
+    }
+
     let mensajeError = 'Error desconocido';
 
     if (error.error instanceof ErrorEvent) {
@@ -123,11 +128,6 @@ export class InterceptorInterceptor implements HttpInterceptor {
     this.errorService.reportError(mensajeError);
 
     // Si el error es un 401
-    if (error.status === 401) {
-      this.util.cuentaAtras("Token caducado, necesitas volver a iniciar sesión", 3000, () => {
-        this.router.navigate(['/loguin']);
-      });
-    }
 
     return throwError(() => new Error(mensajeError));
   }

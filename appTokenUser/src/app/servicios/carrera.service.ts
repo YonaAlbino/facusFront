@@ -52,5 +52,12 @@ export class CarreraService {
     return this.http.get<CarreraDTO[]>(`${this.rutaBase}/carrera/obtenerTopCarreras?pagina=${pagina}&tamanio=${tamanio}`, { headers });
   }
 
+  public eliminarCarrera(id:number):Observable<string>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.delete<string>(this.rutaBase + this.rutaEndPoint + "/" + id, {headers});
+  }
 
 }

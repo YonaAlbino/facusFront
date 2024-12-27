@@ -6,14 +6,12 @@
         <app-errores [mensajeError]="mensajeError"></app-errores>
     </div>
 
-<!-- Barra de búsqueda -->
-<div class="barra-busqueda-container">
-    <div class="barra-busqueda">
-        <app-barra-busqueda
-            (universdiadEncontrada)="manejarUniversidadesEncontradas($event)"
-        ></app-barra-busqueda>
+    <!-- Barra de búsqueda -->
+    <div class="barra-busqueda-container">
+        <div class="barra-busqueda">
+            <app-barra-busqueda (universdiadEncontrada)="manejarUniversidadesEncontradas($event)"></app-barra-busqueda>
+        </div>
     </div>
-</div>
 
     <!-- Botón de recarga -->
     <div class="btn-recargar">
@@ -30,12 +28,8 @@
         <div class="col-md-4" *ngFor="let universidad of universidades">
             <div class="card mb-4">
                 <!-- Imagen de la universidad -->
-                <img
-                    [src]="universidad.imagen"
-                    class="card-img-top"
-                    alt="Imagen de {{ universidad.nombre }}"
-                    (error)="manejarImagenNoCargada($event)"
-                />
+                <img [src]="universidad.imagen" class="card-img-top" alt="Imagen de {{ universidad.nombre }}"
+                    (error)="manejarImagenNoCargada($event)" />
 
                 <!-- Información de la universidad -->
                 <div class="card-body">
@@ -43,12 +37,7 @@
                     <p class="card-text">{{ universidad.descripcion }}</p>
 
                     <!-- Enlace al sitio web de la universidad -->
-                    <a
-                        [href]="universidad.direccionWeb"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="card-link"
-                    >
+                    <a [href]="universidad.direccionWeb" target="_blank" rel="noopener noreferrer" class="card-link">
                         {{ universidad.direccionWeb }}
                     </a>
 
@@ -58,22 +47,15 @@
                     <!-- Calificación promedio -->
                     <ng-container *ngIf="universidad.listaCalificacion">
                         <app-promedio-calificacion
-                            [listaCalificacion]="universidad.listaCalificacion"
-                        ></app-promedio-calificacion>
+                            [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
                     </ng-container>
 
                     <!-- Botones de acción -->
                     <div class="btn-group" role="group">
-                        <a
-                            [routerLink]="['/detalleUniversidad', universidad.id]"
-                            class="btn btn-outline-primary"
-                        >
+                        <a [routerLink]="['/detalleUniversidad', universidad.id]" class="btn btn-outline-primary">
                             Ver
                         </a>
-                        <a
-                            [routerLink]="['/edicionUniversidad', universidad.id]"
-                            class="btn btn-outline-secondary"
-                        >
+                        <a [routerLink]="['/edicionUniversidad', universidad.id]" class="btn btn-outline-secondary">
                             Editar
                         </a>
                     </div>
@@ -92,11 +74,7 @@
 
             <!-- Números de página -->
             <li class="page-item" *ngFor="let i of [].constructor(cantidadPaginas); let index = index">
-                <a
-                    class="page-link"
-                    (click)="cambiarPagina(index)"
-                    [class.active]="paginaActual === index"
-                >
+                <a class="page-link" (click)="cambiarPagina(index)" [class.active]="paginaActual === index">
                     {{ index + 1 }}
                 </a>
             </li>

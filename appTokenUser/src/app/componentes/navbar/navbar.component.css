@@ -57,6 +57,12 @@
     justify-content: flex-end; /* Alinear elementos al final en pantallas grandes */
   }
   
+  .navbar .navbar-collapse a{
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
   /* Responsividad para pantallas pequeñas */
   @media (max-width: 767px) {
     .navbar-expand-lg .navbar-nav {
