@@ -12,8 +12,14 @@
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
-            <img width="3%" style="border-radius: 50%"
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="" />
+            <img class="imagen-usuario" loading="lazy" src={{comentario.imagenUsuario}} alt="Imagen de usuario" />
+
+            <!-- <img class="imagen-usuario"
+              [src]="usuario?.imagen ? usuario?.imagen : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"
+              alt="imagen usuario"> -->
+            <!-- <img width="10%" style="border-radius: 50%;" src={{comentario.imagenUsuario}} alt="Imagen de usuario"> -->
+            <!-- <button (click)="buscarImagenUsuario(comentario.usuarioId)">cargar imagen</button> -->
+
           </div>
           <p *ngIf="comentario.usuarioId">{{comentario.username}}</p>
         </div>

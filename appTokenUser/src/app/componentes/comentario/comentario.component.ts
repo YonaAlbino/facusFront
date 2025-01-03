@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
+import { ImagenUsuario } from 'src/app/modelo/imagen-usuario';
 import { ReaccionDTO } from 'src/app/modelo/ReaccionDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
@@ -20,6 +21,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
   styleUrls: ['./comentario.component.css'],
 })
 export class ComentarioComponent implements OnInit {
+  imagenUsuario: string | undefined;
 
 
   eliminarComentario() {
@@ -31,7 +33,7 @@ export class ComentarioComponent implements OnInit {
     private comentarioService: ComentarioService,
     private respuestaService: RespuestaService,
     private reaccionService: ReaccionService,
-    private universidadService:UniversidadService
+    private universidadService: UniversidadService
   ) { }
 
   respuestaDeLaRespuestaDelComentario: string | undefined;
@@ -63,7 +65,7 @@ export class ComentarioComponent implements OnInit {
     if (this.carrera) {
       this.CargarComentariosPaginadosCarrera();
       this.carreraService.getAllComents(this.carrera.id!).subscribe(
-        (cantidadComentarios:Number) => {
+        (cantidadComentarios: Number) => {
           this.cantidadComentarios = cantidadComentarios
         }
       );
@@ -72,11 +74,13 @@ export class ComentarioComponent implements OnInit {
     if (this.Universidad) {
       this.CargarComentariosPaginadosUniversidad();
       this.universidadService.getAllComents(this.Universidad.id!).subscribe(
-        (cantidadComentarios:Number) => {
+        (cantidadComentarios: Number) => {
           this.cantidadComentarios = cantidadComentarios
         }
       );
     }
+
+
   }
 
   //Metodo para crear una nueva instancia de un Comentario
@@ -146,7 +150,7 @@ export class ComentarioComponent implements OnInit {
       .subscribe((comentario: ComentarioDTO) => {
         console.log(comentario);
       });
-      comentario.mostrarFormularioEdicion = !comentario.mostrarFormularioEdicion;
+    comentario.mostrarFormularioEdicion = !comentario.mostrarFormularioEdicion;
   }
 
   editarRespuesta(respuesta: RespuestaDTO) {
@@ -155,20 +159,20 @@ export class ComentarioComponent implements OnInit {
   }
 
   rellenarCampoEdicionRespuesta(contenidoRespuesta: string) {
-   this.edicionRespuesta = contenidoRespuesta;
+    this.edicionRespuesta = contenidoRespuesta;
   }
 
-    //metodo envio del comentario a editar al back
-    public enviarRespuestaEditada(respuesta: RespuestaDTO) {
-      respuesta.mensaje = this.edicionRespuesta;
-      respuesta.editado = true;
-      this.respuestaService
-        .actualizarRespuesta(respuesta)
-        .subscribe((respuesta: RespuestaDTO) => {
- 
-        });
-        respuesta.mostrarFormularioEdicion = !respuesta.mostrarFormularioEdicion;
-    }
+  //metodo envio del comentario a editar al back
+  public enviarRespuestaEditada(respuesta: RespuestaDTO) {
+    respuesta.mensaje = this.edicionRespuesta;
+    respuesta.editado = true;
+    this.respuestaService
+      .actualizarRespuesta(respuesta)
+      .subscribe((respuesta: RespuestaDTO) => {
+
+      });
+    respuesta.mostrarFormularioEdicion = !respuesta.mostrarFormularioEdicion;
+  }
 
   //Meotodo para guardar la respuesta de la respuesta del comentario
   guardarRespuestaDelComen(respuesta: RespuestaDTO) {
@@ -234,13 +238,13 @@ export class ComentarioComponent implements OnInit {
 
     // Ordenar la lista de comentarios por fecha de manera descendente
     comentariosConFechasValidas.sort((a, b) => {
-      const fechaA = new Date(a.fecha!); // Asegúrate de que fechaA no sea null o undefined
+      const fechaA = new Date(a.fecha!);
       const fechaB = new Date(b.fecha!);
 
       return fechaB.getTime() - fechaA.getTime();
     });
 
-    // Opcional: Si deseas reemplazar la lista original con la ordenada
+    // reemplazar la lista original con la ordenada
     this.listaComentarios = comentariosConFechasValidas;
   }
 
@@ -283,11 +287,25 @@ export class ComentarioComponent implements OnInit {
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
           this.paginaActual++;
+          this.cargarImagenUsuarioComentario(listaComentarios);
         },
         (error) => console.error(error)
       );
 
     this.desplazarVista();
+  }
+
+  cargarImagenUsuarioComentario(listaComentario: ComentarioDTO[]) {
+    listaComentario.forEach((comentario) => {
+      this.buscarImagenUsuario(comentario.usuarioId!).then(
+        (url) => {
+          comentario.imagenUsuario = url;
+        },
+        (error) => {
+          console.error('Error al buscar imagen:', error);
+        }
+      );
+    })
   }
 
   //Metodo para cargar comentarios paginados
@@ -301,7 +319,6 @@ export class ComentarioComponent implements OnInit {
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
-          console.log(listaComentarios);
           this.paginaActual++;
         },
         (error) => console.error(error)
@@ -399,8 +416,8 @@ export class ComentarioComponent implements OnInit {
   }
 
   megustaRespuesta(respuesta: RespuestaDTO) {
-   if(respuesta.listaReaccion == null)
-    respuesta.listaReaccion=[];
+    if (respuesta.listaReaccion == null)
+      respuesta.listaReaccion = [];
     this.reaccionar(respuesta, true, false);
   }
 
@@ -517,5 +534,29 @@ export class ComentarioComponent implements OnInit {
       });
   }
 
+
+  // buscarImagenUsuario(idUsuario: number): string {
+  //   this.userService.buscarImagenUsuario(idUsuario).subscribe(
+  //     (imagen: ImagenUsuario) => {
+  //       return imagen.url
+  //     }, (error) => {
+  //       console.error(error);
+  //     }
+  //   )
+  // }
+
+  buscarImagenUsuario(idUsuario: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.userService.buscarImagenUsuario(idUsuario).subscribe(
+        (imagen: ImagenUsuario) => {
+          resolve(imagen.url);
+        },
+        (error) => {
+          console.error(error);
+          reject(error); // Manejar errores
+        }
+      )
+    })
+  }
 
 }

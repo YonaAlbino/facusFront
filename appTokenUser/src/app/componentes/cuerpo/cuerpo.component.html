@@ -35,7 +35,6 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ universidad.nombre }}</h5>
                     <p class="card-text">{{ universidad.descripcion }}</p>
-
                     <!-- Enlace al sitio web de la universidad -->
                     <a [href]="universidad.direccionWeb" target="_blank" rel="noopener noreferrer" class="card-link">
                         {{ universidad.direccionWeb }}
@@ -55,9 +54,15 @@
                         <a [routerLink]="['/detalleUniversidad', universidad.id]" class="btn btn-outline-primary">
                             Ver
                         </a>
-                        <a [routerLink]="['/edicionUniversidad', universidad.id]" class="btn btn-outline-secondary">
+                        <a *ngIf="idUsuarioActual === universidad.usuarioId; else agregarCarrera"
+                            [routerLink]="['/edicionUniversidad', universidad.id]" class="btn btn-outline-secondary">
                             Editar
                         </a>
+                        <ng-template #agregarCarrera>
+                            <a [routerLink]="['/agregarCarrera', universidad.id]" class="btn btn-outline-secondary">
+                                Agregar carrera
+                            </a>
+                        </ng-template>
                     </div>
                 </div>
             </div>

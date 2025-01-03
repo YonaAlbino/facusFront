@@ -10,6 +10,7 @@ import { MensajeRetornoSimple } from '../modelo/mensaje-retorno-simple';
 import { RegistroRequest } from '../modelo/registro-request';
 import { ActualizarContraseniaRequest } from '../modelo/actualizar-contrasenia-request';
 import Swal from 'sweetalert2'
+import { ImagenUsuario } from '../modelo/imagen-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -125,5 +126,11 @@ export class UsuarioService {
   public infraccionarUsuario(id: number): Observable<MensajeRetornoSimple> {
     return this.HttpClient.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/infraccionar/" + id, null);
   }
+
+  public buscarImagenUsuario(id:number):Observable<ImagenUsuario> {
+    const url = `${this.baseUrl}${this.rutaEndPoint}/buscar-imagen-user/${id}`;
+    return this.HttpClient.get<ImagenUsuario>(url); 
+  }
+
 
 }

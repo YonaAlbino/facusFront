@@ -15,4 +15,5 @@ export interface ComentarioDTO {
     username?:string;
     editado?: boolean;
     eliminado?:boolean;
+    imagenUsuario?:string;
 }

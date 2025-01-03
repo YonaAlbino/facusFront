@@ -14,5 +14,4 @@ export interface UniversidadDTO {
     listaCarreras?: CarreraDTO[];
     listaCalificacion?: CalificacionDTO[];
     listaComentarios?: ComentarioDTO[];
-  
 }

@@ -15,6 +15,8 @@ export class CuerpoComponent implements OnInit {
   cantidadPaginas = 0;
   universidadNoEncontrada = false;
   mensajeError!: string;
+  idsPropietariosUniversidades: number[] = [];
+  idUsuarioActual = Number(localStorage.getItem("userID"));
 
   constructor(
     private universidadService: UniversidadService,
@@ -23,6 +25,7 @@ export class CuerpoComponent implements OnInit {
 
   ngOnInit() {
     this.inicializarUniversidades();
+    // this.obtenerIdsPropietariiosUniversidades();
   }
 
   private inicializarUniversidades() {
@@ -40,6 +43,7 @@ export class CuerpoComponent implements OnInit {
       .subscribe({
         next: universidades => {
           this.universidades = universidades;
+          console.log(universidades)
         },
         error: (error) => this.manejarError(error)
       });
@@ -82,4 +86,23 @@ export class CuerpoComponent implements OnInit {
     console.error("Ocurrió un error al cargar los datos:", error);
     this.mensajeError = "No se pudieron cargar los datos. Por favor, intente de nuevo.";
   }
+
+  // private obtenerIdsPropietariiosUniversidades() {
+  //   this.universidadService.getUniversidades().subscribe(
+  //     (universidadesEncontradas: UniversidadDTO[]) => {
+  //       universidadesEncontradas?.forEach(universidad => {
+  //         this.idsPropietariosUniversidades?.push(universidad.usuarioId!);
+  //       });
+  //     }
+  //   )
+  // }
+
+  // public propietarioUniversidad(): boolean {
+  //   const idUsuarioActual = Number(localStorage.getItem("userID"));
+  //   this.idsPropietariosUniversidades?.forEach(id => {
+  //     if (idUsuarioActual == id)
+  //       return true;
+  //   })
+  //   return false;
+  // }
 }

@@ -37,7 +37,9 @@ import { RegistroComponent } from './componentes/registro/registro.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { RecuperarContraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
-import { ReestablecerContraseniaComponent } from './componentes/reestablecer-contrasenia/reestablecer-contrasenia.component';  // Asegúrate de que esto esté correcto
+import { ReestablecerContraseniaComponent } from './componentes/reestablecer-contrasenia/reestablecer-contrasenia.component';
+import { AgregacionCarreraComponent } from './componentes/agregacion-carrera/agregacion-carrera.component';
+
 
 
 
@@ -70,7 +72,7 @@ const routes: Routes = [
   { path: 'perfil', component: PerfilComponent },
   { path: 'recuperarContrasenia', component: RecuperarContraseniaComponent },
   { path: 'reestablecerContrasenia', component: ReestablecerContraseniaComponent },
-
+  { path: 'agregarCarrera/:id', component: AgregacionCarreraComponent },
 
 
   // Otras rutas
@@ -109,7 +111,7 @@ const routes: Routes = [
     PerfilComponent,
     RecuperarContraseniaComponent,
     ReestablecerContraseniaComponent,
-  
+    AgregacionCarreraComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
-import { TokenVerificacionContraseniaDTO } from 'src/app/modelo/token-verificacion-contrasenia-dto';
 import { TokenVerificacionContraseniaService } from 'src/app/servicios/token-verificacion-contrasenia.service';
 import { TokenVerificacionEmailService } from 'src/app/servicios/token-verificacion-email.service';
 

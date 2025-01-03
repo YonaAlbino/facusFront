@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TokenVerificacionContraseniaDTO } from 'src/app/modelo/token-verificacion-contrasenia-dto';
 import { TokenVerificacionContraseniaService } from 'src/app/servicios/token-verificacion-contrasenia.service';
 import { TokenVerificacionEmailService } from 'src/app/servicios/token-verificacion-email.service';
 
