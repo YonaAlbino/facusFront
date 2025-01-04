@@ -1,6 +1,6 @@
 <div class="container">
   <div id="comentariosContainer" style="text-align: center; margin-top: 20px; margin-bottom: 20px">
-    <h1 style="font-weight: bold">Comentarios <span style="font-weight: 600;">{{cantidadComentarios}}</span></h1>
+    <h2>Comentarios <span style="font-weight: 600;">{{cantidadComentarios}}</span></h2>
   </div>
 </div>
 
@@ -93,9 +93,9 @@
 </ng-template>
 
 <div class="container" style="display: flex; justify-content: center">
-  <input [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
+  <input class="btn btn-primary" [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
     (click)="cargarComentarios()" />
-  <input [disabled]="listaComentarios.length > 0" type="submit" value="Recargar" (click)="recargarComentarios()" />
+  <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar" (click)="recargarComentarios()" />
 </div>
 
 <ng-template #visualizarRespuestasDeLosComentarios let-respuestas="respuestas">

@@ -28,7 +28,7 @@ export class DetalleUniversidadComponent implements OnInit {
   listaComentarios?: ComentarioDTO[] = [];
   recargaComponenteComentario: boolean = true;
   idUsuarioActual: number | undefined;
-
+  usuarioActual:UsuarioDTO | undefined;
 
   constructor(
     private uniService: UniversidadService,
@@ -41,7 +41,7 @@ export class DetalleUniversidadComponent implements OnInit {
     //private alertas: AlertasService
   ) { }
 
-  calificacionEsEditable:boolean = false;
+  calificacionEsEditable: boolean = false;
   idCalificacionEditar: number = 0;
   idUsuarioCalificacion: number = 0;
 
@@ -53,16 +53,17 @@ export class DetalleUniversidadComponent implements OnInit {
     this.userService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null)
         this.idUsuarioActual = idUsuario;
+      this.obtenerUsuarioActual();
     });
 
     this.route.queryParams.subscribe(params => {
-      this.mostrarCarreraComponent = params['activo'] === 'true'; 
+      this.mostrarCarreraComponent = params['activo'] === 'true';
     });
   }
 
   cargarDatos(id: number): void {
     this.buscarUniversidad(this.idUniversidad);
-  
+
   }
 
   buscarUniversidad(id: number): void {
@@ -72,7 +73,7 @@ export class DetalleUniversidadComponent implements OnInit {
         this.filtrarCarrerasActivas();
         this.listaComentarios = universidad.listaComentarios;
         //if(universidad.listaCalificacion)
-          this.calificacionEditable(universidad.listaCalificacion!);
+        this.calificacionEditable(universidad.listaCalificacion!);
       },
       (error: any) => {
         console.error('Error al obtener la universidad:', error);
@@ -149,8 +150,7 @@ export class DetalleUniversidadComponent implements OnInit {
     //this.alertas.alertaEliminacionUniversidad(idUniversidad);
   }
 
-  mostrarDatosCarrera(event: any): void {
-    const id = event.target.value;
+  mostrarDatosCarrera(id: number): void {
     if (id) {
       this.mostrarCarreraComponent = false;
       this.carreraService.getCarreraByID(id).subscribe(
@@ -161,6 +161,14 @@ export class DetalleUniversidadComponent implements OnInit {
         }
       );
     }
+  }
+
+  obtenerUsuarioActual() {
+    this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
+      (usuario:UsuarioDTO) => {
+       this.usuarioActual = usuario;
+      }
+    )
   }
 
   // calificacionEditable(listaCalificaciones: CalificacionDTO[]) {
@@ -174,19 +182,19 @@ export class DetalleUniversidadComponent implements OnInit {
   // });
   //   //this.calificacionEsEditable = listaCalificaciones.some((calificacion) => calificacion.usuarioId === idUsuario);
   // }
-  
+
 
   calificacionEditable(listaCalificaciones: CalificacionDTO[]): void {
     const idUsuario = Number(localStorage.getItem('userID'));
     const calificacionEncontrada = listaCalificaciones.find(calificacion => calificacion.usuarioId === idUsuario);
 
     if (calificacionEncontrada) {
-        this.calificacionEsEditable = true;
-        this.idUsuarioCalificacion = idUsuario;
-        this.idCalificacionEditar = calificacionEncontrada.id!;
+      this.calificacionEsEditable = true;
+      this.idUsuarioCalificacion = idUsuario;
+      this.idCalificacionEditar = calificacionEncontrada.id!;
     } else {
-        this.calificacionEsEditable = false; 
+      this.calificacionEsEditable = false;
     }
-}
+  }
 
 }

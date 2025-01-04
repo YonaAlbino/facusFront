@@ -92,5 +92,51 @@
     margin-bottom: 10px;
   }
   
+  .grid {
+    display: flex; /* Cambiar a flexbox */
+    flex-wrap: wrap; /* Permite que las tarjetas salten a la siguiente línea si no caben */
+    justify-content: center; /* Centra las tarjetas horizontalmente */
+
+  }
   
+  .card {
+    all: unset; /* Elimina estilos predeterminados del botón */
+    display: flex; /* Flex para centrar contenido dentro de la tarjeta */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 200px; /* Fijar un ancho consistente para las tarjetas */
+  }
   
+  .card:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  
+  .contenedor-carreras {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+  }
+  
+  .contenedor-carreras .titulo {
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .datos-basicos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

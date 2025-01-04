@@ -41,20 +41,34 @@
 
     <div class="container contenedor-global">
         <div class="contenedor-cabecera mb-4">
-            <h2>Datos Básicos</h2>
-            <p>
-                Sitio web:
-                <a [href]="universidad.direccionWeb" target="_blank">{{ universidad.direccionWeb }}</a>
-            </p>
-            <p>Dirección: {{ universidad.direccion }}</p>
+            <div class="datos-basicos">
+                <h2>Info</h2>
+                <p>
+                    Sitio web:
+                    <a [href]="universidad.direccionWeb" target="_blank">{{ universidad.direccionWeb }}</a>
+                </p>
+                <p>Dirección: {{ universidad.direccion }}</p>
+            </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="selectCarrera" class="form-label">Lista de carreras</label>
                 <select id="selectCarrera" class="form-select" (change)="mostrarDatosCarrera($event)">
                     <option disabled selected>Selecciona una carrera</option>
                     <option *ngFor="let carrera of listaCarreras" [value]="carrera.id">{{ carrera.nombre }}</option>
                 </select>
+            </div> -->
+
+            <div class="contenedor-carreras">
+                <h1 class="titulo">Carreras</h1>
+                <div class="grid">
+                    <button class="card" *ngFor="let carrera of universidad.listaCarreras"
+                        (click)="mostrarDatosCarrera(carrera.id!)">
+                        <h4>{{ carrera.nombre }}</h4>
+                    </button>
+                </div>
             </div>
+
+
         </div>
 
         <!-- Componente de carrera -->
@@ -68,7 +82,7 @@
             <div class="agregarComentario container">
                 <div class="cabecera mb-3">
                     <h2>Deja un comentario</h2>
-                    <p>Conectado como...</p>
+                    <p>Conectado como: <span style="color: rgb(34, 56, 255);"> {{usuarioActual?.username}}</span></p>
                 </div>
 
                 <div class="mb-3">
