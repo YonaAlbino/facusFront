@@ -62,6 +62,7 @@ const routes: Routes = [
   { path: 'carrusel', component: CarruselComponent},
   { path: 'topCarrera', component: TopCarreraComponent},
   { path: 'detalleUniversidad/:id', component: DetalleUniversidadComponent},
+  { path: 'detalleUniversidad/:id/:carreraId', component: DetalleUniversidadComponent },
   { path: 'topUniversidad', component: TopUniversidadComponent},
   { path: 'cuerpo', component: CuerpoComponent},
   { path: 'barraBusqueda', component: BarraBusquedaComponent},

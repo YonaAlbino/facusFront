@@ -29,6 +29,7 @@ export class DetalleUniversidadComponent implements OnInit {
   recargaComponenteComentario: boolean = true;
   idUsuarioActual: number | undefined;
   usuarioActual:UsuarioDTO | undefined;
+  idCarrera?:number;
 
   constructor(
     private uniService: UniversidadService,
@@ -48,8 +49,11 @@ export class DetalleUniversidadComponent implements OnInit {
 
   ngOnInit(): void {
     this.idUniversidad = this.route.snapshot.params["id"];
+    this.idCarrera = this.route.snapshot.params["carreraId"];
     this.cargarDatos(this.idUniversidad);
-
+    if(this.idCarrera){
+      this.mostrarDatosCarrera(this.idCarrera);
+    }
     this.userService.idUsuarioActual.subscribe(idUsuario => {
       if (idUsuario !== null)
         this.idUsuarioActual = idUsuario;
@@ -88,6 +92,7 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   handleCalificacionGuardada(calificacion: CalificacionDTO): void {
+    console.log('Nueva calificación guardada:', calificacion);
     if (this.universidad.listaCalificacion) {
       this.universidad.listaCalificacion.push(calificacion);
       this.uniService.editUniversidad(this.universidad).subscribe(
@@ -156,7 +161,6 @@ export class DetalleUniversidadComponent implements OnInit {
       this.carreraService.getCarreraByID(id).subscribe(
         (carrera: CarreraDTO) => {
           this.carreraDeCarreraComponent = carrera;
-
           this.mostrarCarreraComponent = true;
         }
       );

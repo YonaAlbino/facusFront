@@ -54,10 +54,9 @@
 
 .card:hover {
     transform: scale(1.05);
-    cursor: pointer;
 }
 
-.contenedor-carreras{
+.contenedor-carreras {
     display: flex;
     flex-direction: column;
 }
@@ -69,8 +68,12 @@
     margin-bottom: 30px;
 }
 
-.contenedor-carreras .btn-agregar-carrera{
+.contenedor-carreras .btn-agregar-carrera {
     width: 150px;
     margin: auto;
     margin-top: 20px;
+}
+
+.nombre-carrera:hover {
+    cursor: pointer
 }

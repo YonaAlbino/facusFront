@@ -1,7 +1,24 @@
 <div class="container">
-  <div id="comentariosContainer" style="text-align: center; margin-top: 20px; margin-bottom: 20px">
-    <h2>Comentarios <span style="font-weight: 600;">{{cantidadComentarios}}</span></h2>
+  <div id="comentariosContainer" class="comentarios-container">
+    <ng-container *ngIf="Universidad">
+      <h3 class="comentarios-titulo">
+        Comentarios de la universidad
+        <span class="comentarios-resaltado">{{ Universidad.nombre }}</span>
+      </h3>
+    </ng-container>
+
+    <ng-container *ngIf="carrera">
+      <h3 class="comentarios-titulo">
+        Comentarios de la carrera
+        <span class="comentarios-resaltado">{{ carrera.nombre }}</span>
+      </h3>
+    </ng-container>
+
+    <h3 class="comentarios-cantidad">
+      Total de comentarios: <span>{{ cantidadComentarios }}</span>
+    </h3>
   </div>
+
 </div>
 
 <ng-container *ngTemplateOutlet="visualizarComentarios;context: { comentarios: listaComentarios }"></ng-container>
@@ -13,12 +30,6 @@
         <div class="infoUsuario">
           <div>
             <img class="imagen-usuario" loading="lazy" src={{comentario.imagenUsuario}} alt="Imagen de usuario" />
-
-            <!-- <img class="imagen-usuario"
-              [src]="usuario?.imagen ? usuario?.imagen : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"
-              alt="imagen usuario"> -->
-            <!-- <img width="10%" style="border-radius: 50%;" src={{comentario.imagenUsuario}} alt="Imagen de usuario"> -->
-            <!-- <button (click)="buscarImagenUsuario(comentario.usuarioId)">cargar imagen</button> -->
 
           </div>
           <p *ngIf="comentario.usuarioId">{{comentario.username}}</p>
@@ -33,10 +44,10 @@
       </p>
       <!-- Botón para mostrar respuestas -->
       <button *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length != null" class="mostrarRespuesta"
-        (click)="toggleRespuestas(comentario)"> Mostrar respuestas ({{ comentario.listaRespuesta.length }}) </button>
+        (click)="toggleRespuestas(comentario)"> Mostrar respuestas xD ({{ comentario.listaRespuesta.length }}) </button>
       <!-- Botón para responder al comentario -->
       <button class="botonResponder" *ngIf="comentario.usuarioId && comentario.usuarioId != idUsuarioActual"
-        (click)="responderComentario(comentario)"> Responder XD </button>
+        (click)="responderComentario(comentario)"> Responder </button>
       <button class="botonResponder" *ngIf="comentario.usuarioId && comentario.usuarioId == idUsuarioActual"
         (click)="editarComentario(comentario)"> Editar </button>
       <button class="botonEliminar" (click)="eliminarComentario()"> Eliminar </button>
@@ -95,7 +106,8 @@
 <div class="container" style="display: flex; justify-content: center">
   <input class="btn btn-primary" [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
     (click)="cargarComentarios()" />
-  <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar" (click)="recargarComentarios()" />
+  <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar"
+    (click)="recargarComentarios()" />
 </div>
 
 <ng-template #visualizarRespuestasDeLosComentarios let-respuestas="respuestas">
@@ -104,8 +116,7 @@
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
-            <img width="3%" style="border-radius: 50%"
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="" />
+            <img class="imagen-usuario" loading="lazy" src={{respuesta.imagenUsuario}} alt="Imagen de usuario" />
           </div>
           <p *ngIf="respuesta.usuarioId && respuesta.username" style="font-size: 14px">
             {{respuesta.username}}</p>

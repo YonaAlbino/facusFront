@@ -55,12 +55,6 @@ export class ComentarioComponent implements OnInit {
     this.userService.idUsuarioActual.subscribe((idUsuario) => {
       if (idUsuario !== null) this.idUsuarioActual = idUsuario;
     });
-    //console.log(this.idUsuarioActual);
-    // this.comentarioService.getComentarios().subscribe({
-    //   // next: (comentarios) => {
-    //   //   // this.comentarios = comentarios;
-    //   // },
-    // });
 
     if (this.carrera) {
       this.CargarComentariosPaginadosCarrera();
@@ -111,11 +105,13 @@ export class ComentarioComponent implements OnInit {
   //Metodo para mostrar o no las respuestas de cada comentario
   toggleRespuestas(comentario: ComentarioDTO) {
     comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
+    this.cargarImagenUsuarioComentario(comentario.listaRespuesta!);
   }
 
   //Metodo para mostrar o no las respuestas de cada respuesta
   toggleRespuestasDelComentario(respuesta: RespuestaDTO) {
     respuesta.mostrarRespuestas = !respuesta.mostrarRespuestas;
+    this.cargarImagenUsuarioComentario(respuesta.listaRespuesta!);
   }
 
   //metodo para responder a la respuesta del comentario
@@ -320,6 +316,7 @@ export class ComentarioComponent implements OnInit {
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
           this.paginaActual++;
+          this.cargarImagenUsuarioComentario(listaComentarios);
         },
         (error) => console.error(error)
       );
@@ -534,16 +531,6 @@ export class ComentarioComponent implements OnInit {
       });
   }
 
-
-  // buscarImagenUsuario(idUsuario: number): string {
-  //   this.userService.buscarImagenUsuario(idUsuario).subscribe(
-  //     (imagen: ImagenUsuario) => {
-  //       return imagen.url
-  //     }, (error) => {
-  //       console.error(error);
-  //     }
-  //   )
-  // }
 
   buscarImagenUsuario(idUsuario: number): Promise<string> {
     return new Promise((resolve, reject) => {
