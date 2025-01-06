@@ -34,3 +34,20 @@
     border: 1px solid;
     text-align: center;
   }
+
+  /* Estilo para el enlace de agregar universidad */
+.link-agregar {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link-agregar:hover {
+  text-decoration: underline;
+}
+
+/* Estilo para el mensaje cuando no está logueado */
+.mensaje-no-logueado {
+  font-size: 14px;
+  color: #ff4d4d;
+}

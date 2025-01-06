@@ -15,9 +15,9 @@ export class PuntuacionComponent {
   constructor(private calificacionService: CalificacionService) { }
 
   @Output() calificacionGuardada: EventEmitter<CalificacionDTO> = new EventEmitter<CalificacionDTO>();
-  @Input() esEditable: boolean = false;  
-  @Input() idCalificacion: number = 0; 
-  @Input() idUsuario: number = 0; 
+  @Input() esEditable: boolean = false;
+  @Input() idCalificacion: number = 0;
+  @Input() idUsuario: number = 0;
 
   capturarPuntacion(event: Event) {
     let puntos: string = (<HTMLInputElement>event.target).value;
@@ -28,18 +28,26 @@ export class PuntuacionComponent {
       nota: this.puntuacion
     }
 
-    if(!this.esEditable){
-      console.log(this.esEditable)
+    if (!this.esEditable) {
       this.calificacionService.crearCalificacion(calificacion).subscribe((calificacion) => {
         this.calificacionGuardada.emit(calificacion);
       });
-    }else{
-      const calificacion:CalificacionDTO = {
-        id:this.idCalificacion,
+    } else {
+      const calificacion: CalificacionDTO = {
+        id: this.idCalificacion,
         nota: this.puntuacion,
-        usuarioId:this.idUsuario
+        usuarioId: this.idUsuario
       }
-      this.calificacionService.editCalificacion(calificacion).subscribe();
+      this.calificacionService.editCalificacion(calificacion).subscribe(
+        () => {
+          const calificacionNula: CalificacionDTO = {
+            id: undefined,
+            nota: undefined,
+            usuarioId: undefined
+          };
+          this.calificacionGuardada.emit(calificacionNula);
+        }
+      );
     }
   }
 

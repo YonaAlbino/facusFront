@@ -1,30 +1,47 @@
 <div class="container">
 
+    <!-- Carrusel -->
     <app-carrusel></app-carrusel>
 
-    <div class="informativo">
+    <!-- Sección informativa -->
+    <section class="informativo">
         <div class="informativo-texto">
-            <p>Esta web tiene como objetivo brindar información sobre las universidades y centros educativos de
+            <p>
+                Esta web tiene como objetivo brindar información sobre las universidades y centros educativos de
                 Argentina.
                 Puedes buscar tu universidad y ver las opiniones de los alumnos, o si no existe en los registros, puedes
-                agregarla tú mismo haciendo click <a href="#">aquí</a>
+                agregarla tú mismo haciendo click
             </p>
+
+            <!-- Condición para usuario logueado -->
+            <div *ngIf="idUsuarioLogueado; else noLogueado">
+                <a class="link-agregar" href="/agregarUniversidad">Aquí</a>
+            </div>
+
+            <!-- Mensaje cuando el usuario no está logueado -->
+            <ng-template #noLogueado>
+                <p class="mensaje-no-logueado">
+                    <span style="color: rgb(5, 184, 5);">No estás logueado. Por favor, inicia sesión para
+                        agregarla.</span>
+                </p>
+            </ng-template>
         </div>
+
+        <!-- Imagen informativa -->
         <div class="informativo-imagen">
             <img width="90%"
                 src="assets/imagenes/undraw_undraw_undraw_undraw_undraw_website_o7n3_bucy_30uo_-1-_d6br_0qfo.svg"
-                alt="Mi imagen SVG">
+                alt="Ilustración web relacionada" />
         </div>
-    </div>
+    </section>
 
-    <!-- <div class="topUniversidadCarrera">
-        <h1>Top universidad-carrera</h1>
-    </div> -->
-
-    <div style="display: flex; justify-content: center; margin-top: 50px;">
+    <!-- Sección de contenido con las mejores universidades y carreras -->
+    <div class="top-section" style="display: flex; justify-content: center; margin-top: 50px;">
         <app-top-universidad></app-top-universidad>
         <app-top-carrera></app-top-carrera>
     </div>
 
+    <!-- Cuerpo del contenido -->
     <app-cuerpo></app-cuerpo>
+
 </div>

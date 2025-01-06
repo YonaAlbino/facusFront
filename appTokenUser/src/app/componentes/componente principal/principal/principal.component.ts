@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
 import { AuthLoguinResponseDTO } from 'src/app/modelo/auth-loguin-response-dto';
-import { PruebaService } from 'src/app/servicios/prueba.service';
-import { SocketService } from 'src/app/servicios/socket.service';
-import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { UtilService } from 'src/app/servicios/util.service';
-
 
 @Component({
   selector: 'app-principal',
@@ -14,35 +9,35 @@ import { UtilService } from 'src/app/servicios/util.service';
 })
 export class PrincipalComponent implements OnInit {
 
-  constructor(private socketService: SocketService, private userService: UsuarioService, private util: UtilService) { }
-
-  role = localStorage.getItem('userRole');
+  role: string | null = localStorage.getItem('userRole');
+  idUsuarioLogueado: number | undefined;
+  constructor(
+    private util: UtilService
+  ) { }
 
   ngOnInit(): void {
-    //window.location.reload();
+    this.manejarParametrosUrl();
+    this.idUsuarioLogueado = Number(localStorage.getItem("userID"));
+  }
+
+  private manejarParametrosUrl(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    let token = urlParams.get('token');
-    let role = urlParams.get('role');
-    let idUsuaruio = urlParams.get('idUsuario');
+    const token = urlParams.get('token');
+    const role = urlParams.get('role');
+    const idUsuario = urlParams.get('idUsuario');
 
-
-    if (token && role && idUsuaruio) {
-      console.log(token + " " + role + " " + idUsuaruio)
+    if (this.validarParametrosUrl(token, role, idUsuario)) {
       const authLoguinResponseDTO: AuthLoguinResponseDTO = {
-        role: role,
-        token: token,
-        id: Number(idUsuaruio)
-      }
-
+        role: role!,
+        token: token!,
+        id: Number(idUsuario)
+      };
+      
       this.util.agregarCredencialesASesion(authLoguinResponseDTO);
     }
+  }
 
-
+  private validarParametrosUrl(token: string | null, role: string | null, idUsuario: string | null): boolean {
+    return token !== null && role !== null && idUsuario !== null && !isNaN(Number(idUsuario));
   }
 }
-
-
-
-
-
-

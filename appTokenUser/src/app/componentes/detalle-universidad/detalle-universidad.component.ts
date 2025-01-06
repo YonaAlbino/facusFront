@@ -28,8 +28,8 @@ export class DetalleUniversidadComponent implements OnInit {
   listaComentarios?: ComentarioDTO[] = [];
   recargaComponenteComentario: boolean = true;
   idUsuarioActual: number | undefined;
-  usuarioActual:UsuarioDTO | undefined;
-  idCarrera?:number;
+  usuarioActual: UsuarioDTO | undefined;
+  idCarrera?: number;
 
   constructor(
     private uniService: UniversidadService,
@@ -51,7 +51,7 @@ export class DetalleUniversidadComponent implements OnInit {
     this.idUniversidad = this.route.snapshot.params["id"];
     this.idCarrera = this.route.snapshot.params["carreraId"];
     this.cargarDatos(this.idUniversidad);
-    if(this.idCarrera){
+    if (this.idCarrera) {
       this.mostrarDatosCarrera(this.idCarrera);
     }
     this.userService.idUsuarioActual.subscribe(idUsuario => {
@@ -92,18 +92,20 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   handleCalificacionGuardada(calificacion: CalificacionDTO): void {
-    console.log('Nueva calificación guardada:', calificacion);
-    if (this.universidad.listaCalificacion) {
-      this.universidad.listaCalificacion.push(calificacion);
-      this.uniService.editUniversidad(this.universidad).subscribe(
-        (universidad: UniversidadDTO) => {
-
-        },
-        (error: any) => {
-          console.error('Error al actualizar la universidad:', error);
-        }
-      );
+    if (!calificacion.id == undefined) {
+      if (this.universidad.listaCalificacion) {
+        this.universidad.listaCalificacion.push(calificacion);
+        this.uniService.editUniversidad(this.universidad).subscribe(
+          (universidad: UniversidadDTO) => {
+          },
+          (error: any) => {
+            console.error('Error al actualizar la universidad:', error);
+          }
+        );
+      }
     }
+    window.location.href = `/detalleUniversidad/${this.idUniversidad}`;
+
   }
 
 
@@ -169,8 +171,8 @@ export class DetalleUniversidadComponent implements OnInit {
 
   obtenerUsuarioActual() {
     this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
-      (usuario:UsuarioDTO) => {
-       this.usuarioActual = usuario;
+      (usuario: UsuarioDTO) => {
+        this.usuarioActual = usuario;
       }
     )
   }
