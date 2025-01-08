@@ -16,21 +16,21 @@
         <img *ngIf="universidades[0]" src="{{universidades[0].imagen}}" class="d-block w-100 imagen" alt="..." (error)="imagenNocargada($event)">
         <div class="carousel-caption d-none d-md-block">
           <h5 class="nombreUniversidades" *ngIf="universidades[0]">{{universidades[0].nombre}}</h5>
-          <p *ngIf="universidades[0]">{{universidades[0].descripcion}}</p>
+   
         </div>
       </div>
       <div class="carousel-item">
         <img *ngIf="universidades[1]" src="{{universidades[1].imagen}}" class="d-block w-100 imagen" alt="..." (error)="imagenNocargada($event)" >
         <div class="carousel-caption d-none d-md-block">
           <h5 class="nombreUniversidades" *ngIf="universidades[1]">{{universidades[1].nombre}}</h5>
-          <p *ngIf="universidades[1]">{{universidades[1].descripcion}}</p>
+
         </div>
       </div>
       <div class="carousel-item">
         <img *ngIf="universidades[2]" src="{{universidades[2].imagen}}" class="d-block w-100 imagen" alt="..." (error)="imagenNocargada($event)">
         <div class="carousel-caption d-none d-md-block">
           <h5 class="nombreUniversidades" *ngIf="universidades[2]">{{universidades[2].nombre}}</h5>
-          <p *ngIf="universidades[2]">{{universidades[2].descripcion}}</p>
+
         </div>
       </div>
     </div>

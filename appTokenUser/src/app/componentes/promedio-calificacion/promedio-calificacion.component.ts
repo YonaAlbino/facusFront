@@ -22,6 +22,7 @@ export class PromedioCalificacionComponent implements OnInit {
     this.pintarEstrellas(this.promedio);
   }
 
+
   calcularPromedio(): number {
     let acumuladorNotas: number = 0;
     let cantidadNotas: number = this.listaCalificacion.length;

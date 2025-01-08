@@ -177,19 +177,6 @@ export class DetalleUniversidadComponent implements OnInit {
     )
   }
 
-  // calificacionEditable(listaCalificaciones: CalificacionDTO[]) {
-  //   const idUsuario: Number = Number(localStorage.getItem('userID'));
-  //   listaCalificaciones.forEach((calificacion: CalificacionDTO) => {
-  //     if(calificacion.usuarioId == idUsuario){
-  //       this.calificacionEsEditable = true;
-  //       this.idUsuarioCalificacion = Number(idUsuario);
-  //       this.idCalificacionEditar = calificacion.id!;
-  //     }
-  // });
-  //   //this.calificacionEsEditable = listaCalificaciones.some((calificacion) => calificacion.usuarioId === idUsuario);
-  // }
-
-
   calificacionEditable(listaCalificaciones: CalificacionDTO[]): void {
     const idUsuario = Number(localStorage.getItem('userID'));
     const calificacionEncontrada = listaCalificaciones.find(calificacion => calificacion.usuarioId === idUsuario);

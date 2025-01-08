@@ -1,10 +1,23 @@
+<div style="border: 1px solid; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
+        <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar: {{carrera.nombre}}</p>
+        <app-puntuacion [esEditable]="true" [idUsuario]="idUsuarioCalificacion" [idCalificacion]="idCalificacionEditar"
+            (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+    </div>
+    <ng-template #notEditable>
+        <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
+        <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+    </ng-template>
+    <app-promedio-calificacion [listaCalificacion]="carrera.listaCalificacion!"></app-promedio-calificacion>
+</div>
+
 <app-comentario [carrera]="carrera"></app-comentario>
 
 <div>
     <div class="agregarComentario container">
         <div class="cabecera mb-3">
             <h2>Deja un comentario</h2>
-            <p>Conectado como...</p>
+            <p>Conectado como... {{carrera.universidadId}}</p>
         </div>
 
         <div class="mb-3">
