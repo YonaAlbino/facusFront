@@ -132,5 +132,8 @@ export class UsuarioService {
     return this.HttpClient.get<ImagenUsuario>(url); 
   }
 
+  public findUsernamesByUniversidadId(id: number): Observable<MensajeRetornoSimple> {
+    return this.HttpClient.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/findUsernamesByUniversidadId/" + id);
+  }
 
 }

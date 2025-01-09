@@ -8,6 +8,7 @@ h2 {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-style: normal;
+    text-align: center;
   }
   
   .table {
@@ -19,6 +20,7 @@ h2 {
   .table td {
     padding: 10px;
     text-align: left;
+    
   }
   
   .table th {
@@ -29,6 +31,7 @@ h2 {
   .table td {
     border-bottom: 1px solid #ddd;
   }
+  
   
   /* Estilo para los enlaces de las carreras */
   a {

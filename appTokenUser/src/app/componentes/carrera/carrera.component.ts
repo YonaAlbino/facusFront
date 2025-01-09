@@ -7,6 +7,8 @@ import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
 import { PromedioCalificacionComponent } from '../promedio-calificacion/promedio-calificacion.component';
+import { UsuarioService } from 'src/app/servicios/usuario.service';
+import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
 
 @Component({
   selector: 'app-carrera',
@@ -17,15 +19,16 @@ export class CarreraComponent implements OnInit {
   calificacionEsEditable: boolean | undefined;
   idUsuarioCalificacion: number = 0;
   idCalificacionEditar: number = 0;
-
+  idUsuarioActual:number = 0;
+  usuarioActual:UsuarioDTO | undefined;
 
   @Input() carrera!: CarreraDTO;
 
-  constructor(private carreraService: CarreraService, private comentarioService: ComentarioService) { }
+  constructor(private carreraService: CarreraService, private comentarioService: ComentarioService, private userService:UsuarioService) { }
 
   ngOnInit(): void {
-    console.log(this.carrera)
-
+    this.idUsuarioActual = Number(localStorage.getItem("userID"));
+    this.obtenerUsuarioActual();
     this.calificacionEditable(this.carrera.listaCalificacion!);
   }
 
@@ -161,6 +164,14 @@ export class CarreraComponent implements OnInit {
     } else {
       this.calificacionEsEditable = false;
     }
+  }
+
+  obtenerUsuarioActual() {
+    this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
+      (usuario: UsuarioDTO) => {
+        this.usuarioActual = usuario;
+      }
+    )
   }
 
 }

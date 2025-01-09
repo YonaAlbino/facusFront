@@ -12,7 +12,7 @@ export class TopUniversidadComponent implements OnInit {
 
   listaTopUniversidades: UniversidadDTO[] = []; // Lista de universidades
   pagina: number = 0; // Página actual para la paginación
-  registrosPorPagina: number = 3; // Número de registros por página
+  registrosPorPagina: number = 5; // Número de registros por página
   totalUniversidades: number = 0; // Total de universidades
   mensajeError: string | null = null; // Mensaje de error en caso de fallo
 

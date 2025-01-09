@@ -17,7 +17,7 @@
       <th scope="row">{{ i + 1 + (pagina * registrosPorPagina) }}</th>
 
       <!-- Columna con el nombre de la universidad -->
-      <td>
+      <td style="height: 200px;">
         <a [routerLink]="['/detalleUniversidad', universidad.id]" class="enlace-universidad">
           {{ universidad.nombre }}
         </a>
