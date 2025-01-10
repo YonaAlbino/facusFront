@@ -45,7 +45,7 @@ export class AgregarUniversidadComponent implements OnInit {
   iniciarFormAltaUniversidad(): FormGroup {
     return this.fb.group({
       nombre: ["", [Validators.required, Validators.minLength(4)]],
-      direccionWeb: ["", [Validators.required, Validators.pattern("^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[ 0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+ &%\$#_]*)?$")]],
+      direccionWeb: ['', [Validators.required, Validators.pattern('https?://.+')]],
       direccionFisica: ["", [Validators.required, Validators.minLength(10)]],
       descripcion: ["", [Validators.required, Validators.minLength(30)]],
       imagen: ["", [Validators.required]],

@@ -39,6 +39,7 @@ import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { RecuperarContraseniaComponent } from './componentes/recuperar-contrasenia/recuperar-contrasenia.component';
 import { ReestablecerContraseniaComponent } from './componentes/reestablecer-contrasenia/reestablecer-contrasenia.component';
 import { AgregacionCarreraComponent } from './componentes/agregacion-carrera/agregacion-carrera.component';
+import { EdicionUniversidadComponent } from './componentes/edicion-universidad/edicion-universidad.component';
 
 
 
@@ -74,7 +75,7 @@ const routes: Routes = [
   { path: 'recuperarContrasenia', component: RecuperarContraseniaComponent },
   { path: 'reestablecerContrasenia', component: ReestablecerContraseniaComponent },
   { path: 'agregarCarrera/:id', component: AgregacionCarreraComponent },
-
+  { path: 'edicionUniversidad/:id', component: EdicionUniversidadComponent },
 
   // Otras rutas
 ];
@@ -113,6 +114,7 @@ const routes: Routes = [
     RecuperarContraseniaComponent,
     ReestablecerContraseniaComponent,
     AgregacionCarreraComponent,
+    EdicionUniversidadComponent,
   ],
   imports: [
     BrowserModule,

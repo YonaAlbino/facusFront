@@ -10,7 +10,7 @@ import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 })
 export class CuerpoComponent implements OnInit {
   universidades: UniversidadDTO[] = [];
-  registrosPorPagina = 8;
+  registrosPorPagina = 6;
   paginaActual = 0;
   cantidadPaginas = 0;
   universidadNoEncontrada = false;
