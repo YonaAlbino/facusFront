@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { AlertasService } from 'src/app/servicios/alertas.service';
@@ -15,12 +15,18 @@ export class AgregacionCarreraComponent implements OnInit {
 
   idUniversidad: number = 0;
   universidadAeditar: UniversidadDTO | undefined;
+  @Input() universidad?: UniversidadDTO; // Propiedad opcional proveniente del padre
 
-  constructor(private route: ActivatedRoute, private universidadService: UniversidadService, private alertas:AlertasService) { }
+
+  constructor(private route: ActivatedRoute, private universidadService: UniversidadService, private alertas: AlertasService) { }
 
   ngOnInit(): void {
-    this.idUniversidad = this.route.snapshot.params["id"];
-    this.buscarUniversidad();
+    if (!this.universidad) {
+      this.idUniversidad = this.route.snapshot.params["id"];
+      this.buscarUniversidad();
+    } else {
+      this.universidadAeditar  = this.universidad;
+    }
   }
 
   buscarUniversidad() {
@@ -45,5 +51,5 @@ export class AgregacionCarreraComponent implements OnInit {
     );
   }
 
-  
+
 }

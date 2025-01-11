@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { AlertasService } from 'src/app/servicios/alertas.service';
+import { CarreraService } from 'src/app/servicios/carrera.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 
 @Component({
@@ -14,9 +15,11 @@ export class EdicionUniversidadComponent implements OnInit {
   idUniversidad: number = 0;
   universidadForm: FormGroup;
   universidadBuscada: UniversidadDTO | undefined;
+  idCarreraEliminar: number = 0;
+  eliminar:boolean = false;
 
-
-  constructor(private route: ActivatedRoute, private universidadService: UniversidadService, private alertas: AlertasService, private fb: FormBuilder, private router: Router) {
+  constructor(private route: ActivatedRoute, private universidadService: UniversidadService,
+    private alertas: AlertasService, private fb: FormBuilder, private router: Router, private carreraService: CarreraService) {
     this.universidadForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(4)]],
       descripcion: ['', [Validators.required, Validators.minLength(40)]],
@@ -83,6 +86,32 @@ export class EdicionUniversidadComponent implements OnInit {
         console.error(error);
       }
     )
+  }
+
+  onCarreraChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      console.log('ID de la carrera seleccionada:', target.value);
+      this.idCarreraEliminar = Number(target.value);
+      // Realiza acciones con el ID seleccionado
+    } else {
+      console.error('El target es null');
+    }
+  }
+
+  eliminarCarrera() {
+    this.carreraService.eliminarCarrera(this.idCarreraEliminar).subscribe(
+      () => {
+        console.log("carrera eliminada");
+        window.location.reload();
+      }, (error) => {
+        console.error(error)
+      }
+    )
+  }
+
+  habilitarEliminacion(){
+    this.eliminar = !this.eliminar;
   }
 
 }

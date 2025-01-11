@@ -1,4 +1,4 @@
-<div class="universidad-container">
+<div *ngIf="!universidad" class="universidad-container">
     <p>{{universidadAeditar?.nombre}}</p>
     <img src="{{universidadAeditar?.imagen}}" alt="Imagen de la universidad" class="universidad-imagen">
 </div>
