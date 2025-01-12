@@ -13,15 +13,32 @@
 .botonResponder{
     background-color: #fff;
     border: none;
-    color: rgb(70, 70, 255);
-    font-weight: bold;
+    font-style: italic;
+}
+
+.botonResponder:hover{
+    color: green;
+}
+
+.botonEditar{
+    background-color: #fff;
+    border: none;
+    font-style: italic;
+}
+
+
+.botonEditar:hover{
+    color: blue;
 }
 
 .botonEliminar{
     background-color: #fff;
     border: none;
-    color: rgb(255, 0, 0);
-    font-weight: bold;
+    font-style: italic;
+}
+
+.botonEliminar:hover{
+    color: red;
 }
 
 .likeDislike{

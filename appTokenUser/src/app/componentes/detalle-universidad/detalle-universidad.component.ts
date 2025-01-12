@@ -30,6 +30,7 @@ export class DetalleUniversidadComponent implements OnInit {
   idUsuarioActual: number | undefined;
   usuarioActual: UsuarioDTO | undefined;
   idCarrera?: number;
+  mostrarInfoBasica: boolean = false;
 
   constructor(
     private uniService: UniversidadService,
@@ -188,6 +189,10 @@ export class DetalleUniversidadComponent implements OnInit {
     } else {
       this.calificacionEsEditable = false;
     }
+  }
+
+  mostrarInfo(){
+    this.mostrarInfoBasica = !this.mostrarInfoBasica;
   }
 
 }

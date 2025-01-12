@@ -25,7 +25,7 @@
 
 <ng-template #visualizarComentarios let-comentarios="comentarios">
   <ng-container *ngFor="let comentario of comentarios">
-    <div style="margin-bottom: 60px" *ngIf="verComentarios">
+    <div style="margin-bottom: 60px; background-color: rgb(255, 255, 255); border-radius: 10px; padding: 10px;" *ngIf="verComentarios">
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
@@ -39,12 +39,12 @@
               *ngIf="comentario.editado">(editado)</span></p>
         </div>
       </div>
-      <p [ngClass]="{ 'comentario-eliminado': comentario.eliminado }">
+      <p style="font-weight: bold;" [ngClass]="{ 'comentario-eliminado': comentario.eliminado }">
         {{ comentario.mensaje }}
       </p>
       <!-- Botón para mostrar respuestas -->
       <button *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length != null" class="mostrarRespuesta"
-        (click)="toggleRespuestas(comentario)"> Mostrar respuestas xD ({{ comentario.listaRespuesta.length }}) </button>
+        (click)="toggleRespuestas(comentario)"> Mostrar respuestas ({{ comentario.listaRespuesta.length }}) </button>
       <!-- Botón para responder al comentario -->
       <button class="botonResponder" *ngIf="comentario.usuarioId && comentario.usuarioId != idUsuarioActual"
         (click)="responderComentario(comentario)"> Responder </button>
@@ -84,14 +84,14 @@
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="respuestaDesdeElInput" rows="8" cols="50"
           class="form-control" placeholder="Tu respuesta..."></textarea>
-        <button (click)="guardarRespuesta(comentario)">Enviar respuesta</button>
+        <button class="botonResponder" (click)="guardarRespuesta(comentario)">Enviar respuesta</button>
       </div>
       <!-- formulario para editar comentario -->
       <div *ngIf="comentario.mostrarFormularioEdicion" style="margin-top: 20px">
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="edicionComentario" rows="8" cols="50"
           class="form-control" placeholder="Tu respuesta..."></textarea>
-        <button (click)="enviarComentarioEditado(comentario)">Editar</button>
+        <button class="botonEditar" (click)="enviarComentarioEditado(comentario)">Guardar</button>
       </div>
       <div *ngIf="comentario.mostrarRespuestas" style="margin-left: 40px">
         <ng-container *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length > 0">
@@ -103,7 +103,7 @@
   </ng-container>
 </ng-template>
 
-<div class="container" style="display: flex; justify-content: center">
+<div class="container" style="display: flex; justify-content: center; margin-bottom: 60px;">
   <input class="btn btn-primary" [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
     (click)="cargarComentarios()" />
   <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar"
@@ -175,7 +175,7 @@
         <!-- <input type="text" [(ngModel)]="respuestaDeLaRespuestaDelComentario" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="respuestaDeLaRespuestaDelComentario" rows="8" cols="50"
           class="form-control" placeholder="Tu respuesta..."></textarea>
-        <button (click)="guardarRespuestaDelComen(respuesta)"> Enviar respuesta 2 </button>
+        <button (click)="guardarRespuestaDelComen(respuesta)"> Enviar respuesta </button>
       </div>
       <div *ngIf="respuesta.mostrarRespuestas" style="margin-left: 20px">
         <ng-container *ngIf="respuesta.listaRespuesta && respuesta.listaRespuesta.length > 0">
