@@ -34,7 +34,9 @@
                 <!-- Información de la universidad -->
                 <div class="card-body">
                     <h5 class="card-title">{{ universidad.nombre }}</h5>
-                    <p class="card-text">{{ universidad.descripcion }}</p>
+                    <div style="min-height: 80px;">
+                        <p  class="card-text">{{ universidad.descripcion }}</p>
+                    </div>
                     <!-- Enlace al sitio web de la universidad -->
                     <a [href]="universidad.direccionWeb" target="_blank" rel="noopener noreferrer" class="card-link">
                         {{ universidad.direccionWeb }}

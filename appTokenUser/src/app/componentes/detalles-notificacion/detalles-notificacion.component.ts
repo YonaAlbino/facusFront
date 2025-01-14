@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
-import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
+import { ComentarioDTO as respuestaDTO } from 'src/app/modelo/ComentarioDTO';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
 import { PermisoDTO } from 'src/app/modelo/PermisoDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
@@ -31,14 +31,14 @@ export class DetallesNotificacionComponent implements OnInit {
   usuarioPropietario: UsuarioDTO | undefined;
 
   carreraBuscada: CarreraDTO | undefined;
-  cometarioBuscado: ComentarioDTO | undefined;
+  cometarioBuscado: respuestaDTO | undefined;
   usuarioBuscado: UsuarioDTO | undefined;
   universidadBuscada: UniversidadDTO | undefined;
   permisoBuscado: PermisoDTO | undefined;
   respuestaBuscada: RespuestaDTO | undefined;
   registroEliminado: boolean = false;;
-  infraccion:boolean | undefined;
-  cargando :boolean = false;
+  infraccion: boolean | undefined;
+  cargando: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -100,19 +100,37 @@ export class DetallesNotificacionComponent implements OnInit {
   eliminarComentario(id: number | undefined) {
     this.comentarioService
       .getComentarioById(id!)
-      .subscribe((comentarioEncontrado: ComentarioDTO) => {
-        let comentario: ComentarioDTO = comentarioEncontrado;
+      .subscribe((comentarioEncontrado: respuestaDTO) => {
+        let comentario: respuestaDTO = comentarioEncontrado;
         comentario.mensaje =
           'Este comentario ha sido eliminado por un administrador';
         comentario.eliminado = true;
         this.comentarioService
           .editComentario(comentario)
-          .subscribe((comentarioEliminado: ComentarioDTO) => {
+          .subscribe((comentarioEliminado: respuestaDTO) => {
             window.location.reload();
             console.log(comentarioEliminado);
           });
       });
   }
+
+  eliminarRespuesta(id: number | undefined) {
+    this.respuestaService
+      .findRespuestaById(id!)
+      .subscribe((respuestaEncontrada: RespuestaDTO) => {
+        let respuesta: respuestaDTO = respuestaEncontrada;
+        respuesta.mensaje =
+          'Este comentario ha sido eliminado por un administrador';
+        respuesta.eliminado = true;
+        this.respuestaService
+          .actualizarRespuesta(respuesta)
+          .subscribe((respuestaEliminada: respuestaDTO) => {
+            window.location.reload();
+            console.log(respuestaEliminada);
+          });
+      });
+  }
+
   cargarUniversidad() {
     this.universidadService.getUniversidadById(this.id!).subscribe(
       (universidad: UniversidadDTO) => {
@@ -185,7 +203,7 @@ export class DetallesNotificacionComponent implements OnInit {
   cargarComentario() {
     this.comentarioService
       .getComentarioById(this.id!)
-      .subscribe((comentario: ComentarioDTO) => {
+      .subscribe((comentario: respuestaDTO) => {
         this.cometarioBuscado = comentario;
         this.usuarioService
           .getUsuarioById(comentario.usuarioId!)

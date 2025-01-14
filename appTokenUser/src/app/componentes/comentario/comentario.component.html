@@ -24,8 +24,14 @@
 <ng-container *ngTemplateOutlet="visualizarComentarios;context: { comentarios: listaComentarios }"></ng-container>
 
 <ng-template #visualizarComentarios let-comentarios="comentarios">
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;" *ngIf="comentarios.length== 0">
+    <img style="border-radius: 10px;" width="20%" src="assets\imagenes\undraw_no-data_ig65.png" alt="">
+    <!-- <img src="assets/imagenes/undraw_undraw_undraw_undraw_undraw_website_o7n3_bucy_30uo_-1-_d6br_0qfo.svg" alt=""> -->
+  </div>
+
   <ng-container *ngFor="let comentario of comentarios">
-    <div style="margin-bottom: 60px; background-color: rgb(255, 255, 255); border-radius: 10px; padding: 10px;" *ngIf="verComentarios">
+    <div class="contenedor-general-comentarios" *ngIf="verComentarios">
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
@@ -46,17 +52,19 @@
       <button *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length != null" class="mostrarRespuesta"
         (click)="toggleRespuestas(comentario)"> Mostrar respuestas ({{ comentario.listaRespuesta.length }}) </button>
       <!-- Botón para responder al comentario -->
-      <button class="botonResponder" *ngIf="comentario.usuarioId && comentario.usuarioId != idUsuarioActual"
+      <button [disabled]="comentario.eliminado" class="botonResponder"
+        *ngIf="comentario.usuarioId && comentario.usuarioId != idUsuarioActual"
         (click)="responderComentario(comentario)"> Responder </button>
-      <button class="botonResponder" *ngIf="comentario.usuarioId && comentario.usuarioId == idUsuarioActual"
-        (click)="editarComentario(comentario)"> Editar </button>
-      <button class="botonEliminar" (click)="eliminarComentario()"> Eliminar </button>
+      <button [disabled]="comentario.eliminado" class="botonResponder"
+        *ngIf="comentario.usuarioId && comentario.usuarioId == idUsuarioActual" (click)="editarComentario(comentario)">
+        Editar </button>
+      <button [disabled]="comentario.eliminado" class="botonEliminar" (click)="eliminarComentario()"> Eliminar </button>
       <div class="likeDislike">
         <div style="display: flex">
           <!-- <p *ngFor="let comentario of comentario.listaReaccion"> -->
           <div style="display: flex; margin-right: 20px">
             <!-- <input type="submit" value="Me gusta" (click)="megusta(comentario)" /> -->
-            <button class="botonLike" (click)="meGustaComentario(comentario)">
+            <button [disabled]="comentario.eliminado" class="botonLike" (click)="meGustaComentario(comentario)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                 <path
@@ -67,7 +75,7 @@
           </div>
           <div style="display: flex">
             <!-- <input type="submit" value="No me gusta" (click)="noMeGusta(comentario)" /> -->
-            <button class="botonLike" (click)="noMegustaComentario(comentario)">
+            <button [disabled]="comentario.eliminado" class="botonLike" (click)="noMegustaComentario(comentario)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                 <path
@@ -126,16 +134,18 @@
               *ngIf="respuesta.editado">(editado)</span></p>
         </div>
       </div>
-      <p style="font-weight: bold; color: rgb(28, 10, 10)"> {{ respuesta.mensaje }} </p>
+      <p  style="font-weight: bold;" [ngClass]="{ 'comentario-eliminado': respuesta.eliminado }"> {{ respuesta.mensaje }} </p>
       <!-- Botón para mostrar respuestas -->
       <button class="mostrarRespuesta" (click)="toggleRespuestasDelComentario(respuesta)"> Mostrar respuestas ({{
         respuesta.listaRespuesta?.length }}) </button>
       <!-- Botón para responder al comentario -->
-      <button class="botonResponder" *ngIf="respuesta.usuarioId && respuesta.usuarioId != idUsuarioActual"
-        (click)="responderRespuestas(respuesta)"> Responder </button>
-      <button class="botonResponder" *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual"
-        (click)="editarRespuesta(respuesta)"> Editar </button>
-      <button class="botonEliminar">Eliminar</button>
+      <button [disabled]="respuesta.eliminado" class="botonResponder"
+        *ngIf="respuesta.usuarioId && respuesta.usuarioId != idUsuarioActual" (click)="responderRespuestas(respuesta)">
+        Responder </button>
+      <button [disabled]="respuesta.eliminado" class="botonResponder"
+        *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual" (click)="editarRespuesta(respuesta)">
+        Editar </button>
+      <button [disabled]="respuesta.eliminado" class="botonEliminar">Eliminar</button>
       <div *ngIf="respuesta.mostrarFormularioEdicion" style="margin-top: 20px">
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="edicionRespuesta" rows="8" cols="50"
@@ -147,7 +157,7 @@
           <p *ngFor="let reaccion of respuesta.listaReaccion">
           <div style="display: flex; margin-right: 20px">
             <!-- <input type="submit" value="Me gusta" (click)="megustaRespuesta(respuesta)" /> -->
-            <button class="botonLike" (click)="megustaRespuesta(respuesta)">
+            <button [disabled]="respuesta.eliminado" class="botonLike" (click)="megustaRespuesta(respuesta)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                 <path
@@ -158,7 +168,7 @@
           </div>
           <div style="display: flex">
             <!-- <input type="submit" value="No me gusta" (click)="noMeGustaRespuesta(respuesta)" /> -->
-            <button class="botonLike" (click)="noMeGustaRespuesta(respuesta)">
+            <button [disabled]="respuesta.eliminado" class="botonLike" (click)="noMeGustaRespuesta(respuesta)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                 <path

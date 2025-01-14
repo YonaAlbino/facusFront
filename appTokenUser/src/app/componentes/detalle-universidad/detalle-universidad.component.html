@@ -4,9 +4,8 @@
     </div>
 
     <div class="row cabezera-descripcion align-items-center mb-4">
-        <div class="" style="display: flex; flex-direction: row; justify-content: center; width: 100%; height: 400px;">
-            <img style="width: 100%; object-fit: contain;" [src]="universidad.imagen" alt="Imagen de la universidad" />
-        </div>
+        <div class="imagen-repetida" [style.backgroundImage]="'url(' + universidad.imagen + ')'"></div>
+
         <div class="col-md-8" style="margin: auto;">
             <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
                 <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
@@ -40,7 +39,8 @@
     <div class="container contenedor-global">
         <div class="contenedor-cabecera mb-4">
             <div class="datos-basicos">
-                <h2>Info <button style="border: none; background-color: transparent; cursor: pointer;" (click)="mostrarInfo()">
+                <h2>Info <button style="border: none; background-color: transparent; cursor: pointer;"
+                        (click)="mostrarInfo()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                             class="bi bi-arrow-bar-down" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -48,7 +48,7 @@
                         </svg>
                     </button>
                 </h2>
-                <div  *ngIf="mostrarInfoBasica">
+                <div *ngIf="mostrarInfoBasica">
                     <p>
                         Sitio web:
                         <a [href]="universidad.direccionWeb" target="_blank">{{ universidad.direccionWeb }}</a>

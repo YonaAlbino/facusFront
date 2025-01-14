@@ -29,7 +29,7 @@
             <p class="usuario-id">ID de Usuario: {{respuestaBuscada?.usuarioId}}</p>
         </div>
         <div class="respuesta-actions">
-            <button class="btn eliminar">Eliminar</button>
+            <button class="btn eliminar" (click)="eliminarRespuesta(respuestaBuscada?.id)">Eliminar</button>
             <button class="btn eliminar-reportar" (click)="infraccionarUsuario(usuarioPropietario?.id)">
                 {{ usuarioPropietario?.infracciones === 3 ? 'Banear usuario' : 'Infraccionar usuario' }}
             </button>

@@ -15,4 +15,5 @@ export interface RespuestaDTO {
     username?:string;
     editado?: boolean;
     imagenUsuario?:string;
+    eliminado?:boolean;
 }

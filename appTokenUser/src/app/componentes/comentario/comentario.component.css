@@ -104,4 +104,17 @@
     color: #555;
   }
   
-  
+  .contenedor-general-comentarios{
+    margin-bottom: 60px; 
+    background-color: rgb(255, 255, 255); 
+    border-radius: 10px; 
+    padding: 10px; 
+    max-height: 600px; 
+    overflow-y: scroll;
+    border:  1px solid transparent;
+  }
+
+  .contenedor-general-comentarios:hover{
+    cursor: pointer;
+    border: 1px solid rgb(187, 187, 250);
+  }
