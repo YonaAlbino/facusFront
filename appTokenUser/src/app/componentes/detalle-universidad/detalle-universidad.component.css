@@ -156,3 +156,14 @@
     background-position: center;
   }
   
+  .btn-ver-puntuacion{
+    background-color: transparent; 
+    border-radius: 10px; 
+    padding: 10px
+  }
+
+  .btn-ver-puntuacion:hover{
+    background-color: #007bff;
+    color: white;
+    border: 2px solid white;
+  }

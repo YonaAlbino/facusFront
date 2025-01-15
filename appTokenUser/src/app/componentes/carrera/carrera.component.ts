@@ -21,6 +21,7 @@ export class CarreraComponent implements OnInit {
   idCalificacionEditar: number = 0;
   idUsuarioActual:number = 0;
   usuarioActual:UsuarioDTO | undefined;
+  actualizarComentarios:boolean = true;
 
   @Input() carrera!: CarreraDTO;
 
@@ -56,6 +57,7 @@ export class CarreraComponent implements OnInit {
 
 
   crearNuevoComentario(comentario: string) {
+    this.actualizarComentarios = false;
     const nuevoComentario = this.crearComentario(comentario);
     this.guardarComentario(nuevoComentario);
     this.nuevoComentario = "";
@@ -92,6 +94,7 @@ export class CarreraComponent implements OnInit {
       .subscribe((carreraEditada: CarreraDTO) => {
         console.log(this.carrera)
         this.carrera = carreraEditada;
+        this.actualizarComentarios = true;
       })
   }
 

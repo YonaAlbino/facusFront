@@ -21,7 +21,10 @@
 
 </div>
 
-<ng-container *ngTemplateOutlet="visualizarComentarios;context: { comentarios: listaComentarios }"></ng-container>
+
+<ng-container *ngIf="mostrarComentarios">
+  <ng-container *ngTemplateOutlet="visualizarComentarios;context: { comentarios: listaComentarios }"></ng-container>
+</ng-container>
 
 <ng-template #visualizarComentarios let-comentarios="comentarios">
 
@@ -58,7 +61,8 @@
       <button [disabled]="comentario.eliminado" class="botonResponder"
         *ngIf="comentario.usuarioId && comentario.usuarioId == idUsuarioActual" (click)="editarComentario(comentario)">
         Editar </button>
-      <button [disabled]="comentario.eliminado" class="botonEliminar" (click)="eliminarComentario()"> Eliminar </button>
+      <button *ngIf="comentario.usuarioId && comentario.usuarioId == idUsuarioActual" [disabled]="comentario.eliminado"
+        class="botonEliminar" (click)="eliminarComentario(comentario.id)"> Eliminar </button>
       <div class="likeDislike">
         <div style="display: flex">
           <!-- <p *ngFor="let comentario of comentario.listaReaccion"> -->
@@ -134,7 +138,8 @@
               *ngIf="respuesta.editado">(editado)</span></p>
         </div>
       </div>
-      <p  style="font-weight: bold;" [ngClass]="{ 'comentario-eliminado': respuesta.eliminado }"> {{ respuesta.mensaje }} </p>
+      <p style="font-weight: bold;" [ngClass]="{ 'comentario-eliminado': respuesta.eliminado }"> {{ respuesta.mensaje }}
+      </p>
       <!-- Botón para mostrar respuestas -->
       <button class="mostrarRespuesta" (click)="toggleRespuestasDelComentario(respuesta)"> Mostrar respuestas ({{
         respuesta.listaRespuesta?.length }}) </button>

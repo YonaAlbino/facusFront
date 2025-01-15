@@ -6,24 +6,34 @@
     <div class="row cabezera-descripcion align-items-center mb-4">
         <div class="imagen-repetida" [style.backgroundImage]="'url(' + universidad.imagen + ')'"></div>
 
-        <div class="col-md-8" style="margin: auto;">
-            <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
-                <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
-                <app-puntuacion [esEditable]="true" [idUsuario]="idUsuarioCalificacion"
-                    [idCalificacion]="idCalificacionEditar"
-                    (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+        <div class="col-md-8"
+            style="margin: auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="margin-top: 20px;">
+                <button (click)="mostrarInfoPuntuacion()" class="btn-ver-puntuacion">Ver puntuación</button>
             </div>
-            <ng-template #notEditable>
-                <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:</p>
-                <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
-            </ng-template>
 
-            <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0" class="text-center">
-                <span>
-                    <app-promedio-calificacion
-                        [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
-                </span>
-            </p>
+            <div *ngIf="infoPuntuacion">
+                <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
+                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:
+                    </p>
+                    <app-puntuacion  [esEditable]="true" [idUsuario]="idUsuarioCalificacion"
+                        [idCalificacion]="idCalificacionEditar"
+                        (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+                </div>
+                <ng-template #notEditable>
+                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:
+                    </p>
+                    <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
+                </ng-template>
+
+                <p *ngIf="universidad.listaCalificacion && universidad.listaCalificacion.length > 0"
+                    class="text-center">
+                    <span >
+                        <app-promedio-calificacion 
+                            [listaCalificacion]="universidad.listaCalificacion"></app-promedio-calificacion>
+                    </span>
+                </p>
+            </div>
         </div>
     </div>
     <div

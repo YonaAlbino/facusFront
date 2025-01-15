@@ -11,7 +11,7 @@
     <app-promedio-calificacion [listaCalificacion]="carrera.listaCalificacion!"></app-promedio-calificacion>
 </div>
 
-<app-comentario [carrera]="carrera"></app-comentario>
+<app-comentario *ngIf="actualizarComentarios" [carrera]="carrera"></app-comentario>
 
 <div>
     <div class="agregarComentario container">

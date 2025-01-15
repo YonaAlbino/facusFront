@@ -24,9 +24,17 @@ export class ComentarioComponent implements OnInit {
   imagenUsuario: string | undefined;
 
 
-  eliminarComentario() {
-    throw new Error('Method not implemented.');
+  eliminarComentario(id: number) {
+    this.comentarioService.eliminarComentario(id).subscribe(
+      () => {
+        console.log("comentario eliminado")
+        this.listaComentarios = this.listaComentarios.filter(comentario => comentario.id !== id);
+      }, (eror) => {
+        console.error(eror);
+      }
+    )
   }
+
   constructor(
     private carreraService: CarreraService,
     private userService: UsuarioService,
@@ -46,6 +54,7 @@ export class ComentarioComponent implements OnInit {
   edicionComentario: string | undefined;
   edicionRespuesta: string | undefined;
   cantidadComentarios: Number | undefined;
+  mostrarComentarios: boolean = true;
 
   @Input() Universidad: UniversidadDTO | undefined;
   @Input() carrera: CarreraDTO | undefined;

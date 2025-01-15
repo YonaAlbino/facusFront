@@ -17,7 +17,6 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 })
 export class DetalleUniversidadComponent implements OnInit {
 
-
   mostrarCarreraComponent: boolean = false;
   nuevoComentario: string = "";
   universidad!: UniversidadDTO;
@@ -31,6 +30,7 @@ export class DetalleUniversidadComponent implements OnInit {
   usuarioActual: UsuarioDTO | undefined;
   idCarrera?: number;
   mostrarInfoBasica: boolean = false;
+  infoPuntuacion: boolean = false;
 
   constructor(
     private uniService: UniversidadService,
@@ -96,6 +96,7 @@ export class DetalleUniversidadComponent implements OnInit {
     if (!calificacion.id == undefined) {
       if (this.universidad.listaCalificacion) {
         this.universidad.listaCalificacion.push(calificacion);
+        
         this.uniService.editUniversidad(this.universidad).subscribe(
           (universidad: UniversidadDTO) => {
           },
@@ -117,10 +118,6 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   private crearComentario(mensaje: string): ComentarioDTO {
-    // const usuario: UsuarioDTO = {
-    //     id: Number(localStorage.getItem('userID'))
-    // };
-
     return {
       mensaje: mensaje,
       usuarioId: Number(localStorage.getItem('userID')),
@@ -132,10 +129,6 @@ export class DetalleUniversidadComponent implements OnInit {
   private guardarComentario(comentario: ComentarioDTO): void {
     this.comentarioService.guardarComentario(comentario).subscribe(
       (comentarioGuardado: ComentarioDTO) => {
-        // const comentario:ComentarioDTO = {
-        //   id:comentarioGuardado.id,
-        //   //fecha:new Date().toISOString()
-        // }
         this.universidad.listaComentarios?.push(comentarioGuardado);
         this.actualizarUniversidad();
       }
@@ -191,8 +184,11 @@ export class DetalleUniversidadComponent implements OnInit {
     }
   }
 
-  mostrarInfo(){
+  mostrarInfo() {
     this.mostrarInfoBasica = !this.mostrarInfoBasica;
   }
 
+  mostrarInfoPuntuacion() {
+    this.infoPuntuacion = !this.infoPuntuacion;
+  }
 }
