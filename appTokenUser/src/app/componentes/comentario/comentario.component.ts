@@ -98,7 +98,10 @@ export class ComentarioComponent implements OnInit {
   actualizarComentario(comentarioAguardar: ComentarioDTO) {
     this.comentarioService
       .editComentario(comentarioAguardar)
-      .subscribe((comentario: ComentarioDTO) => { });
+      .subscribe((comentario: ComentarioDTO) => {
+        this.cargarImagenUsuarioComentario(comentario.listaRespuesta!);
+      });
+
   }
 
   //Metodo para actualizar la lista de respuestas del la respuesta de un comentario
@@ -163,6 +166,14 @@ export class ComentarioComponent implements OnInit {
     respuesta.mostrarFormularioEdicion = !respuesta.mostrarFormularioEdicion;
   }
 
+  eliminarRespuesta(respuesta: RespuestaDTO) {
+    this.respuestaService.eliminarRespuesta(respuesta.id!).subscribe(
+      () => {
+        window.location.reload();
+      }
+    )
+  }
+
   rellenarCampoEdicionRespuesta(contenidoRespuesta: string) {
     this.edicionRespuesta = contenidoRespuesta;
   }
@@ -200,15 +211,24 @@ export class ComentarioComponent implements OnInit {
     this.crearRespuesta(this.respuestaDesdeElInput!).subscribe(
       (respuesta: RespuestaDTO) => {
         // respuesta.listaRespuesta = [];
-        console.log(respuesta)
+        comentario.listaRespuesta?.forEach(respuesta => {
+          this.buscarImagenUsuario(respuesta.usuarioId!).then(
+            (url) => {
+              respuesta.imagenUsuario = url;
+            },
+            (error) => {
+              console.error('Error al buscar imagen:', error);
+            }
+          );
+        });
         comentario.listaRespuesta?.push(respuesta);
         this.actualizarComentario(comentario);
       }
     );
 
     this.respuestaDesdeElInput = '';
-    comentario.mostrarFormularioRespuesta = false;
-    comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
+   comentario.mostrarFormularioRespuesta = false;
+   // comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
   }
 
   //Metodo para crear una nueva instancia de una Respuesta

@@ -38,9 +38,10 @@ export class AgregarUniversidadComponent implements OnInit {
   imagenCargada: boolean = false;
   listaCarrerasUniversidad: CarreraDTO[] = [];
   listaCalificacionUniversidad: CalificacionDTO[] = [];
-
-
+  universidadNoEncontrada = false;
+  universidad: UniversidadDTO | undefined;
   imagenPorDefecto: string = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrtrI3kER6PYUADR5tjXQtwVvqj4kjiDZgRUf1SFWNQ&s";
+  buscarUniversidad:boolean = false;
 
   iniciarFormAltaUniversidad(): FormGroup {
     return this.fb.group({
@@ -161,4 +162,31 @@ export class AgregarUniversidadComponent implements OnInit {
   manejadorExitoImagenUniversdiad() {
     this.imagenCargada = false;
   }
+
+  manejarUniversidadesEncontradas(universidades: UniversidadDTO[]) {
+    if (universidades.length > 0) {
+      this.universidad = universidades[0];
+      this.universidadNoEncontrada = false;
+    } else {
+      this.mostrarMensajeUniversidadNoEncontrada();
+    }
+  }
+
+
+  private mostrarMensajeUniversidadNoEncontrada() {
+    this.universidadNoEncontrada = true;
+    setTimeout(() => {
+      this.universidadNoEncontrada = false;
+    }, 3000);
+  }
+
+  manejarImagenNoCargada(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  }
+
+  mostrarUnversidadBuscada(){
+    this.buscarUniversidad = !this.buscarUniversidad;
+  }
+
 }

@@ -59,7 +59,12 @@ export class RespuestaService implements OnInit {
     return this.http.put(this.rutaBase + this.rutaEndpoint, respuestaClass);
   }
 
-  findRespuestaById(id:number):Observable<RespuestaDTO>{
+  findRespuestaById(id: number): Observable<RespuestaDTO> {
     return this.http.get<RespuestaDTO>(this.rutaBase + this.rutaEndpoint + "/" + id);
+  }
+
+
+  eliminarRespuesta(id: number): Observable<string> {
+    return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);
   }
 }

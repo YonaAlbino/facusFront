@@ -94,3 +94,90 @@
     transform: translateY(-50%); /* Ajustar verticalmente al centro */
     color: #999; /* Color del icono */
 }
+
+.btn-buscar{
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+    cursor: pointer;
+}
+.contenedor-advertencia{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    max-width: 300px; /* Limita el ancho para que no ocupe mucho espacio */
+    margin: 0 auto; /* Centra la tarjeta */
+    border: 1px solid #ddd; /* Agrega un borde sutil */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    overflow: hidden; /* Asegura que el contenido no sobresalga */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animaciones suaves */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Sutil efecto de elevación al pasar el cursor */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Sombra más destacada */
+}
+
+.card-img-top {
+    max-height: 150px; /* Controla la altura de la imagen */
+    object-fit: cover; /* Asegura que la imagen se recorte sin deformarse */
+}
+
+.card-body {
+    padding: 15px; /* Ajusta el espaciado interno */
+    font-family: 'Arial', sans-serif; /* Fuente limpia */
+}
+
+.card-title {
+    font-size: 1.2rem; /* Tamaño adecuado para el título */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 0.9rem; /* Fuente más pequeña para el texto */
+    color: #555; /* Color de texto sutil */
+    margin-bottom: 10px;
+}
+
+.card-link {
+    font-size: 0.85rem; /* Fuente más pequeña para el enlace */
+    color: #007bff; /* Color azul para enlaces */
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: underline; /* Subrayado al pasar el cursor */
+}
+
+.btn-group .btn {
+    font-size: 0.85rem; /* Botones compactos */
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
+
+.card-body .card-text {
+    font-size: 0.95rem;
+    color: #555;
+    display: -webkit-box;
+    /* Habilita el modo de diseño flexible para WebKit */
+    -webkit-line-clamp: 3;
+    /* Número máximo de líneas visibles */
+    -webkit-box-orient: vertical;
+    /* Configura la orientación en vertical */
+    overflow: hidden;
+    /* Oculta el contenido que se desborda */
+    text-overflow: ellipsis;
+    /* Muestra puntos suspensivos (...) */
+    word-wrap: break-word;
+    /* Permite que las palabras se dividan si son demasiado largas */
+    white-space: normal;
+    /* Permite los saltos de línea */
+  }
+  
