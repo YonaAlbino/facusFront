@@ -5,6 +5,7 @@ import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
@@ -39,7 +40,8 @@ export class DetalleUniversidadComponent implements OnInit {
     // private respuestaService: RespuestaService, 
     private router: Router,
     private carreraService: CarreraService,
-    private userService: UsuarioService
+    private userService: UsuarioService,
+    private alertaService:AlertasService
     //private alertas: AlertasService
   ) { }
 
@@ -141,6 +143,7 @@ export class DetalleUniversidadComponent implements OnInit {
       (universidadActualizada: UniversidadDTO) => {
         this.universidad = universidadActualizada;
         this.recargaComponenteComentario = true;
+        this.alertaService.exito("¡Comentario agregado con exito!")
         // this.alertas.alertaExito("Comentario guardado");
       }
     );

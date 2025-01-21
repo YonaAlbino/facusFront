@@ -7,6 +7,7 @@ import { ReaccionDTO } from 'src/app/modelo/ReaccionDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
@@ -14,6 +15,7 @@ import { ReaccionService } from 'src/app/servicios/reaccion.service';
 import { RespuestaService } from 'src/app/servicios/respuesta.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-comentario',
@@ -23,26 +25,16 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 export class ComentarioComponent implements OnInit {
   imagenUsuario: string | undefined;
 
-
-  eliminarComentario(id: number) {
-    this.comentarioService.eliminarComentario(id).subscribe(
-      () => {
-        console.log("comentario eliminado")
-        this.listaComentarios = this.listaComentarios.filter(comentario => comentario.id !== id);
-      }, (eror) => {
-        console.error(eror);
-      }
-    )
-  }
-
   constructor(
     private carreraService: CarreraService,
     private userService: UsuarioService,
     private comentarioService: ComentarioService,
     private respuestaService: RespuestaService,
     private reaccionService: ReaccionService,
-    private universidadService: UniversidadService
+    private universidadService: UniversidadService,
+    private alertaService: AlertasService
   ) { }
+
 
   respuestaDeLaRespuestaDelComentario: string | undefined;
   comentario: string | undefined;
@@ -82,9 +74,20 @@ export class ComentarioComponent implements OnInit {
         }
       );
     }
-
-
   }
+
+  eliminarComentario(id: number) {
+    this.alertaService.mostrarDialogoDeConfirmacion(() => {
+      this.comentarioService.eliminarComentario(id).subscribe(
+        () => {
+          this.listaComentarios = this.listaComentarios.filter(comentario => comentario.id !== id);
+        }, (eror) => {
+          console.error(eror);
+        }
+      )
+    })
+  }
+
 
   //Metodo para crear una nueva instancia de un Comentario
   crearComentario(mensaje: string): ComentarioDTO {
@@ -100,6 +103,7 @@ export class ComentarioComponent implements OnInit {
       .editComentario(comentarioAguardar)
       .subscribe((comentario: ComentarioDTO) => {
         this.cargarImagenUsuarioComentario(comentario.listaRespuesta!);
+
       });
 
   }
@@ -167,11 +171,13 @@ export class ComentarioComponent implements OnInit {
   }
 
   eliminarRespuesta(respuesta: RespuestaDTO) {
-    this.respuestaService.eliminarRespuesta(respuesta.id!).subscribe(
-      () => {
-        window.location.reload();
-      }
-    )
+    this.alertaService.mostrarDialogoDeConfirmacion(() => {
+      this.respuestaService.eliminarRespuesta(respuesta.id!).subscribe(
+        () => {
+          window.location.reload();
+        }
+      )
+    })
   }
 
   rellenarCampoEdicionRespuesta(contenidoRespuesta: string) {
@@ -196,6 +202,7 @@ export class ComentarioComponent implements OnInit {
       (respuestaGuardada: RespuestaDTO) => {
         respuesta.listaRespuesta?.push(respuestaGuardada);
         this.actualizarRespuesta(respuesta);
+        this.alertaService.exito("¡Respuesta agregada!")
       },
       (error) => {
         console.error(error);
@@ -223,12 +230,13 @@ export class ComentarioComponent implements OnInit {
         });
         comentario.listaRespuesta?.push(respuesta);
         this.actualizarComentario(comentario);
+        this.alertaService.exito("¡Respuesta agregada!")
       }
     );
 
     this.respuestaDesdeElInput = '';
-   comentario.mostrarFormularioRespuesta = false;
-   // comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
+    comentario.mostrarFormularioRespuesta = false;
+    // comentario.mostrarRespuestas = !comentario.mostrarRespuestas;
   }
 
   //Metodo para crear una nueva instancia de una Respuesta

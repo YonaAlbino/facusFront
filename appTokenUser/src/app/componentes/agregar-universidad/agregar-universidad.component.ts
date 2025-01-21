@@ -6,6 +6,7 @@ import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
 import { UsuarioLeidoDTO } from 'src/app/modelo/UsuarioLeidoDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 
 
 import { CarreraService } from 'src/app/servicios/carrera.service';
@@ -23,7 +24,8 @@ export class AgregarUniversidadComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router,
     private carreraService: CarreraService,
     private universidadService: UniversidadService,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private alertasService:AlertasService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('userRole') == null)
@@ -42,6 +44,7 @@ export class AgregarUniversidadComponent implements OnInit {
   universidad: UniversidadDTO | undefined;
   imagenPorDefecto: string = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrtrI3kER6PYUADR5tjXQtwVvqj4kjiDZgRUf1SFWNQ&s";
   buscarUniversidad:boolean = false;
+  universidadCreada: UniversidadDTO | undefined;
 
   iniciarFormAltaUniversidad(): FormGroup {
     return this.fb.group({
@@ -98,6 +101,8 @@ export class AgregarUniversidadComponent implements OnInit {
       next: (universidadCreada: UniversidadDTO) => {
         this.agregarUniversidadAUsuario(universidadCreada, userId);
         this.asociarCarrerasAuniversidad(universidadCreada);
+        this.alertasService.exito("¡Universidad agregada con exito!");
+        this.universidadCreada = universidadCreada;
       },
       error: (err) => console.error('Error al crear la universidad:', err)
     });
@@ -126,11 +131,6 @@ export class AgregarUniversidadComponent implements OnInit {
   }
 
 
-
-  // mostrarCamposAgregarCarrera() {
-  //   this.visualizarCamposCarrera = !this.visualizarCamposCarrera;
-  // }
-
   agregarCarreras() {
     const carrera: CarreraDTO = {
       activa: true,
@@ -141,6 +141,7 @@ export class AgregarUniversidadComponent implements OnInit {
 
     this.carreraService.crearCarrera(carrera).subscribe((carreraCreada) => {
       this.listaCarrerasUniversidad.push(carreraCreada);
+      this.alertasService.exito("¡Carrera creada con exito!");
     });
 
     this.formularioAltaUniversidad.patchValue({

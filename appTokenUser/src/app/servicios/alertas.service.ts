@@ -21,45 +21,6 @@ export class AlertasService {
     });
   }
 
-  // async modalAgregarCarrera(): Promise<void> {
-  //   const { value: formValues } = await Swal.fire({
-  //     title: "Agregar carrera",
-  //     html: `
-  //     <style>
-  //       .swal2-input {
-  //         width: 100%;
-  //         padding: 10px;
-  //         margin: 10px 0;
-  //         box-sizing: border-box;
-  //         border: 1px solid #ccc;
-  //         border-radius: 4px;
-  //       }
-  //       label {
-  //         display: block;
-  //         font-weight: bold;
-  //         margin-bottom: 5px;
-  //       }
-  //     </style>
-  //     <label for="swal-input1">Nombre de la carrera:</label>
-  //     <input id="swal-input1" class="swal2-input" placeholder="Ejemplo: Ingeniería en Sistemas">
-  //     <label for="swal-input2">Grado de la carrera:</label>
-  //     <input id="swal-input2" class="swal2-input" placeholder="Ejemplo: Superior">
-  //     <label for="swal-input2">Duración de la carrera:</label>
-  //     <input id="swal-input2" class="swal2-input" placeholder="Ejemplo: 5 años">
-  //   `,
-  //     focusConfirm: false,
-  //     preConfirm: () => {
-  //       const input1 = (document.getElementById("swal-input1") as HTMLInputElement).value;
-  //       const input2 = (document.getElementById("swal-input2") as HTMLInputElement).value;
-  //       return [input1, input2];
-  //     }
-  //   });
-
-  //   if (formValues) {
-  //     Swal.fire(JSON.stringify(formValues));
-  //   }
-  // }
-
 
   async modalAgregarCarrera(iduniversidad: number): Promise<Observable<UniversidadDTO>> {
     const { value: carrera } = await Swal.fire({
@@ -132,6 +93,79 @@ export class AlertasService {
     };
   }
 
+  public exito(titulo: string) {
+    Swal.fire({
+      title: titulo,
+      icon: "success",
+      draggable: true
+    });
+  }
+
+  public ventanaEmergente(titulo: string) {
+    Swal.fire({
+      title: titulo,
+      showClass: {
+        popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `
+      },
+      hideClass: {
+        popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `
+      }
+    });
+  }
+
+  public mostrarDialogoDeConfirmacion(callback: () => void): void {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "¡Sí, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Ejecutar el callback
+        callback();
+        // Mostrar confirmación
+        Swal.fire({
+          title: "¡Eliminado!",
+          text: "Tu archivo ha sido eliminado.",
+          icon: "success",
+        });
+      }
+    });
+  }
+
+  public mostrarDialogoDeConfirmacionParametros(texto:string,callback: () => void): void {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: texto,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "¡Sí, continuar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Ejecutar el callback
+        callback();
+        // Mostrar confirmación
+        Swal.fire({
+          title: "Hecho!",
+          text: "Tu archivo ha sido modificado.",
+          icon: "success",
+        });
+      }
+    });
+  }
 
 
 }

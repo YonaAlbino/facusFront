@@ -16,7 +16,7 @@ export class EdicionUniversidadComponent implements OnInit {
   universidadForm: FormGroup;
   universidadBuscada: UniversidadDTO | undefined;
   idCarreraEliminar: number = 0;
-  eliminar:boolean = false;
+  eliminar: boolean = false;
 
   constructor(private route: ActivatedRoute, private universidadService: UniversidadService,
     private alertas: AlertasService, private fb: FormBuilder, private router: Router, private carreraService: CarreraService) {
@@ -58,11 +58,13 @@ export class EdicionUniversidadComponent implements OnInit {
 
   onSubmit(): void {
     if (this.universidadForm.valid) {
-      this.completarCamposAeditar();
-      this.universidadService.editUniversidad(this.universidadBuscada!).subscribe(
-        (universidadEditada: UniversidadDTO) => {
-          this.router.navigate(["/"])
-        });
+      this.alertas.mostrarDialogoDeConfirmacionParametros("Estas por editar la universidad",() => {
+        this.completarCamposAeditar();
+        this.universidadService.editUniversidad(this.universidadBuscada!).subscribe(
+          (universidadEditada: UniversidadDTO) => {
+            this.router.navigate(["/"])
+          });
+      })
     } else {
       alert('Por favor, llena todos los campos correctamente');
     }
@@ -79,13 +81,15 @@ export class EdicionUniversidadComponent implements OnInit {
   }
 
   eliminarUniversidad() {
-    this.universidadService.eliminarUniversidad(this.idUniversidad).subscribe(
-      () => {
-        this.router.navigate(['/']);
-      }, (error) => {
-        console.error(error);
-      }
-    )
+    this.alertas.mostrarDialogoDeConfirmacion(() => {
+      this.universidadService.eliminarUniversidad(this.idUniversidad).subscribe(
+        () => {
+          this.router.navigate(['/']);
+        }, (error) => {
+          console.error(error);
+        }
+      )
+    })
   }
 
   onCarreraChange(event: Event): void {
@@ -100,17 +104,19 @@ export class EdicionUniversidadComponent implements OnInit {
   }
 
   eliminarCarrera() {
-    this.carreraService.eliminarCarrera(this.idCarreraEliminar).subscribe(
-      () => {
-        console.log("carrera eliminada");
-        window.location.reload();
-      }, (error) => {
-        console.error(error)
-      }
-    )
+    this.alertas.mostrarDialogoDeConfirmacion(() => {
+      this.carreraService.eliminarCarrera(this.idCarreraEliminar).subscribe(
+        () => {
+          console.log("carrera eliminada");
+          window.location.reload();
+        }, (error) => {
+          console.error(error)
+        }
+      )
+    })
   }
 
-  habilitarEliminacion(){
+  habilitarEliminacion() {
     this.eliminar = !this.eliminar;
   }
 

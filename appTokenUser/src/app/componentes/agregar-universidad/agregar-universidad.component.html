@@ -2,7 +2,7 @@
     <form [formGroup]="formularioAltaUniversidad" (ngSubmit)="enviarFormulario($event)"
         class="d-flex align-items-center">
         <div class="contenedorGlobal container">
-            <p>{{indice + "/7"}}</p>
+            <p style="text-align: center; font-weight: bold; font-size: 20px;">{{indice + "/7"}}</p>
             <div class="contenedorHijo container">
                 <div *ngIf="indice === 1" class="caja">
                     <div class="contenedor-advertencia">
@@ -40,8 +40,6 @@
                         Este campo necesita un mínimo de 4 caracteres
                     </div>
                 </div>
-
-
 
                 <div *ngIf="indice === 2" class="caja">
                     <div class="titulo">
@@ -93,7 +91,7 @@
 
                 <div *ngIf="indice === 4" class="descripcion">
                     <div class="titulo text-center" style="margin: auto">
-                        <h1 >Ingresa una descripción sobre la universidad</h1>
+                        <h1>Ingresa una descripción sobre la universidad</h1>
                     </div>
                     <div class="campoDescripcion">
                         <textarea class="form-control" placeholder="Descripción" rows="4"
@@ -185,6 +183,13 @@
                         <input [disabled]="formularioAltaUniversidad.invalid" class="btn btn-primary" type="submit"
                             value="Enviar" style="margin-left: 5px;" />
                     </div>
+
+                    <div *ngIf="universidadCreada" style="margin-top: 20px;">
+                        <a [routerLink]="['/detalleUniversidad', universidadCreada?.id]" class="btn btn-outline-primary">
+                            {{universidadCreada?.nombre}}
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
