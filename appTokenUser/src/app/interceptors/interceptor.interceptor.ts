@@ -15,6 +15,7 @@ import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
 
 import { ErrorServiceService } from '../servicios/error-service.service';
 import { UsuarioDTO } from '../modelo/UsuarioDTO';
+import { AlertasService } from '../servicios/alertas.service';
 
 @Injectable()
 export class InterceptorInterceptor implements HttpInterceptor {
@@ -23,7 +24,8 @@ export class InterceptorInterceptor implements HttpInterceptor {
     private router: Router,
     private util: UtilService,
     private usuarioService: UsuarioService,
-    private errorService: ErrorServiceService
+    private errorService: ErrorServiceService,
+    private alertaService:AlertasService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -77,7 +79,6 @@ export class InterceptorInterceptor implements HttpInterceptor {
     return this.usuarioService.getIdRefreshToken(idUsuario).pipe(
       switchMap((usuario: UsuarioDTO) => {
         const refreshToken = usuario.refreshToken?.token;
-        console.log(refreshToken)
         // Si no hay refresh token, se lanza un error.
         if (!refreshToken) {
           return throwError(() => new Error('No hay refresh token disponible'));
@@ -109,28 +110,62 @@ export class InterceptorInterceptor implements HttpInterceptor {
       })
     );
   }
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 401) {
+
+
+  // private handleError(error: HttpErrorResponse): Observable<never> {
+  //   if (error.status === 401) {
+  //     this.util.cuentaAtras("El token ha expirado, necesitas volver a iniciar sesión", 3000, () => {
+  //       this.router.navigate(['/loguin']);
+  //     });
+  //   }
+
+  //   let mensajeError = 'Error desconocido';
+
+  //   if (error.error instanceof ErrorEvent) {
+  //     mensajeError = `Error del cliente: ${error.error.message}`;
+  //   } else {
+  //     mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
+  //   }
+
+  //   // Llama a reportError con el mensaje de error detallado
+  //   this.errorService.reportError(mensajeError);
+
+  //   // Si el error es un 401
+
+  //   return throwError(() => new Error(mensajeError));
+  // }
+
+  private handleError(httpResponse: HttpErrorResponse): Observable<never> {
+    let mensajeError = 'Ocurrió un error desconocido';
+
+    if (httpResponse.error instanceof ErrorEvent) {
+      // Error del cliente
+      mensajeError = `Error del cliente: ${httpResponse.error.message}`;
+    } else if (httpResponse.error && httpResponse.error.code && httpResponse.error.message) {
+      // Error del servidor con código y mensaje personalizado
+      mensajeError = `Código ${httpResponse.error.code}: ${httpResponse.error.message}`;
+    } else {
+      // Error genérico del servidor
+      mensajeError = `Error del servidor: ${httpResponse.status} - ${httpResponse.message}`;
+    }
+
+    // Manejo de errores específicos según el código personalizado
+    if (httpResponse.error?.code === 401) {
       this.util.cuentaAtras("El token ha expirado, necesitas volver a iniciar sesión", 3000, () => {
         this.router.navigate(['/loguin']);
       });
-    }
+    } 
 
-    let mensajeError = 'Error desconocido';
+    // Registrar el error en el servicio de errores
+   // this.errorService.reportError(mensajeError);
 
-    if (error.error instanceof ErrorEvent) {
-      mensajeError = `Error del cliente: ${error.error.message}`;
-    } else {
-      mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
-    }
+    // Mostrar un mensaje amigable al usuario si es necesario
+    this.alertaService.error(mensajeError);
 
-    // Llama a reportError con el mensaje de error detallado
-    this.errorService.reportError(mensajeError);
-
-    // Si el error es un 401
-
+    // Lanzar el error para que los componentes puedan reaccionar si es necesario
     return throwError(() => new Error(mensajeError));
   }
+
 
 
 }

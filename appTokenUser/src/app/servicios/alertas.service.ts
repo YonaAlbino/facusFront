@@ -144,7 +144,7 @@ export class AlertasService {
     });
   }
 
-  public mostrarDialogoDeConfirmacionParametros(texto:string,callback: () => void): void {
+  public mostrarDialogoDeConfirmacionParametros(texto: string, callback: () => void): void {
     Swal.fire({
       title: "¿Estás seguro?",
       text: texto,
@@ -167,5 +167,12 @@ export class AlertasService {
     });
   }
 
-
+  public error(mensaje:string) {
+    Swal.fire({
+      icon: "error",
+      title: "Algo salio mal",
+      text: mensaje,
+     // footer: '<a href="#">Why do I have this issue?</a>'
+    });
+  }
 }
