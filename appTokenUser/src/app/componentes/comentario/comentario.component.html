@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="!comentarioHilo" class="container">
   <div id="comentariosContainer" class="comentarios-container">
     <ng-container *ngIf="Universidad">
       <h3 class="comentarios-titulo">
@@ -115,7 +115,7 @@
   </ng-container>
 </ng-template>
 
-<div class="container" style="display: flex; justify-content: center; margin-bottom: 60px;">
+<div *ngIf="!comentarioHilo" class="container" style="display: flex; justify-content: center; margin-bottom: 60px;">
   <input class="btn btn-primary" [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
     (click)="cargarComentarios()" />
   <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar"

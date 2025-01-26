@@ -14,6 +14,8 @@ export interface NotificacionDTO {
     respuesta?: boolean;
     fecha?: string;
     publicacionComentada?:boolean;
+    respuestaComentarioRecibida?:boolean;
+    respuestaAunaRespuesta?:boolean;
     // Representa solo los IDs de los usuarios en la lista
     listaUsuariosIds?: number[];
   

@@ -25,7 +25,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
     private util: UtilService,
     private usuarioService: UsuarioService,
     private errorService: ErrorServiceService,
-    private alertaService:AlertasService
+    private alertaService: AlertasService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -99,7 +99,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
           catchError(error => {
             // Si la renovación del token falla, redirigimos al usuario a la página de login.
             this.handleError(error);
-            return throwError(() => new Error('Error al renovar el token'));
+            return throwError(() => new Error('El token ha expirado, necesitas voler a loguarte'));
           })
         );
       }),
@@ -112,28 +112,6 @@ export class InterceptorInterceptor implements HttpInterceptor {
   }
 
 
-  // private handleError(error: HttpErrorResponse): Observable<never> {
-  //   if (error.status === 401) {
-  //     this.util.cuentaAtras("El token ha expirado, necesitas volver a iniciar sesión", 3000, () => {
-  //       this.router.navigate(['/loguin']);
-  //     });
-  //   }
-
-  //   let mensajeError = 'Error desconocido';
-
-  //   if (error.error instanceof ErrorEvent) {
-  //     mensajeError = `Error del cliente: ${error.error.message}`;
-  //   } else {
-  //     mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
-  //   }
-
-  //   // Llama a reportError con el mensaje de error detallado
-  //   this.errorService.reportError(mensajeError);
-
-  //   // Si el error es un 401
-
-  //   return throwError(() => new Error(mensajeError));
-  // }
 
   private handleError(httpResponse: HttpErrorResponse): Observable<never> {
     let mensajeError = 'Ocurrió un error desconocido';
@@ -150,14 +128,14 @@ export class InterceptorInterceptor implements HttpInterceptor {
     }
 
     // Manejo de errores específicos según el código personalizado
-    if (httpResponse.error?.code === 401) {
-      this.util.cuentaAtras("El token ha expirado, necesitas volver a iniciar sesión", 3000, () => {
-        this.router.navigate(['/loguin']);
-      });
+    if (httpResponse.error?.code === 401 || httpResponse.status == 401) {
+      //console.log(mensajeError)
+      this.alertaService.error("El token ha expirado, necesitas volver a loguarte");
+      this.router.navigate(['/loguin']);
     } 
 
     // Registrar el error en el servicio de errores
-   // this.errorService.reportError(mensajeError);
+    // this.errorService.reportError(mensajeError);
 
     // Mostrar un mensaje amigable al usuario si es necesario
     this.alertaService.error(mensajeError);

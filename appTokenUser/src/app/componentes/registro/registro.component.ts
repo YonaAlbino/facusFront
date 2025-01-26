@@ -15,7 +15,7 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     const idUsuario = localStorage.getItem('userID');
-    if(idUsuario)
+    if (idUsuario)
       this.router.navigate(['']);
   }
 
@@ -29,8 +29,8 @@ export class RegistroComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private pruebaService: PruebaService, private router: Router) {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, this.fortalezaContrasenias]],
+      email: ['', [Validators.required, Validators.email, this.sinEspacios]],
+      password: ['', [Validators.required, this.fortalezaContrasenias, this.sinEspacios]],
       repeatPassword: ['', Validators.required],
       showPassword: [false],
       recaptcha: ['', Validators.required] // Agregar campo de reCAPTCHA
@@ -43,6 +43,13 @@ export class RegistroComponent implements OnInit {
     const repeatPassword = form.get('repeatPassword')?.value;
     return password === repeatPassword ? null : { concidencia: true };
   }
+
+  //validacion para evitar espacios en blanco
+  sinEspacios(control: AbstractControl): ValidationErrors | null {
+    const tieneEspacios = /\s/.test(control.value); // Verifica si hay espacios en blanco
+    return tieneEspacios ? { sinEspacios: true } : null; // Retorna error si hay espacios
+  }
+
 
   // Validación personalizada para la fortaleza de la contraseña
   fortalezaContrasenias(control: AbstractControl): ValidationErrors | null {
@@ -57,12 +64,14 @@ export class RegistroComponent implements OnInit {
 
   // Método que se ejecuta cuando se envía el formulario
   enviar() {
-    if (this.registerForm.valid && this.tokenCaptcha) { 
+    if (this.registerForm.valid && this.tokenCaptcha) {
       this.cargando = true;
+      const email = this.registerForm.get('email')?.value?.trim(); // Eliminar espacios
+      const pass = this.registerForm.get('password')?.value.trim();
       const registroRequest: RegistroRequest = {
         captchaToken: this.tokenCaptcha, // Token obtenido del reCAPTCHA
-        email: this.registerForm.get('email')?.value,
-        contrasenia: this.registerForm.get('password')?.value // Corregido el campo 'contrasenia'
+        email: email,
+        contrasenia: pass
       }
 
       // Llamada al servicio de registro
@@ -95,7 +104,7 @@ export class RegistroComponent implements OnInit {
   // Método que se ejecuta cuando el reCAPTCHA es resuelto
   onCaptchaResolved($event: string) {
     this.tokenCaptcha = $event;
-  
+
     this.registerForm.get('recaptcha')?.setValue(this.tokenCaptcha);
     this.registerForm.get('recaptcha')?.markAsTouched();  // Marcar como tocado
   }

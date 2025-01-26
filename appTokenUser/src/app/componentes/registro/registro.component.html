@@ -8,6 +8,9 @@
       <div class="error-message" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
         <span *ngIf="registerForm.get('email')?.errors?.['required']">El email es obligatorio.</span>
         <span *ngIf="registerForm.get('email')?.errors?.['email']">Formato de email inválido.</span>
+        <span *ngIf="registerForm.get('email')?.hasError('sinEspacios') && registerForm.get('email')?.touched">
+          La dirección de correo no debe tener espacios en blanco
+        </span>
       </div>
     </div>
 
@@ -19,6 +22,9 @@
         <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
         <span *ngIf="registerForm.get('password')?.errors?.['contraseniaValida']">
           La contraseña debe contener al menos una mayúscula, un número y un carácter especial.
+        </span>
+        <span *ngIf="registerForm.get('password')?.hasError('sinEspacios') && registerForm.get('password')?.touched">
+          La contraseña no debe tener espacios en blanco
         </span>
       </div>
     </div>

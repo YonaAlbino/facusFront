@@ -3,6 +3,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { ComentarioDTO } from 'src/app/modelo/ComentarioDTO';
 import { ImagenUsuario } from 'src/app/modelo/imagen-usuario';
+import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
 import { ReaccionDTO } from 'src/app/modelo/ReaccionDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
@@ -11,6 +12,7 @@ import { AlertasService } from 'src/app/servicios/alertas.service';
 
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
+import { NotificacionService } from 'src/app/servicios/notificacion.service';
 import { ReaccionService } from 'src/app/servicios/reaccion.service';
 import { RespuestaService } from 'src/app/servicios/respuesta.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
@@ -32,7 +34,8 @@ export class ComentarioComponent implements OnInit {
     private respuestaService: RespuestaService,
     private reaccionService: ReaccionService,
     private universidadService: UniversidadService,
-    private alertaService: AlertasService
+    private alertaService: AlertasService,
+    private notificacionService: NotificacionService
   ) { }
 
 
@@ -50,6 +53,7 @@ export class ComentarioComponent implements OnInit {
 
   @Input() Universidad: UniversidadDTO | undefined;
   @Input() carrera: CarreraDTO | undefined;
+  @Input() comentarioHilo: ComentarioDTO | undefined;
   idUsuarioActual: number | undefined;
 
   ngOnInit(): void {
@@ -73,6 +77,11 @@ export class ComentarioComponent implements OnInit {
           this.cantidadComentarios = cantidadComentarios
         }
       );
+    }
+
+    if (this.comentarioHilo) {
+      this.cargarImagenUsuarioDeUnComentario(this.comentarioHilo);
+      this.listaComentarios = [this.comentarioHilo];
     }
   }
 
@@ -203,6 +212,11 @@ export class ComentarioComponent implements OnInit {
         respuesta.listaRespuesta?.push(respuestaGuardada);
         this.actualizarRespuesta(respuesta);
         this.alertaService.exito("¡Respuesta agregada!")
+        this.notificacionService.notificarRespuestaRecibidaAUnaRespuesta(respuesta.usuarioId!, respuesta.id!, respuestaGuardada.id!).subscribe(
+          (mensajeRetornoSimple: MensajeRetornoSimple) => {
+            console.log(mensajeRetornoSimple.mensaje);
+          }
+        )
       },
       (error) => {
         console.error(error);
@@ -231,6 +245,11 @@ export class ComentarioComponent implements OnInit {
         comentario.listaRespuesta?.push(respuesta);
         this.actualizarComentario(comentario);
         this.alertaService.exito("¡Respuesta agregada!")
+        this.notificacionService.notificarRespuestaRecibidaAcomentario(comentario.usuarioId!, comentario.id!, respuesta.id!).subscribe(
+          (mensajeRetornoSimple: MensajeRetornoSimple) => {
+            console.log(mensajeRetornoSimple.mensaje)
+          }
+        )
       }
     );
 
@@ -339,6 +358,18 @@ export class ComentarioComponent implements OnInit {
         }
       );
     })
+  }
+
+
+  cargarImagenUsuarioDeUnComentario(comentario: ComentarioDTO) {
+    this.buscarImagenUsuario(comentario.usuarioId!).then(
+      (url) => {
+        comentario.imagenUsuario = url;
+      },
+      (error) => {
+        console.error('Error al buscar imagen:', error);
+      }
+    );
   }
 
   //Metodo para cargar comentarios paginados

@@ -6,6 +6,7 @@ import { catchError, map, Observable } from 'rxjs';
 import { UsuarioService } from './usuario.service';
 import { EnumsDTOs } from '../enums/enums-dtos';
 import { RespuestaDTO } from '../modelo/RespuestaDTO';
+import { ComentarioDTO } from '../modelo/ComentarioDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,10 @@ export class RespuestaService implements OnInit {
 
   findRespuestaById(id: number): Observable<RespuestaDTO> {
     return this.http.get<RespuestaDTO>(this.rutaBase + this.rutaEndpoint + "/" + id);
+  }
+
+  findComentariosByListaRespuestaId(idRespuesta: number): Observable<ComentarioDTO> {
+    return this.http.get<ComentarioDTO>(`${this.rutaBase}${this.rutaEndpoint}/findComentariosByListaRespuestaId/${idRespuesta}`);
   }
 
 

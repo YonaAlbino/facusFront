@@ -51,6 +51,8 @@ export class NotificacionesComponent implements OnInit {
             universidad: notificacion.universidad,
             permiso: notificacion.permiso,
             respuesta: notificacion.respuesta,
+            respuestaComentarioRecibida: notificacion.respuestaComentarioRecibida,
+            respuestaAunaRespuesta: notificacion.respuestaAunaRespuesta
           },
         }
       );

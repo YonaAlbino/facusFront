@@ -22,12 +22,14 @@
                     <div class="titulo">
                         <h1 style="text-align: center;">Ingresa el nombre de la universidad</h1>
                     </div>
-                    <div class="campoNombre d-flex align-items-center">
-                        <input class="form-control" type="text" formControlName="nombre" id="nombre"
-                            placeholder="Nombre universidad" />
-                        <button class="btn btn-primary ms-2" type="button"
-                            [disabled]="formularioAltaUniversidad.get('nombre')?.errors != null"
-                            (click)="siguiente()">Siguiente</button>
+                    <div class="campoNombre ">
+                        <input style="width: 70%; margin: auto;" class="form-control" type="text"
+                            formControlName="nombre" id="nombre" placeholder="Nombre universidad" />
+                        <div class="botones-avance">
+                            <button class="btn btn-primary ms-2" type="button"
+                                [disabled]="formularioAltaUniversidad.get('nombre')?.errors != null"
+                                (click)="siguiente()">Siguiente</button>
+                        </div>
                     </div>
 
                     <div *ngIf="formularioAltaUniversidad.get('nombre')?.touched && formularioAltaUniversidad.get('nombre')?.errors?.['required']"
@@ -46,12 +48,14 @@
                         <h1 style="text-align: center;">Ingresa la dirección web</h1>
                     </div>
                     <div class="campoNombre d-flex align-items-center">
-                        <input class="form-control" type="text" placeholder="https://ejemplo.com"
-                            formControlName="direccionWeb" />
-                        <button class="btn btn-primary ms-2" type="button" (click)="anterior()">Atrás</button>
-                        <button class="btn btn-primary ms-2" type="button"
-                            [disabled]="formularioAltaUniversidad.get('direccionWeb')?.errors != null"
-                            (click)="siguiente()">Siguiente</button>
+                        <input style="width: 50%; margin: auto;" class="form-control" type="text"
+                            placeholder="https://ejemplo.com" formControlName="direccionWeb" />
+                        <div class="botones-avance">
+                            <button class="btn btn-primary ms-2" type="button" (click)="anterior()">Atrás</button>
+                            <button class="btn btn-primary ms-2" type="button"
+                                [disabled]="formularioAltaUniversidad.get('direccionWeb')?.errors != null"
+                                (click)="siguiente()">Siguiente</button>
+                        </div>
                     </div>
 
                     <div *ngIf="formularioAltaUniversidad.get('direccionWeb')?.touched && formularioAltaUniversidad.get('direccionWeb')?.errors?.['required']"
@@ -70,12 +74,14 @@
                         <h1 style="text-align: center;">Ingresa la dirección física</h1>
                     </div>
                     <div class="campoNombre d-flex align-items-center">
-                        <input class="form-control" type="text" placeholder="ciudad/provincia/país"
-                            formControlName="direccionFisica" />
-                        <button class="btn btn-primary ms-2" type="button" (click)="anterior()">Atrás</button>
-                        <button class="btn btn-primary ms-2" type="button"
-                            [disabled]="formularioAltaUniversidad.get('direccionFisica')?.errors != null"
-                            (click)="siguiente()">Siguiente</button>
+                        <input style="width: 50%; margin: auto;" class="form-control" type="text"
+                            placeholder="ciudad/provincia/país" formControlName="direccionFisica" />
+                        <div class="botones-avance">
+                            <button class="btn btn-primary ms-2" type="button" (click)="anterior()">Atrás</button>
+                            <button class="btn btn-primary ms-2" type="button"
+                                [disabled]="formularioAltaUniversidad.get('direccionFisica')?.errors != null"
+                                (click)="siguiente()">Siguiente</button>
+                        </div>
                     </div>
 
                     <div *ngIf="formularioAltaUniversidad.get('direccionFisica')?.touched && formularioAltaUniversidad.get('direccionFisica')?.errors?.['required']"
@@ -117,8 +123,13 @@
                 <div *ngIf="indice === 5" class="imagenContainer container">
                     <div>
                         <h1 class="titulo text-center">Url imagen</h1>
-                        <input type="text" class="form-control" placeholder="Cargue la url de la imagen"
-                            formControlName="imagen" (input)="changeImagen($event)" />
+                        <input style="width: 50%; margin: auto;" type="text" class="form-control"
+                            placeholder="Cargue la url de la imagen" formControlName="imagen"
+                            (input)="changeImagen($event)" />
+                    </div>
+
+                    <div style="margin: auto; text-align: center;  margin-top: 10px;">
+                        <img src={{imagenPorDefecto}} class="imagenUniversidad" alt="" (error)="errorImagen()">
                     </div>
 
                     <div *ngIf="formularioAltaUniversidad.get('imagen')?.touched && formularioAltaUniversidad.get('imagen')?.errors?.['required']"
@@ -126,7 +137,7 @@
                         Este campo es requerido
                     </div>
 
-                    <div class="mt-3">
+                    <div class="mt-3" style="text-align: center; margin-top: 10px;">
                         <button class="btn btn-primary" type="button" (click)="anterior()">Atrás</button>
                         <button class="btn btn-primary ms-2" type="button"
                             [disabled]="formularioAltaUniversidad.get('imagen')?.errors != null"
@@ -165,11 +176,13 @@
                         Este campo es requerido
                     </div>
 
-                    <div class="mt-3">
-                        <button class="btn btn-primary" type="button" (click)="anterior()">Atrás</button>
-                        <button class="btn btn-primary ms-2" type="button"
-                            [disabled]="formularioAltaUniversidad.get('imagen')?.errors != null"
-                            (click)="siguiente()">Siguiente</button>
+                    <div class="botones-avance">
+                        <div class="mt-3">
+                            <button class="btn btn-primary" type="button" (click)="anterior()">Atrás</button>
+                            <button class="btn btn-primary ms-2" type="button"
+                                [disabled]="formularioAltaUniversidad.get('imagen')?.errors != null"
+                                (click)="siguiente()">Siguiente</button>
+                        </div>
                     </div>
                 </div>
 
@@ -185,7 +198,8 @@
                     </div>
 
                     <div *ngIf="universidadCreada" style="margin-top: 20px;">
-                        <a [routerLink]="['/detalleUniversidad', universidadCreada?.id]" class="btn btn-outline-primary">
+                        <a [routerLink]="['/detalleUniversidad', universidadCreada?.id]"
+                            class="btn btn-outline-primary">
                             {{universidadCreada?.nombre}}
                         </a>
                     </div>

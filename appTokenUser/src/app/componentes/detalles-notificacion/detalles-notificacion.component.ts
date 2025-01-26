@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
-import { ComentarioDTO as respuestaDTO } from 'src/app/modelo/ComentarioDTO';
+import { ComentarioDTO, ComentarioDTO as respuestaDTO } from 'src/app/modelo/ComentarioDTO';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
 import { PermisoDTO } from 'src/app/modelo/PermisoDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
@@ -29,13 +29,18 @@ export class DetallesNotificacionComponent implements OnInit {
   permiso: boolean | undefined;
   respuesta: boolean | undefined;
   usuarioPropietario: UsuarioDTO | undefined;
+  respuestaComentarioRecibida: boolean | undefined;
+  respuestaAunaRespuesta: boolean | undefined;
 
   carreraBuscada: CarreraDTO | undefined;
   cometarioBuscado: respuestaDTO | undefined;
+  comentarioHilo: respuestaDTO | undefined;
   usuarioBuscado: UsuarioDTO | undefined;
   universidadBuscada: UniversidadDTO | undefined;
   permisoBuscado: PermisoDTO | undefined;
   respuestaBuscada: RespuestaDTO | undefined;
+  respuestaComentario: RespuestaDTO | undefined;
+  respuestaAotraRespuesta: RespuestaDTO | undefined;
   registroEliminado: boolean = false;;
   infraccion: boolean | undefined;
   cargando: boolean = false;
@@ -60,13 +65,17 @@ export class DetallesNotificacionComponent implements OnInit {
     this.universidad = state.universidad;
     this.permiso = state.permiso;
     this.respuesta = state.respuesta;
+    this.respuestaComentarioRecibida = state.respuestaComentarioRecibida;
+    this.respuestaAunaRespuesta = state.respuestaAunaRespuesta;
     this.cargarDatosEntidad(
       this.carrera!,
       this.comentario!,
       this.permiso!,
       this.usuario!,
       this.universidad!,
-      this.respuesta!
+      this.respuesta!,
+      this.respuestaComentarioRecibida!,
+      this.respuestaAunaRespuesta!
     );
   }
 
@@ -76,7 +85,9 @@ export class DetallesNotificacionComponent implements OnInit {
     permiso: boolean,
     usuario: boolean,
     universidad: boolean,
-    respuesta: boolean
+    respuesta: boolean,
+    respuestaComentarioRecibida: boolean,
+    respuestaAunaRespuesta: boolean
   ) {
     if (comentario) this.cargarComentario();
     if (carrera) this.cargarCarrera();
@@ -84,7 +95,34 @@ export class DetallesNotificacionComponent implements OnInit {
     if (usuario) this.cargarUsuario();
     if (universidad) this.cargarUniversidad();
     if (respuesta) this.cargarRespuesta();
+    if (respuestaComentarioRecibida) this.cargarDatosRespuestaComentario();
+    if (respuestaAunaRespuesta) this.cargarDatosRespuestaAUnaRespuesta();
   }
+
+  cargarDatosRespuestaAUnaRespuesta() {
+    this.respuestaService
+      .findRespuestaById(this.id!)
+      .subscribe((respuesta: RespuestaDTO) => {
+        this.respuestaAotraRespuesta = respuesta;
+      }, (error) => {
+        this.registroEliminado = true;
+        console.error(error)
+      }
+      );
+  }
+
+  cargarDatosRespuestaComentario() {
+    this.respuestaService
+      .findRespuestaById(this.id!)
+      .subscribe((respuesta: RespuestaDTO) => {
+        this.respuestaComentario = respuesta;
+      }, (error) => {
+        this.registroEliminado = true;
+        console.error(error)
+      }
+      );
+  }
+
   cargarRespuesta() {
     this.respuestaService
       .findRespuestaById(this.id!)
@@ -252,6 +290,23 @@ export class DetallesNotificacionComponent implements OnInit {
 
   eliminarEinfraccionar(arg0: number | undefined) {
     throw new Error('Method not implemented.');
+  }
+
+  verHilo(id: number | undefined) {
+    this.respuestaService.findComentariosByListaRespuestaId(id!).subscribe(
+      (comentario: ComentarioDTO) => {
+        this.comentarioHilo = comentario
+      }
+    )
+  }
+
+  verHiloRespuesta(id: number | undefined){
+    console.log(id)
+    this.respuestaService.findComentariosByListaRespuestaId(id!).subscribe(
+      (comentario: ComentarioDTO) => {
+        this.comentarioHilo = comentario
+      }
+    )
   }
 
 }

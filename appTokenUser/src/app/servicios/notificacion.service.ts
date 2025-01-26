@@ -5,6 +5,7 @@ import { UtilService } from './util.service';
 import { Rutas } from '../enumerables/rutas';
 import { EnumsDTOs } from '../enums/enums-dtos';
 import { NotificacionDTO } from '../modelo/NotificacionDTO';
+import { MensajeRetornoSimple } from '../modelo/mensaje-retorno-simple';
 
 @Injectable({
   providedIn: 'root'
@@ -48,23 +49,43 @@ export class NotificacionService {
     return this.http.get<NotificacionDTO[]>(this.baseUrl + this.rutaEndpoint);
   }
 
-  getNotificacionById(id:number):Observable<NotificacionDTO>{
+  getNotificacionById(id: number): Observable<NotificacionDTO> {
     return this.http.get<NotificacionDTO>(this.baseUrl + this.rutaEndpoint + "/" + id);
   }
 
-  eliminarNotificacion(id:number):Observable<string>{
+  eliminarNotificacion(id: number): Observable<string> {
     return this.http.delete<string>(this.baseUrl + this.rutaEndpoint + "/" + id);
   }
 
-  crearNotificacion(notificacion:NotificacionDTO):Observable<NotificacionDTO>{
+  crearNotificacion(notificacion: NotificacionDTO): Observable<NotificacionDTO> {
     const notificacionClass = {
-      ...notificacion,  
-      '@class': EnumsDTOs.NotificacionDTO  
+      ...notificacion,
+      '@class': EnumsDTOs.NotificacionDTO
     };
     return this.http.post(this.baseUrl + this.rutaEndpoint, notificacionClass);
   }
 
-  editNotificacion(notificacion:NotificacionDTO):Observable<NotificacionDTO>{
-    return this.http.put(this.baseUrl + this.rutaEndpoint,notificacion);
+  editNotificacion(notificacion: NotificacionDTO): Observable<NotificacionDTO> {
+    return this.http.put(this.baseUrl + this.rutaEndpoint, notificacion);
   }
+
+  notificarRespuestaRecibidaAcomentario(
+    idPropietarioComentario: number,
+    idComentario: number,
+    idRespuesta: number
+  ): Observable<MensajeRetornoSimple> {
+    const ruta = `/notificarRespuestaRecibidaAcomentario/${idPropietarioComentario}/${idComentario}/${idRespuesta}`;
+    return this.http.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndpoint + ruta, null);
+  }
+
+  notificarRespuestaRecibidaAUnaRespuesta(
+    idPropietarioRespuesta: number,
+    idRespuesta: number,
+    idRespuestaRecibida: number
+  ): Observable<MensajeRetornoSimple> {
+    const ruta = `/notificarRespuestaRecibidaAUnaRespuesta/${idPropietarioRespuesta}/${idRespuesta}/${idRespuestaRecibida}`;
+    return this.http.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndpoint + ruta, null);
+  }
+
+
 }
