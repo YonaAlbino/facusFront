@@ -207,7 +207,7 @@ export class ComentarioComponent implements OnInit {
 
   //Meotodo para guardar la respuesta de la respuesta del comentario
   guardarRespuestaDelComen(respuesta: RespuestaDTO) {
-    this.crearRespuesta(this.respuestaDeLaRespuestaDelComentario!).subscribe(
+    this.crearRespuesta(this.respuestaDeLaRespuestaDelComentario!, respuesta.idComentarioPadre!).subscribe(
       (respuestaGuardada: RespuestaDTO) => {
         respuesta.listaRespuesta?.push(respuestaGuardada);
         this.actualizarRespuesta(respuesta);
@@ -229,7 +229,7 @@ export class ComentarioComponent implements OnInit {
 
   //Metodo para guardar la respuesta del comentario
   guardarRespuesta(comentario: ComentarioDTO) {
-    this.crearRespuesta(this.respuestaDesdeElInput!).subscribe(
+    this.crearRespuesta(this.respuestaDesdeElInput!, comentario.id!).subscribe(
       (respuesta: RespuestaDTO) => {
         // respuesta.listaRespuesta = [];
         comentario.listaRespuesta?.forEach(respuesta => {
@@ -259,7 +259,7 @@ export class ComentarioComponent implements OnInit {
   }
 
   //Metodo para crear una nueva instancia de una Respuesta
-  crearRespuesta(mensaje: string): Observable<RespuestaDTO> {
+  crearRespuesta(mensaje: string, idComentarioPadre:number): Observable<RespuestaDTO> {
     // const usuario: Usuario = {
     //   id: Number(localStorage.getItem('userID'))
     // };
@@ -270,6 +270,7 @@ export class ComentarioComponent implements OnInit {
 
     let nuevaRespuesta: RespuestaDTO = {
       mensaje: mensaje,
+      idComentarioPadre:idComentarioPadre,
       fecha: new Date().toISOString(),
       usuarioId: Number(localStorage.getItem('userID')),
     };

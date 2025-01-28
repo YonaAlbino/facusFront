@@ -167,12 +167,40 @@ export class AlertasService {
     });
   }
 
-  public error(mensaje:string) {
+  public error(mensaje: string) {
     Swal.fire({
       icon: "error",
       title: "Algo salio mal",
       text: mensaje,
-     // footer: '<a href="#">Why do I have this issue?</a>'
+      // footer: '<a href="#">Why do I have this issue?</a>'
     });
   }
+
+  topLateral( evento:string, informacion: string) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: true,  // Mostrar un botón para cerrar
+      confirmButtonText: 'Cerrar',  // Texto para el botón de cerrar
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  
+    // Usar solo el texto en el Toast
+    Toast.fire({
+      icon: "success",
+      title: evento,
+      html: `
+        <div style="max-height: 100px; overflow: hidden; max-width: 400px; text-overflow: ellipsis; white-space: nowrap;">
+          ${informacion}
+        </div>
+      `
+    });
+  }
+  
+  
+  
 }

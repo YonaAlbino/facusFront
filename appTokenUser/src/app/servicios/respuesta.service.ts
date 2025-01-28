@@ -68,6 +68,9 @@ export class RespuestaService implements OnInit {
     return this.http.get<ComentarioDTO>(`${this.rutaBase}${this.rutaEndpoint}/findComentariosByListaRespuestaId/${idRespuesta}`);
   }
 
+  
+
+
 
   eliminarRespuesta(id: number): Observable<string> {
     return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);

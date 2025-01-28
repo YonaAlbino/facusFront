@@ -3,6 +3,7 @@ import { Stomp, CompatClient } from '@stomp/stompjs';
 import { Subject, BehaviorSubject } from 'rxjs';
 import * as SockJS from 'sockjs-client';
 import { UsuarioService } from './usuario.service';
+import { AlertasService } from './alertas.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class SocketService implements OnDestroy {
   private idUsuario:number | undefined;
   private readonly WEBSOCKET_URL = "http://localhost:8080/websocket"; 
 
-  constructor(private userService: UsuarioService) {
+  constructor(private userService: UsuarioService, private alertaService:AlertasService) {
     this.userService.idUsuarioActual.subscribe(id => {
       if(id){
         this.idUsuario = id;
@@ -79,6 +80,8 @@ export class SocketService implements OnDestroy {
         this.intentosSubscribicionTopic = 0;
         this.messageSubjects[topic].next(respuesta.body);
         console.log(`Mensaje en ${topic}: ${respuesta.body}`);
+        const mensaje = JSON.parse(respuesta.body);
+        this.alertaService.topLateral(mensaje.evento, mensaje.detalle);
       });
     } else {
       console.error(`No se puede suscribir al tópico ${topic}, WebSocket no está conectado`);

@@ -302,7 +302,7 @@ export class DetallesNotificacionComponent implements OnInit {
 
   verHiloRespuesta(id: number | undefined){
     console.log(id)
-    this.respuestaService.findComentariosByListaRespuestaId(id!).subscribe(
+    this.comentarioService.getComentarioById(id!).subscribe(
       (comentario: ComentarioDTO) => {
         this.comentarioHilo = comentario
       }

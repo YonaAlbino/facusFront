@@ -49,4 +49,8 @@ export class ComentarioService {
   }
   
 
+  // findComentarioByRespuestaRespuestaId(idRespuestaRespuesta: number): Observable<ComentarioDTO> {
+  //   return this.http.get<ComentarioDTO>(`${this.rutaBase}${this.rutaEndpoint}/findComentarioByRespuestaRespuestaId/${idRespuestaRespuesta}`);
+  // }
+
 }
