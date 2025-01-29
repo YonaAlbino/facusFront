@@ -5,13 +5,14 @@ import { CarreraService } from './carrera.service';
 import { UniversidadService } from './universidad.service';
 import { UniversidadDTO } from '../modelo/UniversidadDTO';
 import { Observable, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertasService {
 
-  constructor(private carreraService: CarreraService, private univiersidadService: UniversidadService) { }
+  constructor(private carreraService: CarreraService, private univiersidadService: UniversidadService, private router: Router) { }
 
   mostrarAlerta(titulo: string) {
     Swal.fire({
@@ -176,30 +177,39 @@ export class AlertasService {
     });
   }
 
-  topLateral( evento:string, informacion: string) {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: true,  // Mostrar un botón para cerrar
-      confirmButtonText: 'Cerrar',  // Texto para el botón de cerrar
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      }
-    });
-  
-    // Usar solo el texto en el Toast
-    Toast.fire({
-      icon: "success",
-      title: evento,
-      html: `
-        <div style="max-height: 100px; overflow: hidden; max-width: 400px; text-overflow: ellipsis; white-space: nowrap;">
+
+topLateral(evento: string, informacion: string) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: true, // Mostrar un botón para cerrar
+    confirmButtonText: "Cerrar",
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
+
+  Toast.fire({
+    icon: "success",
+    title: evento,
+    html: `
+        <div style="max-height: 100px; overflow: hidden; max-width: 600px; text-overflow: ellipsis; white-space: nowrap;">
           ${informacion}
         </div>
-      `
-    });
-  }
+        <br>
+        <button id="redirectBtn" style="margin-top: 10px; padding: 5px 10px; background-color: #3085d6; color: white; border: none; cursor: pointer; border-radius: 5px;">
+          Ver Notificaciones
+        </button>
+      `,
+    didOpen: () => {
+      document.getElementById("redirectBtn")?.addEventListener("click", () => {
+        this.router.navigate(['/notificaciones']);
+      });
+    }
+  });
+}
   
   
   

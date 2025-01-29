@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 
 import { NotificacionService } from 'src/app/servicios/notificacion.service';
 import { SocketService } from 'src/app/servicios/socket.service';
@@ -15,18 +16,23 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 })
 export class NotificacionesComponent implements OnInit {
   notificaciones: NotificacionDTO[] = [];
+  listaFiltrada: NotificacionDTO[] = [];
   idUsuario: number = Number(localStorage.getItem('userID'));
   mensajeError!: string;
+  eliminando:boolean = false;
+  filtroSeleccionado: string = 'general'; 
+
 
   constructor(
     private notificacionService: NotificacionService,
     private userService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private alertaService:AlertasService
   ) { }
 
   ngOnInit(): void {
     this.getnotificationsByIdUser(this.idUsuario);
-    //this.visualizarNotificacionesByUserID();
+    //this.visualizarNotificacionesByUserID(); 
     this.notificacionService.visualizarNotificacionesByUserID(this.idUsuario).subscribe();
 
   }
@@ -63,7 +69,7 @@ export class NotificacionesComponent implements OnInit {
     this.notificacionService.getNotificacionesByUserId(idUsuario).subscribe(
       (notificaciones: NotificacionDTO[]) => {
         this.notificaciones = notificaciones;
-
+        this.filtrarNotificaciones(true,false,false,"general");
       },
       (error) => {
         console.error('Error al obtener las notificaciones:', error);
@@ -71,6 +77,36 @@ export class NotificacionesComponent implements OnInit {
     );
   }
 
+
+  filtrarNotificaciones(general: boolean, respuesta: boolean, auditoria: boolean, tipo:string) {
+    this.listaFiltrada = [];
+    this.filtroSeleccionado = tipo;
+    if (general) {
+      this.notificaciones.forEach((notificacion) => {
+        if (notificacion.publicacionComentada) {
+          this.listaFiltrada.push(notificacion);
+        }
+      });
+    }
+
+    if (respuesta) {
+      this.notificaciones.forEach((notificacion) => {
+        if (notificacion.respuestaComentarioRecibida || notificacion.respuestaAunaRespuesta) {
+          this.listaFiltrada.push(notificacion);
+        }
+      });
+    }
+
+    if (auditoria) {
+      this.notificaciones.forEach((notificacion) => {
+        if (!notificacion.publicacionComentada) {
+          if (notificacion.universidad || notificacion.carrera || notificacion.comentario || notificacion.respuesta) {
+            this.listaFiltrada.push(notificacion);
+          }
+        }
+      });
+    }
+  }
 
   getNotificaciones() {
     this.notificacionService
@@ -136,13 +172,16 @@ export class NotificacionesComponent implements OnInit {
   }
 
   visualizarNotificacionesByUserID() {
-    if (this.notificaciones) {
-      this.notificaciones.forEach((notificacion) => {
-        if (notificacion.listaUsuariosIds) {
-          this.actualizarListaUsuariosIds(notificacion);
-        }
-      });
-    }
+    this.alertaService.mostrarDialogoDeConfirmacion(() => {
+      if (this.notificaciones) {
+        this.notificaciones.forEach((notificacion) => {
+          if (notificacion.listaUsuariosIds) {
+            this.actualizarListaUsuariosIds(notificacion);
+          }
+        });
+      }
+    })
+
   }
 
   // Método para actualizar la lista de IDs de usuarios
