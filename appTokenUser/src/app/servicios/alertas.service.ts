@@ -23,12 +23,12 @@ export class AlertasService {
   }
 
 
-  async modalAgregarCarrera(iduniversidad: number): Promise<Observable<UniversidadDTO>> {
+  async modalAgregarCarrera(iduniversidad: number, idUsuarioLogueado:number): Promise<Observable<UniversidadDTO>> {
     const { value: carrera } = await Swal.fire({
       title: "Agregar carrera",
       html: this.getCarreraFormHtml(),
       focusConfirm: false,
-      preConfirm: () => this.createCarreraDTO(iduniversidad),
+      preConfirm: () => this.createCarreraDTO(iduniversidad, idUsuarioLogueado),
     });
 
     if (!carrera) {
@@ -74,7 +74,7 @@ export class AlertasService {
     `;
   }
 
-  private createCarreraDTO(iduniversidad: number): CarreraDTO | null {
+  private createCarreraDTO(iduniversidad: number, idUsuarioLogueado:number): CarreraDTO | null {
     const nombre = (document.getElementById("swal-input1") as HTMLInputElement).value;
     const grado = (document.getElementById("swal-input2") as HTMLInputElement).value;
     const duracion = (document.getElementById("swal-input3") as HTMLInputElement).value;
@@ -90,7 +90,8 @@ export class AlertasService {
       grado,
       duracion,
       activa: true,
-      universidadId: iduniversidad
+      universidadId: iduniversidad,
+      idUsuario:idUsuarioLogueado
     };
   }
 

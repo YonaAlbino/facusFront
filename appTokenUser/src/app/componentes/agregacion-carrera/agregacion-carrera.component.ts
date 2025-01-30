@@ -40,7 +40,8 @@ export class AgregacionCarreraComponent implements OnInit {
   }
 
   async agregarCarrera() {
-    (await this.alertas.modalAgregarCarrera(this.idUniversidad)).subscribe(
+    let idUsuarioLogueado:number = Number(localStorage.getItem('userID'));
+    (await this.alertas.modalAgregarCarrera(this.idUniversidad,idUsuarioLogueado)).subscribe(
       (universidadActualizada: UniversidadDTO) => {
         this.universidadAeditar = universidadActualizada;
         Swal.fire('Carrera agregada');

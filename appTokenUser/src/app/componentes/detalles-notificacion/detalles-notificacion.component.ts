@@ -217,20 +217,14 @@ export class DetallesNotificacionComponent implements OnInit {
     this.carreraService
       .getCarreraByID(this.id!)
       .subscribe((carrera: CarreraDTO) => {
+       
+        console.log(carrera)
         this.carreraBuscada = carrera;
-        this.universidadService
-          .getUniversidadById(carrera.universidadId!)
-          .subscribe((universdiad: UniversidadDTO) => {
-            this.usuarioService
-              .getUsuarioById(universdiad.usuarioId!)
-              .subscribe((usuario: UsuarioDTO) => {
-                this.usuarioPropietario = usuario;
-              });
-          }, (error) => {
-            this.registroEliminado = true;
-            console.error(error)
-          }
-          );
+        this.usuarioService
+          .getUsuarioById(carrera.idUsuario!)
+          .subscribe((usuario: UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          });
       }, (error) => {
         this.registroEliminado = true;
         console.error(error)
@@ -300,7 +294,7 @@ export class DetallesNotificacionComponent implements OnInit {
     )
   }
 
-  verHiloRespuesta(id: number | undefined){
+  verHiloRespuesta(id: number | undefined) {
     console.log(id)
     this.comentarioService.getComentarioById(id!).subscribe(
       (comentario: ComentarioDTO) => {

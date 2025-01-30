@@ -11,5 +11,6 @@ export interface CarreraDTO {
     listaComentarios?: ComentarioDTO[];
     listaCalificacion?: CalificacionDTO[];
     universidadId?: number;
+    idUsuario?:number;
 
 }

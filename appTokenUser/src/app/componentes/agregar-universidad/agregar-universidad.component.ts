@@ -146,6 +146,7 @@ export class AgregarUniversidadComponent implements OnInit {
       nombre: this.formularioAltaUniversidad.get('nombreCarrera')?.value,
       grado: this.formularioAltaUniversidad.get('gradoCarrera')?.value,
       duracion: this.formularioAltaUniversidad.get('duracionCarrera')?.value,
+      idUsuario: Number(localStorage.getItem('userID'))
     };
 
     this.carreraService.crearCarrera(carrera).subscribe((carreraCreada) => {
