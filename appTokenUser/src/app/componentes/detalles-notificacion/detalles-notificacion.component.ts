@@ -31,9 +31,11 @@ export class DetallesNotificacionComponent implements OnInit {
   usuarioPropietario: UsuarioDTO | undefined;
   respuestaComentarioRecibida: boolean | undefined;
   respuestaAunaRespuesta: boolean | undefined;
+  carreraAgregada: boolean | undefined;
+  comentarioAgregadoCarrera: boolean | undefined;
 
-  carreraBuscada: CarreraDTO | undefined;
-  cometarioBuscado: respuestaDTO | undefined;
+  comentarioAgregadoCarreraEntidad: ComentarioDTO | undefined;
+  nuevaCarreraAgregada: CarreraDTO | undefined;
   comentarioHilo: respuestaDTO | undefined;
   usuarioBuscado: UsuarioDTO | undefined;
   universidadBuscada: UniversidadDTO | undefined;
@@ -41,6 +43,7 @@ export class DetallesNotificacionComponent implements OnInit {
   respuestaBuscada: RespuestaDTO | undefined;
   respuestaComentario: RespuestaDTO | undefined;
   respuestaAotraRespuesta: RespuestaDTO | undefined;
+  //nuevaCarreraAgregada:CarreraDTO | undefined;
   registroEliminado: boolean = false;;
   infraccion: boolean | undefined;
   cargando: boolean = false;
@@ -67,6 +70,8 @@ export class DetallesNotificacionComponent implements OnInit {
     this.respuesta = state.respuesta;
     this.respuestaComentarioRecibida = state.respuestaComentarioRecibida;
     this.respuestaAunaRespuesta = state.respuestaAunaRespuesta;
+    this.carreraAgregada = state.carreraAgregada;
+    this.comentarioAgregadoCarrera = state.comentarioAgregadoCarrera
     this.cargarDatosEntidad(
       this.carrera!,
       this.comentario!,
@@ -75,7 +80,9 @@ export class DetallesNotificacionComponent implements OnInit {
       this.universidad!,
       this.respuesta!,
       this.respuestaComentarioRecibida!,
-      this.respuestaAunaRespuesta!
+      this.respuestaAunaRespuesta!,
+      this.carreraAgregada!,
+      this.comentarioAgregadoCarrera!
     );
   }
 
@@ -87,7 +94,9 @@ export class DetallesNotificacionComponent implements OnInit {
     universidad: boolean,
     respuesta: boolean,
     respuestaComentarioRecibida: boolean,
-    respuestaAunaRespuesta: boolean
+    respuestaAunaRespuesta: boolean,
+    carreraAgregada: boolean,
+    comentarioAgregadoCarrera: boolean
   ) {
     if (comentario) this.cargarComentario();
     if (carrera) this.cargarCarrera();
@@ -97,6 +106,42 @@ export class DetallesNotificacionComponent implements OnInit {
     if (respuesta) this.cargarRespuesta();
     if (respuestaComentarioRecibida) this.cargarDatosRespuestaComentario();
     if (respuestaAunaRespuesta) this.cargarDatosRespuestaAUnaRespuesta();
+    if (carreraAgregada) this.cargarDatosCarreraAgregada();
+    if (comentarioAgregadoCarrera) this.cargarComentarioAgregadoCarrera();
+  }
+
+  cargarComentarioAgregadoCarrera() {
+    this.comentarioService
+      .getComentarioById(this.id!)
+      .subscribe((comentario: respuestaDTO) => {
+        this.comentarioAgregadoCarreraEntidad = comentario;
+        this.usuarioService
+          .getUsuarioById(comentario.usuarioId!)
+          .subscribe((usuario: UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          });
+      }, (error) => {
+        this.registroEliminado = true;
+        console.error(error)
+      }
+      );
+  }
+
+  cargarDatosCarreraAgregada() {
+    this.carreraService
+      .getCarreraByID(this.id!)
+      .subscribe((carrera: CarreraDTO) => {
+        this.nuevaCarreraAgregada = carrera;
+        this.usuarioService
+          .getUsuarioById(carrera.idUsuario!)
+          .subscribe((usuario: UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          });
+      }, (error) => {
+        this.registroEliminado = true;
+        console.error(error)
+      }
+      );
   }
 
   cargarDatosRespuestaAUnaRespuesta() {
@@ -217,9 +262,7 @@ export class DetallesNotificacionComponent implements OnInit {
     this.carreraService
       .getCarreraByID(this.id!)
       .subscribe((carrera: CarreraDTO) => {
-       
-        console.log(carrera)
-        this.carreraBuscada = carrera;
+        this.nuevaCarreraAgregada = carrera;
         this.usuarioService
           .getUsuarioById(carrera.idUsuario!)
           .subscribe((usuario: UsuarioDTO) => {
@@ -236,7 +279,7 @@ export class DetallesNotificacionComponent implements OnInit {
     this.comentarioService
       .getComentarioById(this.id!)
       .subscribe((comentario: respuestaDTO) => {
-        this.cometarioBuscado = comentario;
+        this.comentarioAgregadoCarreraEntidad = comentario;
         this.usuarioService
           .getUsuarioById(comentario.usuarioId!)
           .subscribe((usuario: UsuarioDTO) => {

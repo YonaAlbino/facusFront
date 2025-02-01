@@ -19,15 +19,15 @@ export class NotificacionesComponent implements OnInit {
   listaFiltrada: NotificacionDTO[] = [];
   idUsuario: number = Number(localStorage.getItem('userID'));
   mensajeError!: string;
-  eliminando:boolean = false;
-  filtroSeleccionado: string = 'general'; 
+  eliminando: boolean = false;
+  filtroSeleccionado: string = 'general';
 
 
   constructor(
     private notificacionService: NotificacionService,
     private userService: UsuarioService,
     private router: Router,
-    private alertaService:AlertasService
+    private alertaService: AlertasService
   ) { }
 
   ngOnInit(): void {
@@ -38,30 +38,37 @@ export class NotificacionesComponent implements OnInit {
   }
 
   irADetalleNotificacion(notificacion: NotificacionDTO) {
-    if (notificacion.publicacionComentada) {
-      if (notificacion.universidad) {
-        this.router.navigate(
-          ['/detalleUniversidad', notificacion.idRedireccionamiento])
-      }
-      if (notificacion.carrera) {
-        this.router.navigate(['detalleUniversidad', notificacion.idRedireccionamiento], { queryParams: { carrera: true } });
-      }
-    } else {
+    if (notificacion.comentarioAgregadoCarrera) {
       this.router.navigate(
-        ['/detalleNotificacion', notificacion.idRedireccionamiento],
-        {
-          state: {
-            carrera: notificacion.carrera,
-            comentario: notificacion.comentario,
-            usuario: notificacion.usuario,
-            universidad: notificacion.universidad,
-            permiso: notificacion.permiso,
-            respuesta: notificacion.respuesta,
-            respuestaComentarioRecibida: notificacion.respuestaComentarioRecibida,
-            respuestaAunaRespuesta: notificacion.respuestaAunaRespuesta
-          },
+        ['/detalleUniversidad', notificacion.idRedireccionamiento])
+    } else {
+      if (notificacion.publicacionComentada) {
+        if (notificacion.universidad) {
+          this.router.navigate(
+            ['/detalleUniversidad', notificacion.idRedireccionamiento])
         }
-      );
+        if (notificacion.carrera) {
+          this.router.navigate(['detalleUniversidad', notificacion.idRedireccionamiento], { queryParams: { carrera: true } });
+        }
+      } else {
+        this.router.navigate(
+          ['/detalleNotificacion', notificacion.idRedireccionamiento],
+          {
+            state: {
+              carrera: notificacion.carrera,
+              comentario: notificacion.comentario,
+              usuario: notificacion.usuario,
+              universidad: notificacion.universidad,
+              permiso: notificacion.permiso,
+              respuesta: notificacion.respuesta,
+              respuestaComentarioRecibida: notificacion.respuestaComentarioRecibida,
+              respuestaAunaRespuesta: notificacion.respuestaAunaRespuesta,
+              carreraAgregada: notificacion.carreraAgregada,
+              comentarioAgregadoCarrera: notificacion.comentarioAgregadoCarrera
+            },
+          }
+        );
+      }
     }
   }
 
@@ -69,7 +76,7 @@ export class NotificacionesComponent implements OnInit {
     this.notificacionService.getNotificacionesByUserId(idUsuario).subscribe(
       (notificaciones: NotificacionDTO[]) => {
         this.notificaciones = notificaciones;
-        this.filtrarNotificaciones(true,false,false,"general");
+        this.filtrarNotificaciones(true, false, false, "general");
       },
       (error) => {
         console.error('Error al obtener las notificaciones:', error);
@@ -78,12 +85,12 @@ export class NotificacionesComponent implements OnInit {
   }
 
 
-  filtrarNotificaciones(general: boolean, respuesta: boolean, auditoria: boolean, tipo:string) {
+  filtrarNotificaciones(general: boolean, respuesta: boolean, auditoria: boolean, tipo: string) {
     this.listaFiltrada = [];
     this.filtroSeleccionado = tipo;
     if (general) {
       this.notificaciones.forEach((notificacion) => {
-        if (notificacion.publicacionComentada) {
+        if (notificacion.publicacionComentada || notificacion.carreraAgregada || notificacion.comentarioAgregadoCarrera) {
           this.listaFiltrada.push(notificacion);
         }
       });
@@ -99,13 +106,14 @@ export class NotificacionesComponent implements OnInit {
 
     if (auditoria) {
       this.notificaciones.forEach((notificacion) => {
-        if (!notificacion.publicacionComentada) {
+        if (!notificacion.publicacionComentada && !notificacion.carreraAgregada) {
           if (notificacion.universidad || notificacion.carrera || notificacion.comentario || notificacion.respuesta) {
             this.listaFiltrada.push(notificacion);
           }
         }
       });
     }
+    console.log(this.notificaciones)
   }
 
   getNotificaciones() {
