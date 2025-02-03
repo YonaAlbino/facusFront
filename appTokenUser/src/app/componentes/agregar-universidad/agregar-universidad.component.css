@@ -268,3 +268,107 @@
     justify-content: center;
     margin-top: 16px;
 }
+
+
+/* Pantallas grandes pero más pequeñas que un desktop normal */
+@media (max-width: 1200px) {
+    .contenedorGlobal {
+        width: 90%;
+    }
+
+    .campoNombre input {
+        width: 80%;
+    }
+
+    .imagenUniversidad {
+        width: 60%;
+    }
+}
+
+/* Tablets y laptops pequeñas */
+@media (max-width: 992px) {
+    .contenedorGlobal {
+        width: 95%;
+    }
+
+    .campoNombre input {
+        width: 90%;
+    }
+
+    .imagenUniversidad {
+        width: 70%;
+    }
+
+    .titulo h1 {
+        font-size: 22px;
+    }
+
+    .botones-avance {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botones-avance button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Tablets y móviles grandes */
+@media (max-width: 768px) {
+    .contenedorHijo {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .campoNombre input {
+        width: 100%;
+    }
+
+    .imagenUniversidad {
+        width: 80%;
+    }
+
+    .botones-avance button {
+        width: 100%;
+    }
+
+    .titulo h1 {
+        font-size: 20px;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 576px) {
+    .contenedorGlobal {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .campoNombre input {
+        width: 100%;
+    }
+
+    .imagenUniversidad {
+        width: 100%;
+    }
+
+    .botones-avance {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .botones-avance button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .titulo h1 {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .alert {
+        font-size: 14px;
+    }
+}

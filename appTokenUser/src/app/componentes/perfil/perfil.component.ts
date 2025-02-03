@@ -24,14 +24,15 @@ export class PerfilComponent {
   formularioCambioContrasenia!: FormGroup;
   mostrarContrasenia = false;
   formularioContrasenia = false;
-
-
+  infoRol: boolean = false;
+  rolUsuario: string = "";
   constructor(private util: UtilService, private usuarioService: UsuarioService, private fb: FormBuilder, private alertas: AlertasService) { }
 
   ngOnInit(): void {
     this.obtenerIdLocalStorage();
     this.cargarUsuario();
     this.iniciarFormularioCambioContrasenia();
+    this.rolUsuario = localStorage.getItem('userRole')!;
   }
 
   iniciarFormularioCambioContrasenia() {
@@ -120,8 +121,12 @@ export class PerfilComponent {
     this.formularioCambioContrasenia.patchValue({
       nuevaContrasenia: '',
       repetirContrasenia: '',
-      contraseniaActual:""
+      contraseniaActual: ""
     });
+  }
+
+  mostrarInformacionRol() {
+    this.infoRol = !this.infoRol;
   }
 
 

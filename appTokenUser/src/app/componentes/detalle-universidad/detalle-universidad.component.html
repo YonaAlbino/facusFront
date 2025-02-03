@@ -14,14 +14,14 @@
 
             <div *ngIf="infoPuntuacion">
                 <div class="text-center mb-3" *ngIf="calificacionEsEditable; else notEditable">
-                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:
+                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px; text-align: center;">Calificar:
                     </p>
                     <app-puntuacion  [esEditable]="true" [idUsuario]="idUsuarioCalificacion"
                         [idCalificacion]="idCalificacionEditar"
                         (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
                 </div>
                 <ng-template #notEditable>
-                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px;">Calificar:
+                    <p style="margin-top: 10px; font-size: 24px; font-family: roboto; margin-bottom: 0px; text-align: center;">Calificar:
                     </p>
                     <app-puntuacion (calificacionGuardada)="handleCalificacionGuardada($event)"></app-puntuacion>
                 </ng-template>

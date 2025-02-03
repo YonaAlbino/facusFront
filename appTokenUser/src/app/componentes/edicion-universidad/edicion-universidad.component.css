@@ -146,3 +146,55 @@ option {
   display: inline-block;
 }
 
+
+/* Media query para celulares (pantallas menores a 768px) */
+@media (max-width: 768px) {
+  .edicion-universidad {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .form-container {
+    gap: 8px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-control {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .img-thumbnail {
+    max-width: 100%;
+  }
+
+  .btn-primary,
+  .btn-eliminar {
+    font-size: 13px;
+    max-width: 100%;
+  }
+}
+
+/* Media query para pantallas muy pequeñas (menos de 480px) */
+@media (max-width: 480px) {
+  .edicion-universidad {
+    padding: 5px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .form-control {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .btn-primary,
+  .btn-eliminar {
+    font-size: 12px;
+  }
+}

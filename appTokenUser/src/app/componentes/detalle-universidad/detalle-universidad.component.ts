@@ -41,7 +41,7 @@ export class DetalleUniversidadComponent implements OnInit {
     private router: Router,
     private carreraService: CarreraService,
     private userService: UsuarioService,
-    private alertaService:AlertasService
+    private alertaService: AlertasService
     //private alertas: AlertasService
   ) { }
 
@@ -95,12 +95,13 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   handleCalificacionGuardada(calificacion: CalificacionDTO): void {
-    if (!calificacion.id == undefined) {
+    if (calificacion.id !== undefined) {
       if (this.universidad.listaCalificacion) {
         this.universidad.listaCalificacion.push(calificacion);
-        
+
         this.uniService.editUniversidad(this.universidad).subscribe(
           (universidad: UniversidadDTO) => {
+            console.log(universidad)
           },
           (error: any) => {
             console.error('Error al actualizar la universidad:', error);

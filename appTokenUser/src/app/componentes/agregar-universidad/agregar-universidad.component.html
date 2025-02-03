@@ -6,21 +6,21 @@
             <div class="contenedorHijo container">
                 <div *ngIf="indice === 1" class="caja">
                     <div class="contenedor-advertencia">
-                        <h4>Recuerda que no se permiten registros duplicados</h4>
-                        <p>Utiliza el buscador
+                        <h4 style="text-align: center;">Recuerda que no se permiten registros duplicados</h4>
+                        <p style="text-align: center;">Utilize el buscador
                             <a (click)="mostrarUnversidadBuscada()" class="btn-buscar"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                     class="bi bi-search" viewBox="0 0 16 16">
                                     <path
                                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                 </svg>
-                            </a> para verificar que la universidad no se encuentra en los registros de la
+                            </a> Para verificar que la universidad no se encuentra en los registros de la
                             aplicación
                         </p>
 
                     </div>
                     <div class="titulo">
-                        <h1 style="text-align: center;">Ingresa el nombre de la universidad</h1>
+                        <h1 style="text-align: center;">Ingrese el nombre de la universidad</h1>
                     </div>
                     <div class="campoNombre ">
                         <input style="width: 70%; margin: auto;" class="form-control" type="text"
@@ -45,7 +45,7 @@
 
                 <div *ngIf="indice === 2" class="caja">
                     <div class="titulo">
-                        <h1 style="text-align: center;">Ingresa la dirección web</h1>
+                        <h1 style="text-align: center;">Ingrese la dirección web</h1>
                     </div>
                     <div class="campoNombre d-flex align-items-center">
                         <input style="width: 50%; margin: auto;" class="form-control" type="text"
@@ -71,7 +71,7 @@
 
                 <div *ngIf="indice === 3" class="caja">
                     <div class="titulo">
-                        <h1 style="text-align: center;">Ingresa la dirección física</h1>
+                        <h1 style="text-align: center;">Ingrese la dirección física</h1>
                     </div>
                     <div class="campoNombre d-flex align-items-center">
                         <input style="width: 50%; margin: auto;" class="form-control" type="text"
@@ -97,7 +97,7 @@
 
                 <div *ngIf="indice === 4" class="descripcion">
                     <div class="titulo text-center" style="margin: auto">
-                        <h1>Ingresa una descripción sobre la universidad</h1>
+                        <h1>Ingrese una descripción sobre la universidad</h1>
                     </div>
                     <div class="campoDescripcion">
                         <textarea class="form-control" placeholder="Descripción" rows="4"

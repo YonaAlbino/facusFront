@@ -6,13 +6,14 @@ import { UniversidadService } from './universidad.service';
 import { UniversidadDTO } from '../modelo/UniversidadDTO';
 import { Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
+import { SonidoService } from './sonido-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertasService {
 
-  constructor(private carreraService: CarreraService, private univiersidadService: UniversidadService, private router: Router) { }
+  constructor(private carreraService: CarreraService, private univiersidadService: UniversidadService, private router: Router, private sonidoService:SonidoService) { }
 
   mostrarAlerta(titulo: string) {
     Swal.fire({
@@ -180,6 +181,7 @@ export class AlertasService {
 
 
 topLateral(evento: string, informacion: string) {
+  this.sonidoService.notificacion();
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",

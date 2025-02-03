@@ -16,6 +16,7 @@ import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
 import { ErrorServiceService } from '../servicios/error-service.service';
 import { UsuarioDTO } from '../modelo/UsuarioDTO';
 import { AlertasService } from '../servicios/alertas.service';
+import { SonidoService } from '../servicios/sonido-service.service';
 
 @Injectable()
 export class InterceptorInterceptor implements HttpInterceptor {
@@ -25,7 +26,8 @@ export class InterceptorInterceptor implements HttpInterceptor {
     private util: UtilService,
     private usuarioService: UsuarioService,
     private errorService: ErrorServiceService,
-    private alertaService: AlertasService
+    private alertaService: AlertasService,
+    private sonidoService:SonidoService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -114,6 +116,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
 
   private handleError(httpResponse: HttpErrorResponse): Observable<never> {
+    this.sonidoService.error();
     let mensajeError = 'Ocurrió un error desconocido';
 
     if (httpResponse.error instanceof ErrorEvent) {
