@@ -21,33 +21,54 @@ export class ComentarioService {
   }
 
   getComentarioById(id: number): Observable<ComentarioDTO> {
-    return this.http.get<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint + "/" + id);
+    return this.http.get<ComentarioDTO>(this.rutaBase + this.rutaEndpoint + "/" + id);
   }
 
   guardarComentario(comentario: ComentarioDTO): Observable<ComentarioDTO> {
-    return this.http.post<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentario);
+    return this.http.post<ComentarioDTO>(this.rutaBase + this.rutaEndpoint, comentario);
   }
 
   eliminarComentario(id: number): Observable<string> {
     return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);
   }
 
-  editComentario(comentario:ComentarioDTO): Observable<ComentarioDTO> {
+  editComentario(comentario: ComentarioDTO): Observable<ComentarioDTO> {
     const comentarioClass = {
-      ...comentario,  
-      '@class': EnumsDTOs.ComentarioDTO  
+      ...comentario,
+      '@class': EnumsDTOs.ComentarioDTO
     };
-    return this.http.put<ComentarioDTO>(this.rutaBase  + this.rutaEndpoint, comentarioClass);
+    return this.http.put<ComentarioDTO>(this.rutaBase + this.rutaEndpoint, comentarioClass);
   }
 
-  CargarComentariosPaginadosCarrera(pagina:number, tamanio:number, idCarrera:number):Observable<ComentarioDTO[]>{
-    return this.http.get<ComentarioDTO[]>(this.rutaBase+"/comentario/encontrarComentariosPorIdCarrera/"+idCarrera+"?pagina="+pagina+"&tamanio="+tamanio);
-  }
-
-  CargarComentariosPaginadosUniversidad(pagina:number, tamanio:number, idUniversidad:number):Observable<ComentarioDTO[]>{
-    return this.http.get<ComentarioDTO[]>(this.rutaBase+"/comentario/encontrarComentariosPorIdUniversidad/"+idUniversidad+"?pagina="+pagina+"&tamanio="+tamanio);
+  CargarComentariosPaginadosCarrera(
+    pagina: number,
+    tamanio: number,
+    idCarrera: number,
+    recientes: boolean,
+    antiguos: boolean,
+    votados: boolean
+  ): Observable<ComentarioDTO[]> {
+  
+    return this.http.get<ComentarioDTO[]>(
+      `${this.rutaBase}/comentario/encontrarComentariosPorIdCarrera/${idCarrera}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`
+    );
   }
   
+
+  CargarComentariosPaginadosUniversidad(
+    pagina: number,
+    tamanio: number,
+    idUniversidad: number,
+    recientes: boolean,
+    antiguos: boolean,
+    votados: boolean,
+  ): Observable<ComentarioDTO[]> {
+
+    return this.http.get<ComentarioDTO[]>(
+      `${this.rutaBase}/comentario/encontrarComentariosPorIdUniversidad/${idUniversidad}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`
+    );
+  }
+
 
   // findComentarioByRespuestaRespuestaId(idRespuestaRespuesta: number): Observable<ComentarioDTO> {
   //   return this.http.get<ComentarioDTO>(`${this.rutaBase}${this.rutaEndpoint}/findComentarioByRespuestaRespuestaId/${idRespuestaRespuesta}`);

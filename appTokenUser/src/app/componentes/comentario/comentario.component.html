@@ -19,6 +19,16 @@
     </h3>
   </div>
 
+  <div class="botones-notificacion">
+    <button (click)="filtrarComentarios(true, false, false, 'recientes')"
+      [ngClass]="{ 'seleccionado': filtroSeleccionado === 'recientes' }">
+      Más recientes
+    </button>
+    <button (click)="filtrarComentarios(false, true, false, 'antiguos')"
+      [ngClass]="{ 'seleccionado': filtroSeleccionado === 'antiguos' }"> Más antiguos</button>
+    <button (click)="filtrarComentarios(false, false, true, 'votados')"
+      [ngClass]="{ 'seleccionado': filtroSeleccionado === 'votados' }">Mejores comentarios</button>
+  </div>
 </div>
 
 
@@ -107,7 +117,7 @@
       </div>
       <div *ngIf="comentario.mostrarRespuestas" style="margin-left: 40px">
         <ng-container *ngIf="comentario.listaRespuesta && comentario.listaRespuesta.length > 0">
-          <ng-container 
+          <ng-container
             *ngTemplateOutlet="visualizarRespuestasDeLosComentarios; context: { respuestas: comentario.listaRespuesta }"></ng-container>
         </ng-container>
       </div>
@@ -117,7 +127,7 @@
 
 <div *ngIf="!comentarioHilo" class="container" style="display: flex; justify-content: center; margin-bottom: 60px;">
   <input class="btn btn-primary" [disabled]="listaComentarios.length == 0" type="submit" value="Cargar más comentarios"
-    (click)="cargarComentarios()" />
+    (click)="cargarComentarios(comentariosRecientes, comentariosAntiguos, comentariosVotados)" />
   <input class="btn btn-primary" [disabled]="listaComentarios.length > 0" type="submit" value="Recargar"
     (click)="recargarComentarios()" />
 </div>
@@ -150,7 +160,8 @@
       <button [disabled]="respuesta.eliminado" class="botonEditar"
         *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual" (click)="editarRespuesta(respuesta)">
         Editar </button>
-      <button [disabled]="respuesta.eliminado" *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual" (click)="eliminarRespuesta(respuesta)"  class="botonEliminar">Eliminar 66</button>
+      <button [disabled]="respuesta.eliminado" *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual"
+        (click)="eliminarRespuesta(respuesta)" class="botonEliminar">Eliminar 66</button>
       <div *ngIf="respuesta.mostrarFormularioEdicion" style="margin-top: 20px">
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="edicionRespuesta" rows="8" cols="50"

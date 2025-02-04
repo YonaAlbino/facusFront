@@ -118,3 +118,32 @@
     cursor: pointer;
     border: 1px solid rgb(187, 187, 250);
   }
+
+  
+  .botones-notificacion{
+    display: flex; flex-direction: row; justify-content: center; align-items: center;
+  }
+  
+  .botones-notificacion button{
+    background-color: transparent;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 2px solid;
+  }
+
+  .botones-notificacion button:hover{
+   background-color: #007bff;
+   color: white;
+   border: 2px solid #000;
+  }
+
+  .botones-notificacion button:not(:last-child){
+    margin-right: 10px;
+  }
+
+  .botones-notificacion button.seleccionado {
+    background-color: #007bff;
+    color: white;
+    border: 2px solid #000;
+}

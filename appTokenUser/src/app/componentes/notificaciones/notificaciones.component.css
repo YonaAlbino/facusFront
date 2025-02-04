@@ -72,6 +72,12 @@
     margin-right: 10px;
   }
 
+  .botones-notificacion button.seleccionado {
+    background-color: #007bff;
+    color: white;
+    border: 2px solid #000;
+}
+
   .cargando{
     font-size: 18px;
     color: #007bff;
@@ -85,8 +91,3 @@
     margin-top: 50px;
   }
 
-  .botones-notificacion button.seleccionado {
-    background-color: #007bff;
-    color: white;
-    border: 2px solid #000;
-}

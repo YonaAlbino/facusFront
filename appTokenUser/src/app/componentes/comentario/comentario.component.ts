@@ -50,6 +50,10 @@ export class ComentarioComponent implements OnInit {
   edicionRespuesta: string | undefined;
   cantidadComentarios: Number | undefined;
   mostrarComentarios: boolean = true;
+  filtroSeleccionado: string = "recientes";
+  comentariosRecientes: boolean = true;
+  comentariosAntiguos: boolean = false;
+  comentariosVotados: boolean = false;
 
   @Input() Universidad: UniversidadDTO | undefined;
   @Input() carrera: CarreraDTO | undefined;
@@ -63,26 +67,34 @@ export class ComentarioComponent implements OnInit {
 
     if (this.carrera) {
       this.CargarComentariosPaginadosCarrera();
-      this.carreraService.getAllComents(this.carrera.id!).subscribe(
-        (cantidadComentarios: Number) => {
-          this.cantidadComentarios = cantidadComentarios
-        }
-      );
+      this.obtenerCantidadComentariosCarrera(this.carrera.id!);
     }
 
     if (this.Universidad) {
       this.CargarComentariosPaginadosUniversidad();
-      this.universidadService.getAllComents(this.Universidad.id!).subscribe(
-        (cantidadComentarios: Number) => {
-          this.cantidadComentarios = cantidadComentarios
-        }
-      );
+      this.obtenerCantidadComentariosUniversidad(this.Universidad.id!);
     }
 
     if (this.comentarioHilo) {
       this.cargarImagenUsuarioDeUnComentario(this.comentarioHilo);
       this.listaComentarios = [this.comentarioHilo];
     }
+  }
+
+  obtenerCantidadComentariosCarrera(id: number) {
+    this.carreraService.getAllComents(id).subscribe(
+      (cantidadComentarios: Number) => {
+        this.cantidadComentarios = cantidadComentarios
+      }
+    );
+  }
+
+  obtenerCantidadComentariosUniversidad(id: number) {
+    this.universidadService.getAllComents(id).subscribe(
+      (cantidadComentarios: Number) => {
+        this.cantidadComentarios = cantidadComentarios
+      }
+    );
   }
 
   eliminarComentario(id: number) {
@@ -259,7 +271,7 @@ export class ComentarioComponent implements OnInit {
   }
 
   //Metodo para crear una nueva instancia de una Respuesta
-  crearRespuesta(mensaje: string, idComentarioPadre:number): Observable<RespuestaDTO> {
+  crearRespuesta(mensaje: string, idComentarioPadre: number): Observable<RespuestaDTO> {
     // const usuario: Usuario = {
     //   id: Number(localStorage.getItem('userID'))
     // };
@@ -270,7 +282,7 @@ export class ComentarioComponent implements OnInit {
 
     let nuevaRespuesta: RespuestaDTO = {
       mensaje: mensaje,
-      idComentarioPadre:idComentarioPadre,
+      idComentarioPadre: idComentarioPadre,
       fecha: new Date().toISOString(),
       usuarioId: Number(localStorage.getItem('userID')),
     };
@@ -334,7 +346,10 @@ export class ComentarioComponent implements OnInit {
       .CargarComentariosPaginadosUniversidad(
         this.paginaActual,
         this.cantidadRegistros,
-        this.Universidad!.id!
+        this.Universidad!.id!,
+        true,
+        false,
+        false
       )
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
@@ -379,7 +394,10 @@ export class ComentarioComponent implements OnInit {
       .CargarComentariosPaginadosCarrera(
         this.paginaActual,
         this.cantidadRegistros,
-        this.carrera!.id!
+        this.carrera!.id!,
+        true,
+        false,
+        false
       )
       .subscribe(
         (listaComentarios: ComentarioDTO[]) => {
@@ -416,13 +434,19 @@ export class ComentarioComponent implements OnInit {
   }
 
   //Metodo para cargar comentarios tanto de universidad o carrera
-  cargarComentarios() {
+  cargarComentarios(recientes: boolean, antiguos: boolean, mejores: boolean) {
     if (this.carrera) {
       this.CargarComentariosPaginadosCarrera();
     }
 
     if (this.Universidad) {
-      this.CargarComentariosPaginadosUniversidad();
+      if (recientes) {
+        this.CargarComentariosPaginadosUniversidad();
+      } else if (antiguos) {
+        this.cargarComentariosAntiguosUniversidad();
+      } else if (mejores) {
+        this.cargarComentariosMasVotadosUniversidad();
+      }
     }
   }
 
@@ -614,5 +638,127 @@ export class ComentarioComponent implements OnInit {
       )
     })
   }
+
+  cargarComentariosAntiguosCarrera() {
+    this.comentarioService
+      .CargarComentariosPaginadosCarrera(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.carrera!.id!,
+        false,
+        true,
+        false
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+        },
+        (error) => console.error(error)
+      );
+  }
+
+  cargarComentariosRecientesCarrera() {
+    this.comentarioService
+      .CargarComentariosPaginadosCarrera(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.carrera!.id!,
+        true,
+        false,
+        false
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+        },
+        (error) => console.error(error)
+      );
+
+    //this.desplazarVista();
+  }
+
+
+  cargarComentariosRecientesUniversidad() {
+    this.comentarioService
+      .CargarComentariosPaginadosUniversidad(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.Universidad!.id!,
+        true,
+        false,
+        false
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+        }
+      );
+  }
+
+  cargarComentariosMasVotadosUniversidad() {
+    this.comentarioService
+      .CargarComentariosPaginadosUniversidad(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.Universidad!.id!,
+        false,
+        false,
+        true
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.paginaActual++;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+        }
+      );
+  }
+
+  cargarComentariosAntiguosUniversidad() {
+    this.comentarioService
+      .CargarComentariosPaginadosUniversidad(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.Universidad!.id!,
+        false,
+        true,
+        false
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.paginaActual++;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+        }
+      );
+  }
+
+  filtrarComentarios(recientes: boolean, antiguos: boolean, votados: boolean, tipo: string) {
+    this.paginaActual = 0;
+    this.filtroSeleccionado = tipo;
+    this.comentariosRecientes = recientes;
+    this.comentariosAntiguos = antiguos;
+    this.comentariosVotados = votados;
+    if (this.Universidad) {
+      if (recientes) {
+        this.cargarComentariosRecientesUniversidad();
+      } else if (antiguos) {
+        this.cargarComentariosAntiguosUniversidad();
+      } else if (votados) {
+        this.cargarComentariosMasVotadosUniversidad();
+      }
+    } if (this.carrera) {
+      console.log(this.carrera)
+      if (recientes) {
+        this.cargarComentariosRecientesCarrera();
+      } else if (antiguos) {
+        this.cargarComentariosAntiguosCarrera();
+      }
+    }
+  }
+
 
 }
