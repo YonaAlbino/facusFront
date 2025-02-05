@@ -34,6 +34,8 @@ export class PrincipalComponent implements OnInit {
       };
       
       this.util.agregarCredencialesASesion(authLoguinResponseDTO);
+        // Limpiar los parámetros de la URL
+    window.history.replaceState({}, '', window.location.pathname);
     }
   }
 

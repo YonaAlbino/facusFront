@@ -48,10 +48,10 @@
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
-            <img class="imagen-usuario" loading="lazy" src={{comentario.imagenUsuario}} alt="Imagen de usuario" />
+            <img class="imagen-usuario" loading="lazy" src={{comentario.imagenUsuario}} alt="Imagen de usuario" (error)="manejarImagenNoCargada($event)"/>
 
           </div>
-          <p *ngIf="comentario.usuarioId">{{comentario.username}}</p>
+          <p *ngIf="comentario.usuarioId">{{comentario.nickname}}</p>
         </div>
         <div class="fecha">
           <p style="font-size: 14px"> {{ comentario.fecha | date : "medium" }} <span
@@ -138,10 +138,10 @@
       <div class="cabeceraComentario">
         <div class="infoUsuario">
           <div>
-            <img class="imagen-usuario" loading="lazy" src={{respuesta.imagenUsuario}} alt="Imagen de usuario" />
+            <img class="imagen-usuario" loading="lazy" src={{respuesta.imagenUsuario}} alt="Imagen de usuario" (error)="manejarImagenNoCargada($event)" />
           </div>
-          <p *ngIf="respuesta.usuarioId && respuesta.username" style="font-size: 14px">
-            {{respuesta.username}}</p>
+          <p *ngIf="respuesta.usuarioId && respuesta.nickname" style="font-size: 14px">
+            {{respuesta.nickname}}</p>
         </div>
         <div class="fecha">
           <p style="font-size: 14px">{{ respuesta.fecha | date : "medium" }} <span

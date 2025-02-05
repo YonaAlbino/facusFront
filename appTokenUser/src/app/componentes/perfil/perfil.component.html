@@ -1,6 +1,7 @@
 <div class="contenedor-perfil">
     <h2>Mi perfil</h2>
     <p class="username">Usuario: {{usuario?.username}}</p>
+    <p class="username">Nickname: {{usuario?.nick}}</p>
     <p class="username">Rol: {{usuario?.listaRoles?.[0]?.nombreRol}}</p>
     <img class="imagen-usuario"
         [src]="usuario?.imagen ? usuario?.imagen : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"

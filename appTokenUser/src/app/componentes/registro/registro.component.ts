@@ -30,6 +30,7 @@ export class RegistroComponent implements OnInit {
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private pruebaService: PruebaService, private router: Router) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, this.sinEspacios]],
+      nick:['', [Validators.required, this.sinEspacios]],
       password: ['', [Validators.required, this.fortalezaContrasenias, this.sinEspacios]],
       repeatPassword: ['', Validators.required],
       showPassword: [false],
@@ -68,16 +69,18 @@ export class RegistroComponent implements OnInit {
       this.cargando = true;
       const email = this.registerForm.get('email')?.value?.trim(); // Eliminar espacios
       const pass = this.registerForm.get('password')?.value.trim();
+      const nickName = this.registerForm.get('nick')?.value.trim();
       const registroRequest: RegistroRequest = {
         captchaToken: this.tokenCaptcha, // Token obtenido del reCAPTCHA
         email: email,
-        contrasenia: pass
+        contrasenia: pass,
+        nick:nickName
       }
 
       // Llamada al servicio de registro
       this.usuarioService.registro(registroRequest).subscribe(
         (mensajeRetornoSimple: MensajeRetornoSimple) => {
-          console.log("Registro exitoso: ", mensajeRetornoSimple);
+
           this.cuentaCreada = true;
           this.cargando = false;
         },

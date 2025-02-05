@@ -435,8 +435,13 @@ export class ComentarioComponent implements OnInit {
 
   //Metodo para cargar comentarios tanto de universidad o carrera
   cargarComentarios(recientes: boolean, antiguos: boolean, mejores: boolean) {
+    console.log(this.paginaActual)
     if (this.carrera) {
-      this.CargarComentariosPaginadosCarrera();
+      if (recientes) {
+        this.cargarComentariosRecientesCarrera();
+      } else if(antiguos){
+        this.cargarComentariosAntiguosCarrera();
+      }
     }
 
     if (this.Universidad) {
@@ -639,6 +644,27 @@ export class ComentarioComponent implements OnInit {
     })
   }
 
+  cargarComentariosMasVotadosCarrera() {
+    this.comentarioService
+      .CargarComentariosPaginadosCarrera(
+        this.paginaActual,
+        this.cantidadRegistros,
+        this.carrera!.id!,
+        false,
+        false,
+        true
+      )
+      .subscribe(
+        (listaComentarios: ComentarioDTO[]) => {
+          this.listaComentarios = listaComentarios;
+          this.cargarImagenUsuarioComentario(listaComentarios);
+          this.paginaActual++;
+        },
+        (error) => console.error(error)
+      );
+  }
+
+
   cargarComentariosAntiguosCarrera() {
     this.comentarioService
       .CargarComentariosPaginadosCarrera(
@@ -653,6 +679,7 @@ export class ComentarioComponent implements OnInit {
         (listaComentarios: ComentarioDTO[]) => {
           this.listaComentarios = listaComentarios;
           this.cargarImagenUsuarioComentario(listaComentarios);
+          this.paginaActual++;
         },
         (error) => console.error(error)
       );
@@ -756,9 +783,15 @@ export class ComentarioComponent implements OnInit {
         this.cargarComentariosRecientesCarrera();
       } else if (antiguos) {
         this.cargarComentariosAntiguosCarrera();
+      } else if(votados){
+        this.cargarComentariosMasVotadosCarrera();
       }
     }
   }
 
+  manejarImagenNoCargada(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  }
 
 }

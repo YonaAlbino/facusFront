@@ -9,6 +9,7 @@ import { ComentarioService } from 'src/app/servicios/comentario.service';
 import { PromedioCalificacionComponent } from '../promedio-calificacion/promedio-calificacion.component';
 import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 
 @Component({
   selector: 'app-carrera',
@@ -19,13 +20,13 @@ export class CarreraComponent implements OnInit {
   calificacionEsEditable: boolean | undefined;
   idUsuarioCalificacion: number = 0;
   idCalificacionEditar: number = 0;
-  idUsuarioActual:number = 0;
-  usuarioActual:UsuarioDTO | undefined;
-  actualizarComentarios:boolean = true;
+  idUsuarioActual: number = 0;
+  usuarioActual: UsuarioDTO | undefined;
+  actualizarComentarios: boolean = true;
 
   @Input() carrera!: CarreraDTO;
 
-  constructor(private carreraService: CarreraService, private comentarioService: ComentarioService, private userService:UsuarioService) { }
+  constructor(private carreraService: CarreraService, private comentarioService: ComentarioService, private userService: UsuarioService, private alertaService: AlertasService) { }
 
   ngOnInit(): void {
     this.idUsuarioActual = Number(localStorage.getItem("userID"));
@@ -92,7 +93,7 @@ export class CarreraComponent implements OnInit {
   actualizarCarrera(carrera: CarreraDTO) {
     this.carreraService.editCarrera(carrera)
       .subscribe((carreraEditada: CarreraDTO) => {
-        console.log(this.carrera)
+        this.alertaService.exito("Comentario agregado!")
         this.carrera = carreraEditada;
         this.actualizarComentarios = true;
       })
@@ -175,6 +176,19 @@ export class CarreraComponent implements OnInit {
         this.usuarioActual = usuario;
       }
     )
+  }
+
+  volverUniversidad() {
+  // Obtener la ruta actual
+  const pathname = window.location.pathname;
+  
+  // Obtener solo el primer parámetro de la URL (en este caso el primer número)
+  const partes = pathname.split('/');
+  const nuevaRuta = partes.slice(0, 3).join('/'); // Mantener solo la primera parte de la URL
+
+  // Reemplazar la URL y recargar la página
+  window.history.replaceState({}, '', nuevaRuta);
+  window.location.reload();;
   }
 
 }

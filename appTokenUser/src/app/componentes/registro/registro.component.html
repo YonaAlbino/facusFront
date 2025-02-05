@@ -15,6 +15,17 @@
     </div>
 
     <div class="input-group">
+      <label for="text">Ingresa tu nickname</label>
+      <input type="text" id="text" formControlName="nick" placeholder="Scrapycoco" />
+      <div class="error-message" *ngIf="registerForm.get('nick')?.touched && registerForm.get('nick')?.invalid">
+        <span *ngIf="registerForm.get('nick')?.errors?.['required']">El nick es obligatorio.</span>
+        <span *ngIf="registerForm.get('nick')?.hasError('sinEspacios') && registerForm.get('nick')?.touched">
+          Tu nickName no puede contener espacios en blanco
+        </span>
+      </div>
+    </div>
+
+    <div class="input-group">
       <label for="password">Ingresa tu contraseña</label>
       <input [type]="mostrarContrasenia ? 'text' : 'password'" id="password" formControlName="password"
         placeholder="Contraseña" autocomplete="new-password" />

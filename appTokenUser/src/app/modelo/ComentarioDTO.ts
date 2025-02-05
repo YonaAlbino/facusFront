@@ -13,6 +13,7 @@ export interface ComentarioDTO {
     listaReaccion?: ReaccionDTO[];
     listaRespuesta?: RespuestaDTO[];
     username?:string;
+    nickname?:string;
     editado?: boolean;
     eliminado?:boolean;
     imagenUsuario?:string;

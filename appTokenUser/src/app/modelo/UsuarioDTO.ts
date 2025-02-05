@@ -10,6 +10,7 @@ import { UniversidadDTO } from "./UniversidadDTO";
 
 export interface UsuarioDTO {
     id?: number;
+    nick?:string;
     username?: string;
     password?: string;
     enable?: boolean;
