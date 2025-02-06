@@ -32,10 +32,10 @@ export class PrincipalComponent implements OnInit {
         token: token!,
         id: Number(idUsuario)
       };
-      
+
       this.util.agregarCredencialesASesion(authLoguinResponseDTO);
-        // Limpiar los parámetros de la URL
-    window.history.replaceState({}, '', window.location.pathname);
+      // Limpiar los parámetros de la URL
+      window.history.replaceState({}, '', window.location.pathname);
     }
   }
 

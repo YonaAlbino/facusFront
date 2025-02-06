@@ -179,16 +179,16 @@ export class CarreraComponent implements OnInit {
   }
 
   volverUniversidad() {
-  // Obtener la ruta actual
-  const pathname = window.location.pathname;
-  
-  // Obtener solo el primer parámetro de la URL (en este caso el primer número)
-  const partes = pathname.split('/');
-  const nuevaRuta = partes.slice(0, 3).join('/'); // Mantener solo la primera parte de la URL
+    // Obtener la ruta actual
+    const pathname = window.location.pathname;
 
-  // Reemplazar la URL y recargar la página
-  window.history.replaceState({}, '', nuevaRuta);
-  window.location.reload();;
+    // Obtener solo el primer parámetro de la URL (en este caso el primer número)
+    const partes = pathname.split('/');
+    const nuevaRuta = partes.slice(0, 3).join('/'); // Mantener solo la primera parte de la URL
+
+    // Reemplazar la URL y recargar la página
+    window.history.replaceState({}, '', nuevaRuta);
+    window.location.reload();;
   }
 
 }
