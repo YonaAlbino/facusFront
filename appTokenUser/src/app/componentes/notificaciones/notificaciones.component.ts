@@ -52,7 +52,7 @@ export class NotificacionesComponent implements OnInit {
         }
       } else {
         this.router.navigate(
-          ['/detalleNotificacion', notificacion.idRedireccionamiento],
+          ['/detalleNotificacion', notificacion.idRedireccionamiento, notificacion.id],
           {
             state: {
               carrera: notificacion.carrera,

@@ -78,6 +78,7 @@ export class ComentarioComponent implements OnInit {
     if (this.comentarioHilo) {
       this.cargarImagenUsuarioDeUnComentario(this.comentarioHilo);
       this.listaComentarios = [this.comentarioHilo];
+      console.log(this.listaComentarios)
     }
   }
 

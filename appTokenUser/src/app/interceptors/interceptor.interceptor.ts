@@ -27,7 +27,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
     private usuarioService: UsuarioService,
     private errorService: ErrorServiceService,
     private alertaService: AlertasService,
-    private sonidoService:SonidoService
+    private sonidoService: SonidoService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -132,10 +132,14 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
     // Manejo de errores específicos según el código personalizado
     if (httpResponse.error?.code === 401 || httpResponse.status == 401) {
-      //console.log(mensajeError)
-      this.alertaService.error("El token ha expirado, necesitas volver a loguarte");
-      this.router.navigate(['/loguin']);
-    } 
+    
+      if (httpResponse.error.message === "Token inválido") {
+        console.log("11111111111111111111111111111111111111111111")
+        //this.alertaService.error("Tu token de seguridad ha expirado, necesitas volver a loguarte");
+        this.router.navigate(['/loguin']);
+      }
+
+    }
 
     // Registrar el error en el servicio de errores
     // this.errorService.reportError(mensajeError);

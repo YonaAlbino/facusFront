@@ -30,9 +30,10 @@ export class NotificacionService {
   }
 
   visualizarNotificacionesByUserID(userId: number): Observable<string> {
+    console.log(userId)
     const url = this.baseUrl + this.rutaEndpoint + "/visualizarNotificacionesByUserID/" + userId;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<string>(url, { headers });
+    //const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<string>(url, null);
   }
 
   // eliminarNotificacion(idNotificacion: number, idUsuario: number) {

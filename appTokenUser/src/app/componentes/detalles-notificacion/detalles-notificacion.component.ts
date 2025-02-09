@@ -3,12 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { ComentarioDTO, ComentarioDTO as respuestaDTO } from 'src/app/modelo/ComentarioDTO';
 import { MensajeRetornoSimple } from 'src/app/modelo/mensaje-retorno-simple';
+import { NotificacionDTO } from 'src/app/modelo/NotificacionDTO';
 import { PermisoDTO } from 'src/app/modelo/PermisoDTO';
 import { RespuestaDTO } from 'src/app/modelo/RespuestaDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { UsuarioDTO } from 'src/app/modelo/UsuarioDTO';
+import { AlertasService } from 'src/app/servicios/alertas.service';
 import { CarreraService } from 'src/app/servicios/carrera.service';
 import { ComentarioService } from 'src/app/servicios/comentario.service';
+import { NotificacionService } from 'src/app/servicios/notificacion.service';
 import { PermisoService } from 'src/app/servicios/permiso.service';
 import { RespuestaService } from 'src/app/servicios/respuesta.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
@@ -22,6 +25,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 export class DetallesNotificacionComponent implements OnInit {
 
   id: number | null = null;
+  idNotificacion: number | null = null;
   carrera: boolean | undefined;
   comentario: boolean | undefined;
   usuario: boolean | undefined;
@@ -32,8 +36,9 @@ export class DetallesNotificacionComponent implements OnInit {
   respuestaComentarioRecibida: boolean | undefined;
   respuestaAunaRespuesta: boolean | undefined;
   carreraAgregada: boolean | undefined;
-  comentarioAgregadoCarrera: boolean | undefined;
+  comentarioAgregadoCarrera: boolean | undefined; 
 
+  notificacionBuscada: NotificacionDTO | undefined;
   comentarioAgregadoCarreraEntidad: ComentarioDTO | undefined;
   nuevaCarreraAgregada: CarreraDTO | undefined;
   comentarioHilo: respuestaDTO | undefined;
@@ -56,11 +61,20 @@ export class DetallesNotificacionComponent implements OnInit {
     private permisoService: PermisoService,
     private carreraService: CarreraService,
     private usuarioService: UsuarioService,
-    private respuestaService: RespuestaService
+    private respuestaService: RespuestaService,
+    private notificacionService: NotificacionService,
+    private alertaService: AlertasService
   ) { }
 
   ngOnInit(): void {
     this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.idNotificacion = Number(this.activatedRoute.snapshot.paramMap.get('idNotificacion'));
+
+    this.notificacionService.getNotificacionById(this.idNotificacion!).subscribe(
+      (notificacion: NotificacionDTO) => {
+        this.notificacionBuscada = notificacion;
+      }
+    )
     const state = history.state;
     this.carrera = state.carrera;
     this.comentario = state.comentario;
@@ -214,10 +228,28 @@ export class DetallesNotificacionComponent implements OnInit {
       });
   }
 
+  cargarCarrera() {
+    this.carreraService
+      .getCarreraByID(this.id!)
+      .subscribe((carrera: CarreraDTO) => {
+        this.nuevaCarreraAgregada = carrera;
+        this.usuarioService
+          .getUsuarioById(carrera.idUsuario!)
+          .subscribe((usuario: UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          });
+      }, (error) => {
+        this.registroEliminado = true;
+        console.error(error)
+      }
+      );
+  }
+
   cargarUniversidad() {
     this.universidadService.getUniversidadById(this.id!).subscribe(
       (universidad: UniversidadDTO) => {
         this.universidadBuscada = universidad;
+        console.log(this.universidadBuscada)
         this.usuarioService.getUsuarioById(universidad.usuarioId!).subscribe(
           (usuario: UsuarioDTO) => {
             this.usuarioPropietario = usuario;
@@ -258,22 +290,7 @@ export class DetallesNotificacionComponent implements OnInit {
       );
   }
 
-  cargarCarrera() {
-    this.carreraService
-      .getCarreraByID(this.id!)
-      .subscribe((carrera: CarreraDTO) => {
-        this.nuevaCarreraAgregada = carrera;
-        this.usuarioService
-          .getUsuarioById(carrera.idUsuario!)
-          .subscribe((usuario: UsuarioDTO) => {
-            this.usuarioPropietario = usuario;
-          });
-      }, (error) => {
-        this.registroEliminado = true;
-        console.error(error)
-      }
-      );
-  }
+
 
   cargarComentario() {
     this.comentarioService
@@ -313,16 +330,20 @@ export class DetallesNotificacionComponent implements OnInit {
   }
 
   infraccionarUsuario(id: number | undefined) {
-    this.cargando = true;
-    this.usuarioService.infraccionarUsuario(id!).subscribe(
-      (mensaje: MensajeRetornoSimple) => {
-        console.log(mensaje);
-        this.infraccion = true;
-        this.cargando = false;
-      }, (error) => {
-        console.error(error);
-      }
-    )
+    if (this.notificacionBuscada?.auditada) {
+      this.alertaService.error("El usuario ya ha sido sancionado por esta notificación");
+    } else {
+      this.cargando = true;
+      this.usuarioService.infraccionarUsuario(id!).subscribe(
+        (mensaje: MensajeRetornoSimple) => {
+          console.log(mensaje);
+          this.infraccion = true;
+          this.notificacionBuscada!.auditada = true;
+          this.notificacionService.editNotificacion(this.notificacionBuscada!).subscribe();
+          window.location.reload();
+        }
+      )
+    }
   }
 
   eliminarEinfraccionar(arg0: number | undefined) {
@@ -338,7 +359,7 @@ export class DetallesNotificacionComponent implements OnInit {
   }
 
   verHiloRespuesta(id: number | undefined) {
-    console.log(id)
+
     this.comentarioService.getComentarioById(id!).subscribe(
       (comentario: ComentarioDTO) => {
         this.comentarioHilo = comentario

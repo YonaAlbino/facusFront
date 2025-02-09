@@ -67,13 +67,13 @@
 }
 
 .imagen-usuario {
-    width: 60px; /* Tamaño fijo o ajustable */
-    height: 60px; /* Asegura proporción */
+    width: 50px; /* Tamaño fijo o ajustable */
+    height: 50px; /* Asegura proporción */
     border-radius: 50%; /* Circular */
-    border: 2px solid #ddd; /* Borde sutil */
+
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra ligera */
     object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
-    margin: 5px; /* Espaciado */
+
   }
 
   .comentarios-container {

@@ -1,3 +1,7 @@
+<div *ngIf="cargando" class="cargando">
+    <p>Cargando...</p>
+</div>
+
 <div *ngIf="carreraAgregada && !registroEliminado && !infraccion && !cargando" class="section carrera">
     <h2 class="section-title">Nombre: {{ nuevaCarreraAgregada?.nombre }}</h2>
     <p class="detail">Duración: {{ nuevaCarreraAgregada?.duracion }}</p>
@@ -17,7 +21,7 @@
     </p>
     <div class="respuesta-actions">
         <button class="btn eliminar" (click)="eliminarCarrera(nuevaCarreraAgregada?.id)">Eliminar</button>
-        <button class="btn eliminar-reportar" (click)="infraccionarUsuario(usuarioPropietario?.id)">
+        <button [disabled]="notificacionBuscada?.auditada" class="btn eliminar-reportar" (click)="infraccionarUsuario(usuarioPropietario?.id)">
             {{ usuarioPropietario?.infracciones === 3 ? 'Banear usuario' : 'Infraccionar usuario' }}
         </button>
     </div>
@@ -31,7 +35,7 @@
         <div class="respuesta-details">
             <p class="fecha">{{respuestaComentario?.fecha | date: 'medium'}}</p>
             <p class="editado" *ngIf="respuestaComentario?.editado">(Editado)</p>
-            <p class="usuario">Por: <span class="username">{{respuestaComentario?.username}}</span></p>
+            <p class="usuario">Por: <span class="username">{{respuestaComentario?.nickname}}</span></p>
             <button class="btn btn-primary" style="margin-bottom: 20px;" (click)="verHilo(respuestaComentario?.id)">Ver
                 hilo</button>
             <div *ngIf="comentarioHilo">
@@ -114,7 +118,6 @@
 </div>
 
 <div *ngIf="comentario && !registroEliminado  && !infraccion && !cargando" class="section comentario">
-    <p>sdsadas</p>
     <h2 class="section-title">Comentario</h2>
     <div class="respuesta-container">
         <p class="mensaje">{{comentarioAgregadoCarreraEntidad?.mensaje}}</p>
@@ -126,11 +129,14 @@
             <p [ngClass]="{'infracciones-altas': usuarioPropietario?.infracciones! == 3}">
                 Infracciones: {{usuarioPropietario?.infracciones}}
             </p>
+            <p style="font-size: 12px;" *ngIf="notificacionBuscada?.auditada">
+                El usuario ya ha sido sancionado por un administrador
+            </p>
         </div>
         <div class="respuesta-actions">
             <button class="btn eliminar"
                 (click)="eliminarComentario(comentarioAgregadoCarreraEntidad?.id)">Eliminar</button>
-            <button class="btn eliminar-reportar" (click)="infraccionarUsuario(usuarioPropietario?.id)">
+            <button [disabled]="notificacionBuscada?.auditada" class="btn eliminar-reportar" (click)="infraccionarUsuario(usuarioPropietario?.id)">
                 {{ usuarioPropietario?.infracciones === 3 ? 'Banear usuario' : 'Infraccionar usuario' }}
             </button>
         </div>
@@ -203,6 +209,3 @@
         <p class="p-infraccion">Se ha aplicado la infracción exitosamente</p>
     </div>
 
-    <div *ngIf="cargando" class="cargando">
-        <p>Cargando...</p>
-    </div>

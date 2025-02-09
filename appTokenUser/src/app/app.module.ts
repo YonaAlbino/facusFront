@@ -52,6 +52,7 @@ const routes: Routes = [
   { path: 'escucha', component: EsuchaSocketComponent },
   { path: 'notificaciones', component: NotificacionesComponent },
   { path: 'detalleNotificacion/:id', component: DetallesNotificacionComponent},
+  { path: 'detalleNotificacion/:id/:idNotificacion', component: DetallesNotificacionComponent }, 
   { path: 'comentarios', component: ComentarioComponent},
   { path: 'loguin', component: LogueoComponent},
   { path: 'usuario', component: UsuarioComponent},

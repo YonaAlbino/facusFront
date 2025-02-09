@@ -188,9 +188,11 @@
 
                 <div *ngIf="indice === 7"
                     style="display:flex; justify-content: center; flex-direction: column; align-items: center;">
-                    <h1 style="text-align: center;">Califica la universidad!!</h1>
-                    <app-puntuacion (calificacionGuardada)="guardarCalificacion($event)"></app-puntuacion>
-                    <div class="botones">
+                    <div style="text-align: center;" *ngIf="!universidadCreada">
+                        <h1 style="text-align: center;">Califica la universidad!!</h1>
+                        <app-puntuacion (calificacionGuardada)="guardarCalificacion($event)"></app-puntuacion>
+                    </div>
+                    <div *ngIf="!universidadCreada" class="botones">
                         <button type="button" class="btn btn-primary" (click)="anterior()"
                             style="margin-left: 5px;">Atrás</button>
                         <input [disabled]="formularioAltaUniversidad.invalid" class="btn btn-primary" type="submit"
@@ -200,7 +202,7 @@
                     <div *ngIf="universidadCreada" style="margin-top: 20px;">
                         <a [routerLink]="['/detalleUniversidad', universidadCreada?.id]"
                             class="btn btn-outline-primary">
-                            {{universidadCreada?.nombre}}
+                           Ir a {{universidadCreada?.nombre}}
                         </a>
                     </div>
 
