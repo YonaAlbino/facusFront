@@ -70,87 +70,66 @@ export class InterceptorInterceptor implements HttpInterceptor {
       catchError(error => this.handleError(error))
     );
   }
-
   private refreshToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const idUsuario = localStorage.getItem("userID");
+
     // Si no hay ID de usuario, se lanza un error.
     if (!idUsuario) {
       return throwError(() => new Error('No hay ID de usuario disponible'));
     }
+
     // Obtiene el usuario y su refreshToken
     return this.usuarioService.getIdRefreshToken(idUsuario).pipe(
       switchMap((usuario: UsuarioDTO) => {
         const refreshToken = usuario.refreshToken?.token;
+
         // Si no hay refresh token, se lanza un error.
         if (!refreshToken) {
           return throwError(() => new Error('No hay refresh token disponible'));
         }
+
         // Se realiza la solicitud de renovación del token usando el refresh token.
-        return this.usuarioService.refreshToken(refreshToken).pipe(
-          switchMap((authResponse: AuthLoguinResponseDTO) => {
-            // Guardamos las nuevas credenciales en la sesión (por ejemplo, authToken y refreshToken).
-            this.util.agregarCredencialesASesion(authResponse);
-            // Clonamos la solicitud original con el nuevo token de autenticación.
-            const cloneRequest = request.clone({
-              setHeaders: {
-                'Authorization': `Bearer ${authResponse.token}` // Añadimos el nuevo authToken directamente en el encabezado.
-              }
-            });
-            return next.handle(cloneRequest); // Procesamos la solicitud con el nuevo token.
-          }),
-          catchError(error => {
-            // Si la renovación del token falla, redirigimos al usuario a la página de login.
-            this.handleError(error);
-            return throwError(() => new Error('El token ha expirado, necesitas voler a loguarte'));
-          })
-        );
+        return this.usuarioService.refreshToken(refreshToken);
       }),
-      catchError(error => {
-        // Maneja errores al obtener el usuario
-        this.handleError(error);
-        return throwError(() => new Error('Error al obtener el usuario'));
-      })
+      switchMap((authResponse: AuthLoguinResponseDTO) => {
+        // Guardamos las nuevas credenciales en la sesión (por ejemplo, authToken y refreshToken).
+        this.util.agregarCredencialesASesion(authResponse);
+
+        // Clonamos la solicitud original con el nuevo token de autenticación.
+        const cloneRequest = request.clone({
+          setHeaders: {
+            'Authorization': `Bearer ${authResponse.token}` // Añadimos el nuevo authToken directamente en el encabezado.
+          }
+        });
+
+        return next.handle(cloneRequest); // Procesamos la solicitud con el nuevo token.
+      }),
+      catchError(error => this.handleError(error)) // Manejo de errores de manera simplificada
     );
   }
 
-
-
-  private handleError(httpResponse: HttpErrorResponse): Observable<never> {
+  private handleError(error: any): Observable<never> {
+    // Maneja el error, simplificado
     this.sonidoService.error();
+
     let mensajeError = 'Ocurrió un error desconocido';
-
-    if (httpResponse.error instanceof ErrorEvent) {
-      // Error del cliente
-      mensajeError = `Error del cliente: ${httpResponse.error.message}`;
-    } else if (httpResponse.error && httpResponse.error.code && httpResponse.error.message) {
-      // Error del servidor con código y mensaje personalizado
-      mensajeError = `Código ${httpResponse.error.code}: ${httpResponse.error.message}`;
+    if (error.error?.code && error.error?.message) {
+      mensajeError = `Código ${error.error.code}: ${error.error.message}`;
+    } else if (error instanceof ErrorEvent) {
+      mensajeError = `Error del cliente: ${error.message}`;
     } else {
-      // Error genérico del servidor
-      mensajeError = `Error del servidor: ${httpResponse.status} - ${httpResponse.message}`;
+      mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
     }
 
-    // Manejo de errores específicos según el código personalizado
-    if (httpResponse.error?.code === 401 || httpResponse.status == 401) {
-    
-      if (httpResponse.error.message === "Token inválido") {
-        console.log("11111111111111111111111111111111111111111111")
-        //this.alertaService.error("Tu token de seguridad ha expirado, necesitas volver a loguarte");
-        this.router.navigate(['/loguin']);
-      }
-
+    if (error?.error?.code === 401 && error?.error?.message === 'Token inválido') {
+      this.router.navigate(['/loguin']);
+    } else if (error?.error?.code === 403 && error?.error?.message === "La cuenta del usuario está bloqueada.") {
+      this.alertaService.error(error?.error?.message);
+    } else {
+      this.alertaService.error(mensajeError);
     }
 
-    // Registrar el error en el servicio de errores
-    // this.errorService.reportError(mensajeError);
 
-    // Mostrar un mensaje amigable al usuario si es necesario
-    this.alertaService.error(mensajeError);
-
-    // Lanzar el error para que los componentes puedan reaccionar si es necesario
     return throwError(() => new Error(mensajeError));
   }
-
-
-
-}
+}  

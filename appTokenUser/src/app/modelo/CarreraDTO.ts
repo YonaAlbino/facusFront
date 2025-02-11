@@ -12,5 +12,6 @@ export interface CarreraDTO {
     listaCalificacion?: CalificacionDTO[];
     universidadId?: number;
     idUsuario?:number;
+    eliminacionLogica?:boolean;
 
 }

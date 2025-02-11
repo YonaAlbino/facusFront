@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Rutas } from '../enumerables/rutas';
 import { EnumsDTOs } from '../enums/enums-dtos';
 import { CarreraDTO } from '../modelo/CarreraDTO';
@@ -23,7 +23,8 @@ export class CarreraService {
   private rutaEndPoint = "/carrera"
 
   getCarreras(): Observable<CarreraDTO[]> {
-    return this.http.get<CarreraDTO[]>(this.rutaBase + this.rutaEndPoint)
+    return this.http.get<CarreraDTO[]>(this.rutaBase + this.rutaEndPoint).pipe(
+      map(carreras => carreras.filter(carrera => carrera.eliminacionLogica === false)))
   }
 
   getCarreraByID(id: number): Observable<CarreraDTO> {
@@ -40,7 +41,7 @@ export class CarreraService {
   }
 
   editCarrera(carrera: CarreraDTO): Observable<CarreraDTO> {
-   console.log(carrera);
+    console.log(carrera);
     return this.http.put<CarreraDTO>(this.rutaBase + this.rutaEndPoint, carrera);
   }
 
@@ -49,15 +50,22 @@ export class CarreraService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<CarreraDTO[]>(`${this.rutaBase}/carrera/obtenerTopCarreras?pagina=${pagina}&tamanio=${tamanio}`, { headers });
+    return this.http.get<CarreraDTO[]>(`${this.rutaBase}/carrera/obtenerTopCarreras?pagina=${pagina}&tamanio=${tamanio}`, { headers }).pipe(
+      map(carreras => carreras.filter(carrera => carrera.eliminacionLogica === false)))
   }
 
-  public eliminarCarrera(id:number):Observable<string>{
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Skip-Interceptor': 'true' // Encabezado personalizado
-    });
-    return this.http.delete<string>(this.rutaBase + this.rutaEndPoint + "/" + id, {headers});
+  public eliminarCarrera(id: number): Observable<string> {
+    return new Observable<string>(observer => {
+      this.getCarreraByID(id).subscribe(carreraBuscada => {
+        carreraBuscada.eliminacionLogica = true;
+        this.editCarrera(carreraBuscada).subscribe(() => {
+          observer.next("Carrera eliminada lógicamente");
+          observer.complete;
+        })
+      }
+      )
+    }
+    )
   }
 
 }

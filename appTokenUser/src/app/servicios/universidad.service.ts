@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Rutas } from '../enumerables/rutas';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { EnumsDTOs } from '../enums/enums-dtos';
 import { UniversidadDTO } from '../modelo/UniversidadDTO';
@@ -20,7 +20,9 @@ export class UniversidadService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint, {headers});
+    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint, { headers }).pipe(
+      map(universidades => universidades.filter(universidad => universidad.eliminacionLogica === false))
+    );
   }
 
   public getUniversidadById(id: number): Observable<UniversidadDTO> {
@@ -45,43 +47,51 @@ export class UniversidadService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers });
+    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers }).pipe(
+      map(universidades => universidades.filter(universidad => universidad.eliminacionLogica === false)));
   }
 
 
   getuniversidadIdCarrera(idCarrera: number): Observable<UniversidadDTO> {
     return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera);
   }
-  
-  obtenerUniversidadesPaginadas(pagina:number, tamanio:number):Observable<UniversidadDTO[]>{
+
+  obtenerUniversidadesPaginadas(pagina: number, tamanio: number): Observable<UniversidadDTO[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/paginadas?pagina=${pagina}&tamanio=${tamanio}`, {headers});
+    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/paginadas?pagina=${pagina}&tamanio=${tamanio}`, { headers }).pipe(
+      map(universidades => universidades.filter(universidad => universidad.eliminacionLogica === false)))
   }
 
-  public buscarUniversidadesPorNombre(name:string):Observable<UniversidadDTO[]>{
+  public buscarUniversidadesPorNombre(name: string): Observable<UniversidadDTO[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint + "/findUniversidadByName/" + name, {headers});
-  }
-  
-  public getAllComents(idUniversidad:number):Observable<Number>{
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Skip-Interceptor': 'true' // Encabezado personalizado
-    });
-    return this.http.get<Number>(this.baseUrl + this.rutaEndPoint + "/getAllComents/" + idUniversidad, {headers});
+    return this.http.get<UniversidadDTO[]>(this.baseUrl + this.rutaEndPoint + "/findUniversidadByName/" + name, { headers }).pipe(
+      map(universidades => universidades.filter(universidad => universidad.eliminacionLogica === false)));
   }
 
-  public eliminarUniversidad(id:number):Observable<string>{
+  public getAllComents(idUniversidad: number): Observable<Number> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.delete<string>(this.baseUrl + this.rutaEndPoint + "/" + id, {headers});
+    return this.http.get<Number>(this.baseUrl + this.rutaEndPoint + "/getAllComents/" + idUniversidad, { headers });
   }
+
+  public eliminarUniversidad(id: number): Observable<string> {
+    return new Observable<string>(observer => {
+      this.getUniversidadById(id).subscribe(universidadBuscada => {
+        universidadBuscada.eliminacionLogica = true;
+        this.editUniversidad(universidadBuscada).subscribe(() => {
+          observer.next('Universidad eliminada lógicamente');
+          observer.complete();
+        });
+      });
+    });
+  }
+
 }

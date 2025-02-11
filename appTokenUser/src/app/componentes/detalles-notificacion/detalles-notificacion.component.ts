@@ -36,7 +36,7 @@ export class DetallesNotificacionComponent implements OnInit {
   respuestaComentarioRecibida: boolean | undefined;
   respuestaAunaRespuesta: boolean | undefined;
   carreraAgregada: boolean | undefined;
-  comentarioAgregadoCarrera: boolean | undefined; 
+  comentarioAgregadoCarrera: boolean | undefined;
 
   notificacionBuscada: NotificacionDTO | undefined;
   comentarioAgregadoCarreraEntidad: ComentarioDTO | undefined;
@@ -187,6 +187,11 @@ export class DetallesNotificacionComponent implements OnInit {
       .findRespuestaById(this.id!)
       .subscribe((respuesta: RespuestaDTO) => {
         this.respuestaBuscada = respuesta;
+        this.usuarioService
+          .getUsuarioById(respuesta.usuarioId!)
+          .subscribe((usuario: UsuarioDTO) => {
+            this.usuarioPropietario = usuario;
+          });
       }, (error) => {
         this.registroEliminado = true;
         console.error(error)
