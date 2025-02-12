@@ -10,6 +10,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="">Home</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/contacto">Contacto</a>
+          </li>
           <li *ngIf="!loguado" class="nav-item">
             <a class="nav-link active" href="/loguin">Loguin</a>
           </li>
@@ -30,7 +33,10 @@
             <a class="nav-link active" href="/perfil">Perfil</a>
           </li>
           <li *ngIf="loguado" class="nav-item">
-            <a class="nav-link active" href=""  (click)="salir()">Salir</a>
+            <a class="nav-link active" href="/normas">Normas</a>
+          </li>
+          <li *ngIf="loguado" class="nav-item">
+            <a class="nav-link active" href="" (click)="salir()">Salir</a>
           </li>
         </ul>
       </div>

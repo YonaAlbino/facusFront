@@ -13,14 +13,12 @@ export class PruebaService {
 
   private authUrl = 'http://localhost:8080/login'; // URL del endpoint de autenticación en Spring Boot
 
-  constructor(private http: HttpClient, private router: Router, private socketService: SocketService) { }
+  constructor() { }
 
   login() {
     window.location.href = this.authUrl; // Redirige al usuario a la página de inicio de sesión de Google
   }
 
-  handleAuthCallback(token:string, rol:string) {
-    
-  }
+
 
 }

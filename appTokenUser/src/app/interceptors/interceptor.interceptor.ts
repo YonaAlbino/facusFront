@@ -121,7 +121,8 @@ export class InterceptorInterceptor implements HttpInterceptor {
       mensajeError = `Error del servidor: ${error.status} - ${error.message}`;
     }
 
-    if (error?.error?.code === 401 && error?.error?.message === 'Token inválido') {
+    if (error?.error?.message === 'Token inválido') {
+      mensajeError = "El token ha expirado, necesitas volver a loguarte"
       this.router.navigate(['/loguin']);
     } else if (error?.error?.code === 403 && error?.error?.message === "La cuenta del usuario está bloqueada.") {
       this.alertaService.error(error?.error?.message);

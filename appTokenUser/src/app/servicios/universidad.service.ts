@@ -46,9 +46,8 @@ export class UniversidadService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
-    });
-    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers }).pipe(
-      map(universidades => universidades.filter(universidad => universidad.eliminacionLogica === false)));
+    })
+    return this.http.get<UniversidadDTO[]>(`${this.baseUrl}${this.rutaEndPoint}/obtenerTopUniversidades?pagina=${pagina}&tamanio=${tamanio}`, { headers })
   }
 
 
