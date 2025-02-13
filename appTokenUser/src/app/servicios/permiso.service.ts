@@ -23,18 +23,10 @@ export class PermisoService {
   }
   
   editPermiso(permiso:PermisoDTO):Observable<PermisoDTO>{
-    const permisoClass = {
-      ...permiso,  
-      '@class': EnumsDTOs.PermisoDTO  
-    };
-    return this.http.put(this.baseUrl + this.rutaEndPoint, permisoClass);
+    return this.http.put(this.baseUrl + this.rutaEndPoint, permiso);
   }
 
   crearPermiso(permiso:PermisoDTO):Observable<PermisoDTO>{
-    const permisoClass = {
-      ...permiso,  
-      '@class': EnumsDTOs.PermisoDTO  
-    };
-    return this.http.post(this.baseUrl + this.rutaEndPoint, permisoClass);
+    return this.http.post(this.baseUrl + this.rutaEndPoint, permiso);
   }
 }

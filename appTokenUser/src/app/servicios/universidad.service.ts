@@ -26,19 +26,18 @@ export class UniversidadService {
   }
 
   public getUniversidadById(id: number): Observable<UniversidadDTO> {
-    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/" + id);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    })
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/" + id, {headers});
   }
 
   public crearUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
-    const universidadClass = {
-      ...universidad,
-      '@class': EnumsDTOs.UniversidadDTO
-    };
-    return this.http.post(this.baseUrl + this.rutaEndPoint, universidadClass);
+    return this.http.post(this.baseUrl + this.rutaEndPoint, universidad);
   }
 
   public editUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
-    console.log(universidad)
     return this.http.put(this.baseUrl + this.rutaEndPoint, universidad);
   }
 
@@ -52,7 +51,11 @@ export class UniversidadService {
 
 
   getuniversidadIdCarrera(idCarrera: number): Observable<UniversidadDTO> {
-    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera, {headers});
   }
 
   obtenerUniversidadesPaginadas(pagina: number, tamanio: number): Observable<UniversidadDTO[]> {
@@ -92,5 +95,6 @@ export class UniversidadService {
       });
     });
   }
+
 
 }

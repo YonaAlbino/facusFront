@@ -42,6 +42,7 @@ import { AgregacionCarreraComponent } from './componentes/agregacion-carrera/agr
 import { EdicionUniversidadComponent } from './componentes/edicion-universidad/edicion-universidad.component';
 import { NormasComponent } from './componentes/normas/normas.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
+import { loguinGuard } from './guards/loguin.guards';
 
 
 
@@ -51,18 +52,18 @@ import { ContactoComponent } from './componentes/contacto/contacto.component';
 const routes: Routes = [
   { path: '', component: PrincipalComponent }, 
   { path: 'loguin', component: LogueoComponent }, 
-  { path: 'escucha', component: EsuchaSocketComponent },
-  { path: 'notificaciones', component: NotificacionesComponent },
-  { path: 'detalleNotificacion/:id', component: DetallesNotificacionComponent},
-  { path: 'detalleNotificacion/:id/:idNotificacion', component: DetallesNotificacionComponent }, 
-  { path: 'comentarios', component: ComentarioComponent},
+  { path: 'escucha', component: EsuchaSocketComponent, canActivate:[loguinGuard] },
+  { path: 'notificaciones', component: NotificacionesComponent, canActivate:[loguinGuard]},
+  { path: 'detalleNotificacion/:id', component: DetallesNotificacionComponent, canActivate:[loguinGuard]},
+  { path: 'detalleNotificacion/:id/:idNotificacion', component: DetallesNotificacionComponent, canActivate:[loguinGuard]}, 
+  { path: 'comentarios', component: ComentarioComponent, canActivate:[loguinGuard]},
   { path: 'loguin', component: LogueoComponent},
-  { path: 'usuario', component: UsuarioComponent},
-  { path: 'universidad', component: UniversidadComponent},
-  { path: 'carrera', component: CarreraComponent},
-  { path: 'calificacion', component: CalificacionComponent},
-  { path: 'permiso', component: PermisoComponent},
-  { path: 'reaccion', component: ReaccionComponent},
+  { path: 'usuario', component: UsuarioComponent, canActivate:[loguinGuard]},
+  { path: 'universidad', component: UniversidadComponent, canActivate:[loguinGuard]},
+  { path: 'carrera', component: CarreraComponent, canActivate:[loguinGuard]},
+  { path: 'calificacion', component: CalificacionComponent, canActivate:[loguinGuard]},
+  { path: 'permiso', component: PermisoComponent, canActivate:[loguinGuard]},
+  { path: 'reaccion', component: ReaccionComponent, canActivate:[loguinGuard]},
   { path: 'carrusel', component: CarruselComponent},
   { path: 'topCarrera', component: TopCarreraComponent},
   { path: 'detalleUniversidad/:id', component: DetalleUniversidadComponent},
@@ -71,14 +72,14 @@ const routes: Routes = [
   { path: 'cuerpo', component: CuerpoComponent},
   { path: 'barraBusqueda', component: BarraBusquedaComponent},
   { path: 'footer', component: FooterComponent},
-  { path: 'agregarUniversidad', component: AgregarUniversidadComponent},
+  { path: 'agregarUniversidad', component: AgregarUniversidadComponent, canActivate:[loguinGuard]},
   { path: 'error/token/:idTokenVerificador', component: TokenVerificacionErrorComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'perfil', component: PerfilComponent },
+  { path: 'perfil', component: PerfilComponent, canActivate:[loguinGuard]},
   { path: 'recuperarContrasenia', component: RecuperarContraseniaComponent },
   { path: 'reestablecerContrasenia', component: ReestablecerContraseniaComponent },
-  { path: 'agregarCarrera/:id', component: AgregacionCarreraComponent },
-  { path: 'edicionUniversidad/:id', component: EdicionUniversidadComponent },
+  { path: 'agregarCarrera/:id', component: AgregacionCarreraComponent, canActivate:[loguinGuard]},
+  { path: 'edicionUniversidad/:id', component: EdicionUniversidadComponent, canActivate:[loguinGuard]},
   { path: 'normas', component: NormasComponent },
   { path: 'contacto', component: ContactoComponent },
 

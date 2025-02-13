@@ -20,11 +20,6 @@ export class NotificacionService {
   getNotificacionesByUserId(idUser: number): Observable<NotificacionDTO[]> {
     return this.http.get<NotificacionDTO[]>(`${this.baseUrl + this.rutaEndpoint + "/byUserId"}/${idUser}`);
   }
-
-  // getNotificacionesFalseByUserId(idUser:number):Observable<Notificacion[]>{
-  //   return this.http.get<Notificacion[]>(`${this.baseUrl}/false/${idUser}`);
-  // }
-
   getNotificacionesNoLeidas(idUser: number): Observable<NotificacionDTO[]> {
     return this.http.get<NotificacionDTO[]>(this.baseUrl + this.rutaEndpoint + "/noLeidas/" + idUser);
   }
@@ -32,14 +27,8 @@ export class NotificacionService {
   visualizarNotificacionesByUserID(userId: number): Observable<string> {
     console.log(userId)
     const url = this.baseUrl + this.rutaEndpoint + "/visualizarNotificacionesByUserID/" + userId;
-    //const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<string>(url, null);
   }
-
-  // eliminarNotificacion(idNotificacion: number, idUsuario: number) {
-  //   //return this.http.put<string>(`${this.baseUrl}/${idNotificacion}/${idUsuario}`, null);
-  //   return this.http.put<string>(this.baseUrl + this.rutaEndpoint + "/" + idNotificacion + "/" + idUsuario, null);
-  // }
 
   eliminarUsuarioAsignado(idNotificacion: number, idUsuario: number): Observable<string> {
     const url = `${this.baseUrl}/${idNotificacion}/${idUsuario}`;
@@ -59,11 +48,7 @@ export class NotificacionService {
   }
 
   crearNotificacion(notificacion: NotificacionDTO): Observable<NotificacionDTO> {
-    const notificacionClass = {
-      ...notificacion,
-      '@class': EnumsDTOs.NotificacionDTO
-    };
-    return this.http.post(this.baseUrl + this.rutaEndpoint, notificacionClass);
+    return this.http.post(this.baseUrl + this.rutaEndpoint, notificacion);
   }
 
   editNotificacion(notificacion: NotificacionDTO): Observable<NotificacionDTO> {

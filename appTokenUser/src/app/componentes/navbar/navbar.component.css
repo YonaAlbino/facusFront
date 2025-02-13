@@ -62,7 +62,8 @@
     font-weight: 400;
     font-style: normal;
   }
-  
+
+
   /* Responsividad para pantallas pequeñas */
   @media (max-width: 767px) {
     .navbar-expand-lg .navbar-nav {

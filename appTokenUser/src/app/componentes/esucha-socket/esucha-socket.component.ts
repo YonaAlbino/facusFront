@@ -22,7 +22,7 @@ export class EsuchaSocketComponent implements OnInit {
 
   ngOnInit() {
     this.usuarioService.idUsuarioActual.subscribe(idUsuario => {
-      if (idUsuario !== null) {
+      if (idUsuario !== null && idUsuario !== 0) {
         this.escucharSocket(idUsuario);
         this.notificacionesService.getNotificacionesNoLeidas(idUsuario)
           .subscribe((notificaciones: NotificacionDTO[]) => {

@@ -31,8 +31,6 @@ export class CarruselComponent {
           if (universidades.length < 3) {
             this.completarCampos(this.universidades);
           }
-          console.log("11111111111111111111")
-          console.log(universidades)
         }
       })
   }

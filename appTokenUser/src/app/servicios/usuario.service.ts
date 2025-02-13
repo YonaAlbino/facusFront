@@ -11,13 +11,14 @@ import { RegistroRequest } from '../modelo/registro-request';
 import { ActualizarContraseniaRequest } from '../modelo/actualizar-contrasenia-request';
 import Swal from 'sweetalert2'
 import { ImagenUsuario } from '../modelo/imagen-usuario';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
-  constructor(private HttpClient: HttpClient) {
+  constructor(private HttpClient: HttpClient, private router: Router,) {
     const rolUsuario = localStorage.getItem('userRole');
     if (rolUsuario) {
       this.rolUsuario.next(rolUsuario);
@@ -127,13 +128,28 @@ export class UsuarioService {
     return this.HttpClient.post<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/infraccionar/" + id, null);
   }
 
-  public buscarImagenUsuario(id:number):Observable<ImagenUsuario> {
+  public buscarImagenUsuario(id: number): Observable<ImagenUsuario> {
     const url = `${this.baseUrl}${this.rutaEndPoint}/buscar-imagen-user/${id}`;
-    return this.HttpClient.get<ImagenUsuario>(url); 
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    })
+    return this.HttpClient.get<ImagenUsuario>(url, {headers});
   }
 
   public findUsernamesByUniversidadId(id: number): Observable<MensajeRetornoSimple> {
-    return this.HttpClient.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/findUsernamesByUniversidadId/" + id);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    })
+    return this.HttpClient.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/findUsernamesByUniversidadId/" + id, {headers});
   }
+
+  // usuarioLogueado() {
+  //   this.idUsuarioActual.subscribe(id => {
+  //     if (id === null || id === 0)
+  //       this.router.navigate(['']);
+  //   });
+  // }
 
 }

@@ -35,8 +35,11 @@ export class ComentarioComponent implements OnInit {
     private reaccionService: ReaccionService,
     private universidadService: UniversidadService,
     private alertaService: AlertasService,
-    private notificacionService: NotificacionService
-  ) { }
+    private notificacionService: NotificacionService,
+    private usuarioService:UsuarioService
+  ) { 
+
+  }
 
 
   respuestaDeLaRespuestaDelComentario: string | undefined;

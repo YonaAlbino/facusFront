@@ -3,7 +3,7 @@ import { Rutas } from '../enumerables/rutas';
 import { ContactoRequest } from '../modelo/contacto-request';
 import { MensajeRetornoSimple } from '../modelo/mensaje-retorno-simple';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,11 @@ export class ContactoService {
   constructor(private http: HttpClient) { }
 
   enviarMensaje(contactoRequest: ContactoRequest): Observable<MensajeRetornoSimple> {
-    return this.http.post<MensajeRetornoSimple>(this.rutaBase + this.rutaEndpoint, contactoRequest);
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Skip-Interceptor': 'true' // Encabezado personalizado
+        })
+    return this.http.post<MensajeRetornoSimple>(this.rutaBase + this.rutaEndpoint, contactoRequest, {headers});
   }
 
 }

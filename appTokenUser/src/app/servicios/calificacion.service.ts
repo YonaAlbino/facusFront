@@ -23,21 +23,11 @@ export class CalificacionService {
   }
   
   crearCalificacion(calificacion:CalificacionDTO):Observable<CalificacionDTO>{
-    const calificacionClass = {
-      ...calificacion,  
-      '@class': EnumsDTOs.CalificacionDTO  
-    };
-  
-    return this.http.post<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacionClass);
+    return this.http.post<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacion);
   }
   
   editCalificacion(calificacion:CalificacionDTO):Observable<CalificacionDTO>{
-    const calificacionClass = {
-      ...calificacion,  
-      '@class': EnumsDTOs.CalificacionDTO  
-    };
-  
-    return this.http.put<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacionClass);
+    return this.http.put<CalificacionDTO>(this.baseUrl + this.rutaEndPoint, calificacion);
   }
   
 

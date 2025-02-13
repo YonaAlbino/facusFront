@@ -23,21 +23,24 @@ export class CarreraService {
   private rutaEndPoint = "/carrera"
 
   getCarreras(): Observable<CarreraDTO[]> {
-    return this.http.get<CarreraDTO[]>(this.rutaBase + this.rutaEndPoint).pipe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.get<CarreraDTO[]>(this.rutaBase + this.rutaEndPoint, {headers}).pipe(
       map(carreras => carreras.filter(carrera => carrera.eliminacionLogica === false)))
   }
 
   getCarreraByID(id: number): Observable<CarreraDTO> {
-    return this.http.get<CarreraDTO>(this.rutaBase + this.rutaEndPoint + "/" + id);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.get<CarreraDTO>(this.rutaBase + this.rutaEndPoint + "/" + id, {headers});
   }
 
   crearCarrera(carrera: CarreraDTO): Observable<CarreraDTO> {
-    const carreraConClass = {
-      ...carrera,
-      '@class': EnumsDTOs.CarreraDTO
-    };
-
-    return this.http.post<CarreraDTO>(this.rutaBase + this.rutaEndPoint, carreraConClass);
+    return this.http.post<CarreraDTO>(this.rutaBase + this.rutaEndPoint, carrera);
   }
 
   editCarrera(carrera: CarreraDTO): Observable<CarreraDTO> {

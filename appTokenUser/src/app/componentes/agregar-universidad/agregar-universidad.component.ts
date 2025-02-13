@@ -29,7 +29,7 @@ export class AgregarUniversidadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('userRole') == null) this.router.navigate(['']);
+    //if (localStorage.getItem('userRole') == null) this.router.navigate(['']);
     this.formularioAltaUniversidad = this.iniciarFormAltaUniversidad();
   }
 

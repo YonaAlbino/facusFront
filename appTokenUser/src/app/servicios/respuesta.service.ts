@@ -31,12 +31,8 @@ export class RespuestaService implements OnInit {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-
-
     return this.http.post<RespuestaDTO>(this.rutaBase + this.rutaEndpoint, respuesta, { headers: headers });
-
   }
-
 
   crearRespuesta(mensaje: string): Observable<RespuestaDTO> {
     let respuesta: RespuestaDTO = {
@@ -53,11 +49,8 @@ export class RespuestaService implements OnInit {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    const respuestaClass = {
-      ...respuestaOriginal,
-      '@class': EnumsDTOs.RespuestaDTO
-    };
-    return this.http.put(this.rutaBase + this.rutaEndpoint, respuestaClass);
+
+    return this.http.put(this.rutaBase + this.rutaEndpoint, respuestaOriginal);
   }
 
   findRespuestaById(id: number): Observable<RespuestaDTO> {
@@ -67,10 +60,6 @@ export class RespuestaService implements OnInit {
   findComentariosByListaRespuestaId(idRespuesta: number): Observable<ComentarioDTO> {
     return this.http.get<ComentarioDTO>(`${this.rutaBase}${this.rutaEndpoint}/findComentariosByListaRespuestaId/${idRespuesta}`);
   }
-
-  
-
-
 
   eliminarRespuesta(id: number): Observable<string> {
     return this.http.delete<string>(this.rutaBase + this.rutaEndpoint + "/" + id);

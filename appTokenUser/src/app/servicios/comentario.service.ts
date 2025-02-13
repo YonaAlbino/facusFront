@@ -33,11 +33,7 @@ export class ComentarioService {
   }
 
   editComentario(comentario: ComentarioDTO): Observable<ComentarioDTO> {
-    const comentarioClass = {
-      ...comentario,
-      '@class': EnumsDTOs.ComentarioDTO
-    };
-    return this.http.put<ComentarioDTO>(this.rutaBase + this.rutaEndpoint, comentarioClass);
+    return this.http.put<ComentarioDTO>(this.rutaBase + this.rutaEndpoint, comentario);
   }
 
   CargarComentariosPaginadosCarrera(
@@ -48,9 +44,13 @@ export class ComentarioService {
     antiguos: boolean,
     votados: boolean
   ): Observable<ComentarioDTO[]> {
-  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    })
+
     return this.http.get<ComentarioDTO[]>(
-      `${this.rutaBase}/comentario/encontrarComentariosPorIdCarrera/${idCarrera}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`
+      `${this.rutaBase}/comentario/encontrarComentariosPorIdCarrera/${idCarrera}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`, {headers}
     );
   }
   
@@ -63,9 +63,13 @@ export class ComentarioService {
     antiguos: boolean,
     votados: boolean,
   ): Observable<ComentarioDTO[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    })
 
     return this.http.get<ComentarioDTO[]>(
-      `${this.rutaBase}/comentario/encontrarComentariosPorIdUniversidad/${idUniversidad}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`
+      `${this.rutaBase}/comentario/encontrarComentariosPorIdUniversidad/${idUniversidad}?pagina=${pagina}&tamanio=${tamanio}&recientes=${recientes}&antiguos=${antiguos}&votados=${votados}`, {headers}
     );
   }
 

@@ -23,31 +23,17 @@ export class ReaccionService {
   }
 
   crearReaccion(reaccion: ReaccionDTO): Observable<ReaccionDTO> {
-    const reaccionClass = {
-      ...reaccion,  
-      '@class': EnumsDTOs.ReaccionDTO  
-    };
-    return this.http.post(this.rutaBase + this.rutaEndPoint, reaccionClass);
+    return this.http.post(this.rutaBase + this.rutaEndPoint, reaccion);
   }
 
   editarReaccion(reaccion: ReaccionDTO): Observable<ReaccionDTO> {
-    const reaccionClass = {
-      ...reaccion,  
-      '@class': EnumsDTOs.ReaccionDTO  
-    };
-    return this.http.put(this.rutaBase + this.rutaEndPoint, reaccionClass);
+    return this.http.put(this.rutaBase + this.rutaEndPoint, reaccion);
   }
 
   public guardarReaccion(reaccion: ReaccionDTO): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-
-    const reaccionClass = {
-      ...reaccion,  
-      '@class': EnumsDTOs.ReaccionDTO  
-    };
-
-    return this.http.post(this.rutaBase + this.rutaEndPoint, reaccionClass, { headers: headers });
+    return this.http.post(this.rutaBase + this.rutaEndPoint, reaccion, { headers: headers });
   }
 }

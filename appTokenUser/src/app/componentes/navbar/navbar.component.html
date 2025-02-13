@@ -8,35 +8,34 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">Home</a>
+            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/contacto">Contacto</a>
+            <a class="nav-link active" routerLink="/contacto">Contacto</a>
           </li>
           <li *ngIf="!loguado" class="nav-item">
-            <a class="nav-link active" href="/loguin">Loguin</a>
+            <a class="nav-link active" routerLink="/loguin">Loguin</a>
           </li>
           <li *ngIf="!loguado" class="nav-item">
-            <a class="nav-link active" href="/registro">Registro</a>
+            <a class="nav-link active" routerLink="/registro">Registro</a>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="loguado" href="/notificaciones">Notificaciones</a>
+            <a class="nav-link active" *ngIf="loguado" routerLink="/notificaciones">Notificaciones</a>
           </li>
           <span class="navbar-text">
             <app-esucha-socket></app-esucha-socket>
           </span>
           <li class="nav-item">
-            <a class="nav-link active" *ngIf="loguado" href="/agregarUniversidad">Agregar universidad</a>
+            <a class="nav-link active" *ngIf="loguado" routerLink="/agregarUniversidad">Agregar universidad</a>
           </li>
           <li *ngIf="loguado" class="nav-item">
-            <a class="nav-link active" href="/perfil">Perfil</a>
+            <a class="nav-link active" routerLink="/perfil">Perfil</a>
           </li>
           <li *ngIf="loguado" class="nav-item">
-            <a class="nav-link active" href="/normas">Normas</a>
+            <a class="nav-link active" routerLink="/normas">Normas</a>
           </li>
           <li *ngIf="loguado" class="nav-item">
-            <a class="nav-link active" href="" (click)="salir()">Salir</a>
+            <a class="nav-link active" href="#" (click)="salir()">Salir</a>
           </li>
         </ul>
       </div>

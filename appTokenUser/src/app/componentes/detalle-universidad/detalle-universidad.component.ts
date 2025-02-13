@@ -168,11 +168,13 @@ export class DetalleUniversidadComponent implements OnInit {
   }
 
   obtenerUsuarioActual() {
-    this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
-      (usuario: UsuarioDTO) => {
-        this.usuarioActual = usuario;
-      }
-    )
+    if (this.idUsuarioActual !== null && this.idUsuarioActual !== 0) {
+      this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
+        (usuario: UsuarioDTO) => {
+          this.usuarioActual = usuario;
+        }
+      )
+    }
   }
 
   calificacionEditable(listaCalificaciones: CalificacionDTO[]): void {
