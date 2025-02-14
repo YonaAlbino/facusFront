@@ -18,6 +18,7 @@ export class TopCarreraComponent implements OnInit {
   paginaActual: number = 0; // Página actual para la paginación
   registrosPorPagina: number = 5; // Registros por página
   totalCarrerasCargadas: number = 0; // Carreras cargadas
+  universidadesActivas:number[] = [];
 
   constructor(
     private carreraService: CarreraService,
@@ -26,6 +27,7 @@ export class TopCarreraComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCarreras();
+    this.obtenerUniversidadesActivas();
   }
 
   cargarCarreras(): void {
@@ -61,5 +63,18 @@ export class TopCarreraComponent implements OnInit {
           console.error('Error al buscar la universidad:', error);
         }
       );
+  }
+
+
+  obtenerUniversidadesActivas(): void {
+    this.universidadService.buscarUniversidadesActivas().subscribe({
+      next: (ids: number[]) => {
+        console.log("Universidades activas:", ids);
+        //this.universidadesActivas = ids;
+      },
+      error: (error) => {
+        console.error("Error al obtener universidades activas:", error);
+      }
+    });
   }
 }

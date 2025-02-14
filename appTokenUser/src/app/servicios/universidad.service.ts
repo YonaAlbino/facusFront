@@ -30,7 +30,7 @@ export class UniversidadService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     })
-    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/" + id, {headers});
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/" + id, { headers });
   }
 
   public crearUniversidad(universidad: UniversidadDTO): Observable<UniversidadDTO> {
@@ -55,7 +55,7 @@ export class UniversidadService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     });
-    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera, {headers});
+    return this.http.get<UniversidadDTO>(this.baseUrl + this.rutaEndPoint + "/universidadID/" + idCarrera, { headers });
   }
 
   obtenerUniversidadesPaginadas(pagina: number, tamanio: number): Observable<UniversidadDTO[]> {
@@ -97,4 +97,11 @@ export class UniversidadService {
   }
 
 
+  public buscarUniversidadesActivas(): Observable<number[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Skip-Interceptor': 'true' // Encabezado personalizado
+    });
+    return this.http.get<number[]>(this.baseUrl + this.rutaEndPoint + "/buscarUniversidadesActivas", { headers });
+  }
 }

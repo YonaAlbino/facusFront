@@ -5,8 +5,8 @@
     <p class="username">Rol: {{usuario?.listaRoles?.[0]?.nombreRol}}</p>
     <p  class="username">Infracciones: {{usuario?.infracciones}}</p>
     <img class="imagen-usuario"
-        [src]="usuario?.imagen ? usuario?.imagen : 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='"
-        alt="imagen usuario">
+        [src]="usuario?.imagen"
+        alt="imagen usuario" (error)="manejarImagenNoCargada($event)">
     <div class="contenedor-botones">
         <button class="boton-primario" (click)="cambiarImagen()">Cambiar imagen de perfil</button>
         <button class="boton-secundario" (click)="mostrarFormularioContrasenia()">Cambiar contraseña</button>

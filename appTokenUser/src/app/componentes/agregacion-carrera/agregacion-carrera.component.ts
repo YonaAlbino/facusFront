@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CarreraDTO } from 'src/app/modelo/CarreraDTO';
 import { UniversidadDTO } from 'src/app/modelo/UniversidadDTO';
 import { AlertasService } from 'src/app/servicios/alertas.service';
 import { UniversidadService } from 'src/app/servicios/universidad.service';
@@ -25,23 +26,25 @@ export class AgregacionCarreraComponent implements OnInit {
       this.idUniversidad = this.route.snapshot.params["id"];
       this.buscarUniversidad();
     } else {
-      this.universidadAeditar  = this.universidad;
+      this.universidadAeditar = this.universidad;
     }
   }
 
   buscarUniversidad() {
     this.universidadService.getUniversidadById(this.idUniversidad).subscribe(
       (universidad: UniversidadDTO) => {
-        this.universidadAeditar = universidad;
-      }, (error) => {
-        console.error(error);
+        if (universidad.listaCarreras) {
+          universidad.listaCarreras = universidad.listaCarreras.filter(carrera => !carrera.eliminacionLogica);
+          this.universidadAeditar = universidad;
+        }
       }
-    )
+    );
   }
 
+
   async agregarCarrera() {
-    let idUsuarioLogueado:number = Number(localStorage.getItem('userID'));
-    (await this.alertas.modalAgregarCarrera(this.idUniversidad,idUsuarioLogueado)).subscribe(
+    let idUsuarioLogueado: number = Number(localStorage.getItem('userID'));
+    (await this.alertas.modalAgregarCarrera(this.idUniversidad, idUsuarioLogueado)).subscribe(
       (universidadActualizada: UniversidadDTO) => {
         this.universidadAeditar = universidadActualizada;
         Swal.fire('Carrera agregada');

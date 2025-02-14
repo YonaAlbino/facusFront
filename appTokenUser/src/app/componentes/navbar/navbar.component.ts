@@ -9,7 +9,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 })
 export class NavbarComponent implements OnInit {
   constructor(private router: Router, private usuarioService: UsuarioService) {}
-
+  rutaSeleccionada:string = "hole";
   loguado: boolean = false;
 
   ngOnInit(): void {
@@ -22,5 +22,9 @@ export class NavbarComponent implements OnInit {
     localStorage.clear();
     window.history.replaceState({}, document.title, window.location.pathname);
     window.location.reload();
+  }
+
+  seleccionar(ruta:string){
+    this.rutaSeleccionada = ruta;
   }
 }

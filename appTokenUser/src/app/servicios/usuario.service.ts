@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CredencialesLogueo } from '../modelo/credenciales-logueo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthLoguinResponseDTO } from '../modelo/auth-loguin-response-dto';
@@ -134,7 +134,7 @@ export class UsuarioService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     })
-    return this.HttpClient.get<ImagenUsuario>(url, {headers});
+    return this.HttpClient.get<ImagenUsuario>(url, { headers });
   }
 
   public findUsernamesByUniversidadId(id: number): Observable<MensajeRetornoSimple> {
@@ -142,7 +142,7 @@ export class UsuarioService {
       'Content-Type': 'application/json',
       'Skip-Interceptor': 'true' // Encabezado personalizado
     })
-    return this.HttpClient.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/findUsernamesByUniversidadId/" + id, {headers});
+    return this.HttpClient.get<MensajeRetornoSimple>(this.baseUrl + this.rutaEndPoint + "/findUsernamesByUniversidadId/" + id, { headers });
   }
 
   // usuarioLogueado() {
@@ -151,5 +151,12 @@ export class UsuarioService {
   //       this.router.navigate(['']);
   //   });
   // }
+
+  isAdmin(id: number): Observable<boolean> {
+    return this.getUsuarioById(id).pipe(
+      map((usuario: UsuarioDTO) => usuario.listaRoles?.some(rol => rol.nombreRol === "ADMIN") || false)
+    );
+  }
+
 
 }

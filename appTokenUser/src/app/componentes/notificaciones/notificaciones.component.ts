@@ -21,7 +21,7 @@ export class NotificacionesComponent implements OnInit {
   mensajeError!: string;
   eliminando: boolean = false;
   filtroSeleccionado: string = 'general';
-
+  admin: boolean = false;
 
   constructor(
     private notificacionService: NotificacionService,
@@ -32,6 +32,11 @@ export class NotificacionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getnotificationsByIdUser(this.idUsuario);
+    this.userService.isAdmin(this.idUsuario).subscribe(
+      (admin: boolean) => {
+        this.admin = admin;
+      }
+    )
     //this.visualizarNotificacionesByUserID(); 
     this.notificacionService.visualizarNotificacionesByUserID(this.idUsuario).subscribe();
 
@@ -212,5 +217,6 @@ export class NotificacionesComponent implements OnInit {
       }
     }
   }
+
 
 }

@@ -103,10 +103,10 @@ export class PerfilComponent {
 
   guardarNuevaImagenUsuario() {
     this.usuario!.imagen = this.nuevaImagenPerfil;
-    console.log(this.usuario)
     this.usuarioService.editUsuario(this.usuario!).subscribe(
       (usuarioModificado: UsuarioDTO) => {
-        console.log(usuarioModificado);
+       this.alertas.exito("Imagen modificada")
+       this.editarImagen = false;
       }, (error) => {
         console.error(error)
       }
@@ -128,6 +128,13 @@ export class PerfilComponent {
   mostrarInformacionRol() {
     this.infoRol = !this.infoRol;
   }
+
+  
+  manejarImagenNoCargada(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+  }
+
 
 
 

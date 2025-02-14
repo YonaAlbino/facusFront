@@ -4,7 +4,7 @@
       [ngClass]="{ 'seleccionado': filtroSeleccionado === 'general' }">General</button>
     <button (click)="filtrarNotificaciones(false, true, false, 'respuestas')"
       [ngClass]="{ 'seleccionado': filtroSeleccionado === 'respuestas' }">Respuestas</button>
-    <button (click)="filtrarNotificaciones(false, false, true, 'auditoria')"
+    <button *ngIf="admin" (click)="filtrarNotificaciones(false, false, true, 'auditoria')"
       [ngClass]="{ 'seleccionado': filtroSeleccionado === 'auditoria' }">Auditoria</button>
   </div>
 </div>

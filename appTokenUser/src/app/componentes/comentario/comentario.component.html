@@ -165,7 +165,7 @@
         *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual" (click)="editarRespuesta(respuesta)">
         Editar </button>
       <button [disabled]="respuesta.eliminado" *ngIf="respuesta.usuarioId && respuesta.usuarioId == idUsuarioActual"
-        (click)="eliminarRespuesta(respuesta)" class="botonEliminar">Eliminar 66</button>
+        (click)="eliminarRespuesta(respuesta)" class="botonEliminar">Eliminar</button>
       <div *ngIf="respuesta.mostrarFormularioEdicion" style="margin-top: 20px">
         <!-- <input type="text" class="form-control" [(ngModel)]="respuestaDesdeElInput" placeholder="Tu respuesta..."> -->
         <textarea id="texto_area" name="comentario" [(ngModel)]="edicionRespuesta" rows="8" cols="50"

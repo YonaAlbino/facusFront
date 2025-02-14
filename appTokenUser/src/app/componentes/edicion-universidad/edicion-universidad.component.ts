@@ -37,6 +37,7 @@ export class EdicionUniversidadComponent implements OnInit {
   buscarUniversidad() {
     this.universidadService.getUniversidadById(this.idUniversidad).subscribe(
       (universidadEncontrada: UniversidadDTO) => {
+        universidadEncontrada.listaCarreras = universidadEncontrada.listaCarreras?.filter(carrera => !carrera.eliminacionLogica);
         this.universidadBuscada = universidadEncontrada;
         this.cargarDatosUniversidadBuscada(universidadEncontrada);
       }, (error) => {

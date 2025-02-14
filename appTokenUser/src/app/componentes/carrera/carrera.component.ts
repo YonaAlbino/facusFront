@@ -171,11 +171,13 @@ export class CarreraComponent implements OnInit {
   }
 
   obtenerUsuarioActual() {
-    this.userService.getUsuarioById(this.idUsuarioActual!).subscribe(
-      (usuario: UsuarioDTO) => {
-        this.usuarioActual = usuario;
-      }
-    )
+    if (this.idUsuarioActual && this.idUsuarioActual != 0) {
+      this.userService.getUsuarioById(this.idUsuarioActual).subscribe(
+        (usuario: UsuarioDTO) => {
+          this.usuarioActual = usuario;
+        }
+      )
+    }
   }
 
   volverUniversidad() {
